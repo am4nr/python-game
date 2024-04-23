@@ -17,4 +17,4 @@ class Entity:
         self.image = image
         self.image_rect = self.image.get_rect()
 
-    
+    # def update(self)
