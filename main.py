@@ -1,10 +1,10 @@
 import sys
 
 import pygame
-import scripts.utilities.flyweight as flyweight
-from scripts.utilities.settings import *
-import scripts.sprites.characters.main_character as main_character
-from scripts.sprites.tiles import Tileset, Tilemap
+import scripts.flyweight as flyweight
+from scripts.settings import *
+import scripts.main_character as main_character
+from scripts.tiles import Tileset, Tilemap
 
 
 class Game:
@@ -24,7 +24,7 @@ class Game:
         
         print(self.assets)
         
-    def assetmanager(self, type, asset):
+    def flyweight(self, type, asset):
         if type == "tileset" or type == "map":
             self.assets[type+"s"].append(asset) 
             

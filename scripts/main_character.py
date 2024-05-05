@@ -1,4 +1,4 @@
-from scripts.utilities.settings import *
+from scripts.settings import *
 
 class Entity:
     def __init__(self, x, y, vel_x, vel_y, acl_x, acl_y, image, max_vel_x = MAX_VEL_X, max_vel_y = MAX_VEL_Y):

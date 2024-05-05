@@ -1,6 +1,5 @@
 import os
 import json
-
 utilities_folder = os.path.dirname(__file__)
 scripts_folder = os.path.join(utilities_folder, os.pardir)
 game_folder = os.path.join(scripts_folder, os.pardir)
