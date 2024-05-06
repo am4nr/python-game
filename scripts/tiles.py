@@ -1,13 +1,16 @@
 import os
 import json
-utilities_folder = os.path.dirname(__file__)
-scripts_folder = os.path.join(utilities_folder, os.pardir)
-game_folder = os.path.join(scripts_folder, os.pardir)
+
+scripts_folders = os.path.dirname(__file__)
+game_folder = os.path.join(scripts_folders, os.pardir)
+assets_folder = os.path.join(game_folder, "assets")
+
 
 class Tileset:
-    def __init__(self, tileset, game):
-        tset = os.path.join(game_folder, "tiled", "tilesets", tileset+".json")
-        
+    def __new__(cls, tileset):
+        self = object.__new__(Tileset)
+        tset = os.path.join(assets_folder, "tilesets", tileset+".json")
+    
         with open(tset) as ts:
             self.json = json.load(ts)
             
@@ -25,14 +28,17 @@ class Tileset:
         self.tiles = self.json["tiles"] if "tiles" in self.json else []
         self.tiled_version = self.json["tiledversion"]
         self.version = self.json["version"]
-        game.assetmanager("tileset", self)
+        return self
+    
+    def __init__(self, tileset):
+        pass
         
     def __repr__(self):
         return f"{{name: {self.name}}}, {{image: {self.image}}}, {{type: {self.type}}}, {{image_height: {self.image_height}}}, {{image_width: {self.image_width}}}, {{columns: {self.columns}}}, {{tile_height: {self.tile_height}}}, {{tile_width: {self.tile_width}}}, {{tile_count: {self.tile_count}}}, {{margin: {self.margin}}}, {{spacing: {self.spacing}}}, {{tiles: {self.tiles}}}, {{tiled_version: {self.tiled_version}}}, {{version: {self.version}}}"
 
 class Tilemap:
     def __init__(self, tilemap, game):
-        tmap = os.path.join(game_folder, "maps", tilemap+".json")
+        tmap = os.path.join(assets_folder, "maps", tilemap+".json")
         
         with open(tmap) as tm:
             self.json = json.load(tm)
@@ -63,6 +69,6 @@ class Tilemap:
         self.type = self.json["type"]
         self.tiled_version = self.json["tiledversion"]
         self.version = self.json["version"]
-        game.assetmanager("map", self)
+        game.flyweight("map", self)
     def __repr__(self):
         return f"{{compression_level: {self.compression_level}}}, {{height: {self.height}}}, {{infinite: {self.infinite}}}, {{layers: {self.layers}}}, {{next_layer_id: {self.next_layer_id}}}, {{next_object_id: {self.next_object_id}}}, {{orientation: {self.orientation}}}, {{render_order: {self.render_order}}}, {{tile_height: {self.tile_height}}}, {{tile_width: {self.tile_width}}}, {{tilesets: {self.tilesets}}}, {{type: {self.type}}}, {{tiled_version: {self.tiled_version}}}, {{version: {self.version}}}"

@@ -1,32 +1,31 @@
 import sys
 
 import pygame
-import scripts.flyweight as flyweight
+from scripts.flyweight import Flyweight, Asset
 from scripts.settings import *
 import scripts.main_character as main_character
 from scripts.tiles import Tileset, Tilemap
 
 
 class Game:
+    __instance = None
+    def __new__(cls): # Game soll singleton sein, damit es sich immer um die selbe Instanz von Game handelt
+        if cls.__instance is None:
+            cls.__instance = object.__new__(cls)
+        return cls.__instance
+    
     def __init__(self):
         pygame.init()
 
         pygame.display.set_caption("Animal Adventure")
         self.screen = pygame.display.set_mode((WIDTH, HEIGHT), pygame.SCALED)
         self.sprites = []
-        self.player_image = flyweight.get_image_dict("characters", "finn\/finn_idle.png")
-        self.player = main_character.Entity(50, 50, 0, 0, 0, 0, self.player_image["finn\/finn_idle.png"])
+        self.player = main_character.Entity(50, 50, 0, 0, 0, 0, Asset("Sprite", "characters/finn/finn_idle.png", testkwarg="test"))
         self.clock = pygame.time.Clock()
-        self.assets = {"tilesets":[],"maps":[]}
+        self.flyweight = Flyweight()
+        terrain = Asset("Tileset", "terrain")
         
-        morning_adventure = Tileset("morning_adventure", self)
-        testmap = Tilemap("Test-Level", self)
-        
-        print(self.assets)
-        
-    def flyweight(self, type, asset):
-        if type == "tileset" or type == "map":
-            self.assets[type+"s"].append(asset) 
+        print(self.flyweight)
             
     def run(self):
         while True:

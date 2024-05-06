@@ -1,15 +1,64 @@
 import pygame
 import os
+import sys
+from scripts.tiles import Tilemap, Tileset
 
 # Dateisystem
-utilities_folder = os.path.dirname(__file__)
-scripts_folder = os.path.join(utilities_folder, os.pardir)
-game_folder = os.path.join(scripts_folder, os.pardir)
+scripts_folders = os.path.dirname(__file__)
+game_folder = os.path.join(scripts_folders, os.pardir)
+assets_folder = os.path.join(game_folder, "assets")
 
+def str_to_class(classname):
+    return getattr(sys.modules[__name__],classname)
 
-def get_image_dict(asset_category, asset_name):
-    image_dict = {}
-    image_dict[asset_name] = pygame.image.load(os.path.join(game_folder, "assets", asset_category, asset_name)).convert_alpha()
-    return image_dict
 
 # to do: def get_tiles_dict()
+
+#Flyweight als singleton, damit nicht mehr als ein Flyweight erstellt werden kann -> jede instanz von Flyweight ist die selbe
+class Flyweight:
+    __instance = None
+    assets = {
+        "sprite": {},
+        "animation": {},
+        "audio": {},
+        "tileset": {},
+        "tilemap": {}
+    }
+    
+    def __new__(cls):
+        if cls.__instance is None:
+            cls.__instance = object.__new__(cls)
+        return cls.__instance
+    
+    def __repr__(self):
+        return f"assets: {self.assets}"
+    
+class Asset:
+    def __new__(cls, asset_type, asset, **kwargs):
+        self = Flyweight.assets.get(asset_type.lower()).get(asset)
+        if self is None:
+            self = Flyweight.assets[asset_type.lower()][asset] = str_to_class(asset_type).__new__(cls, asset, **kwargs)
+
+        return self
+    
+#Sprite Factory ist in __new__ eingebaut, __new__ wird vor __init__ ausgeführt und händelt die erstellung einer instanz hingegen __init__ händelt die instanzierung von einer instanz
+class Sprite:  
+    def __new__(cls, asset, testkwarg):
+        asset_path = os.path.join(assets_folder, *asset.split("/"))
+        self = object.__new__(Sprite)
+        self.asset = asset
+        
+        self.testkwarg = testkwarg
+        
+        self.image = pygame.image.load(asset_path).convert_alpha()
+        self.image_rect = self.image.get_rect()
+        return self
+    
+    def __repr__(self) -> str:
+        return f"{self.testkwarg}"
+
+class Animation:
+    pass
+
+class Audio:
+    pass
