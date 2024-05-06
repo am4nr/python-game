@@ -1,23 +1,36 @@
 import sys
 import pygame
-import utilities.flyweight as flyweight
-#from utilities.spritesheet import CharacterSpritesheet
-from utilities.settings import *
-import scripts.player as player
+from scripts.flyweight import Flyweight, Asset
+from scripts.settings import *
+import scripts.main_character as main_character
+from scripts.tiles import Tileset, Tilemap
 
 
 class Game:
+    __instance = None
+
+    def __new__(
+        cls,
+    ):  # Game soll singleton sein, damit es sich immer um die selbe Instanz von Game handelt
+        if cls.__instance is None:
+            cls.__instance = object.__new__(cls)
+        return cls.__instance
+
     def __init__(self):
         pygame.init()
 
         pygame.display.set_caption("Animal Adventure")
         self.screen = pygame.display.set_mode((WIDTH, HEIGHT), pygame.SCALED)
         self.sprites = []
-        self.player_image = flyweight.get_image_dict("characters", "finn", "finn_idle_alt.png")
-        self.player = player.Entity(50, 50, 50, 50, 0, 0, 0, 0,self.player_image["finn_idle_alt.png"])
+        self.player = main_character.Entity(
+            50, 50, 0, 0, 0, 0, Asset("Sprite", "characters/finn/finn_idle.png")
+        )
         self.clock = pygame.time.Clock()
-        # self.character_spritesheet = CharacterSpritesheet("finn", "finn_idle_alt.png")
-        
+        self.flyweight = Flyweight()
+        terrain = Asset("Tileset", "terrain")
+
+        print(self.flyweight)
+
     def run(self):
         while True:
             # Events
@@ -25,7 +38,7 @@ class Game:
                 if event.type == pygame.QUIT:
                     pygame.quit()
                     sys.exit()
-            
+
             # Update
             pygame.display.update()
             self.clock.tick(FPS)
@@ -35,5 +48,7 @@ class Game:
             self.screen.blit(self.player.image, self.player.rect)
 
             pygame.display.flip()
-            
-Game().run()
+
+
+game = Game()
+game.run()
