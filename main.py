@@ -1,9 +1,9 @@
 import sys
-
 import pygame
-import scripts.utilities.flyweight as flyweight
-from scripts.utilities.settings import *
-import scripts.sprites.characters.main_character as main_character
+import utilities.flyweight as flyweight
+#from utilities.spritesheet import CharacterSpritesheet
+from utilities.settings import *
+import scripts.player as player
 
 
 class Game:
@@ -13,9 +13,10 @@ class Game:
         pygame.display.set_caption("Animal Adventure")
         self.screen = pygame.display.set_mode((WIDTH, HEIGHT), pygame.SCALED)
         self.sprites = []
-        self.player_image = flyweight.get_image_dict("characters", "finn\otter_idle_1.png")
-        self.player = main_character.Entity(50, 50, 0, 0, 0, 0, self.player_image["finn\otter_idle_1.png"])
+        self.player_image = flyweight.get_image_dict("characters", "finn", "finn_idle_alt.png")
+        self.player = player.Entity(50, 50, 50, 50, 0, 0, 0, 0,self.player_image["finn_idle_alt.png"])
         self.clock = pygame.time.Clock()
+        # self.character_spritesheet = CharacterSpritesheet("finn", "finn_idle_alt.png")
         
     def run(self):
         while True:
@@ -31,7 +32,7 @@ class Game:
 
             # Render
             self.screen.fill((0, 0, 0))
-            self.screen.blit(self.player.image, self.player.image_rect)
+            self.screen.blit(self.player.image, self.player.rect)
 
             pygame.display.flip()
             
