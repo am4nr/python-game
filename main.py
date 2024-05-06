@@ -2,9 +2,9 @@ import sys
 
 import pygame
 from scripts.flyweight import Flyweight, Asset
-from scripts.settings import *
+from scripts.settings import *  # noqa: F403
 import scripts.main_character as main_character
-from scripts.tiles import Tileset, Tilemap
+from scripts.tiles import Tileset, Tilemap  # noqa: F401
 
 
 class Game:
@@ -29,6 +29,7 @@ class Game:
         self.clock = pygame.time.Clock()
         self.flyweight = Flyweight()
         terrain = Asset("Tileset", "terrain")
+        test_level = Asset("Tilemap", "Test-Level")
 
         print(self.flyweight)
 

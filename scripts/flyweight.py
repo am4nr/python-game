@@ -33,7 +33,7 @@ class Flyweight:
         return cls.__instance
 
     def __repr__(self):
-        return f"assets: {self.collections}"
+        return f"assets:\n {{sprite: {self.collections['sprite']}}},\n {{animation: {self.collections['animation']}}},\n {{audio: {self.collections['audio']}}},\n {{tileset: {self.collections['tileset']}}},\n {{tilemap: {self.collections['tilemap']}}}"
 
 
 class Asset:

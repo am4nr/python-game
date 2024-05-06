@@ -38,12 +38,12 @@ class Tileset:
 
 
 class Tilemap:
-    def __init__(self, tilemap, game):
-        tmap = os.path.join(assets_folder, "maps", tilemap + ".json")
-
+    def __new__(cls, tilemap):
+        self = object.__new__(Tilemap)
+        tmap = os.path.join(assets_folder,"maps", tilemap + ".json")
+        
         with open(tmap) as tm:
             self.json = json.load(tm)
-
         self.compression_level = self.json["compressionlevel"]
         self.height = self.json["height"]
         self.width = self.json["width"]
@@ -67,7 +67,10 @@ class Tilemap:
         self.type = self.json["type"]
         self.tiled_version = self.json["tiledversion"]
         self.version = self.json["version"]
-        game.flyweight("map", self)
+        return self
+        
+    def __init__(self, tilemap, game):
+        pass
 
     def __repr__(self):
-        return f"{{compression_level: {self.compression_level}}}, {{height: {self.height}}}, {{infinite: {self.infinite}}}, {{layers: {self.layers}}}, {{next_layer_id: {self.next_layer_id}}}, {{next_object_id: {self.next_object_id}}}, {{orientation: {self.orientation}}}, {{render_order: {self.render_order}}}, {{tile_height: {self.tile_height}}}, {{tile_width: {self.tile_width}}}, {{tilesets: {self.tilesets}}}, {{type: {self.type}}}, {{tiled_version: {self.tiled_version}}}, {{version: {self.version}}}"
+        return f"{{compression_level: {self.compression_level}}}, {{height: {self.height}}}, {{infinite: {self.infinite}}}, {{layers: {{...}}}}, {{next_layer_id: {self.next_layer_id}}}, {{next_object_id: {self.next_object_id}}}, {{orientation: {self.orientation}}}, {{render_order: {self.render_order}}}, {{tile_height: {self.tile_height}}}, {{tile_width: {self.tile_width}}}, {{tilesets: {self.tilesets}}}, {{type: {self.type}}}, {{tiled_version: {self.tiled_version}}}, {{version: {self.version}}}"
