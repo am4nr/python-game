@@ -38,10 +38,23 @@ class Game:
                 if event.type == pygame.QUIT:
                     pygame.quit()
                     sys.exit()
+                if event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_LEFT:
+                        pass
+                    if event.key == pygame.K_RIGHT:
+                        pass
+                    if event.key == pygame.K_SPACE:
+                        pass
+
+                if event.type == pygame.KEYUP:
+                    pass
+
 
             # Update
             pygame.display.update()
+            self.player.update()
             self.clock.tick(FPS)
+
 
             # Render
             self.screen.fill((0, 0, 0))

@@ -12,6 +12,11 @@ class Spritesheet:
             surface.blit(self.spritesheet, (0,0), rect)
             self.sprites.append(surface)
 
+    def scaleSprites(self, factor):
+        scaledSprites = []
+        for sprite in self.sprites:
+            scaledSprites.append(pygame.transform.scale_by(sprite, factor))
+        return scaledSprites
     
     def flip(self, sprites):
         return (pygame.transform.flip(sprite, True, False) for sprite in sprites)

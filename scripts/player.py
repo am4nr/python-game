@@ -2,7 +2,7 @@ import pygame
 from scripts.settings import *
 from scripts.gameobject import GameObject
 from scripts.spritesheet import Spritesheet
-
+from scripts.animation import Animation
 
 class Player(GameObject):
     def __init__(
@@ -29,9 +29,9 @@ class Player(GameObject):
         self.acl_x = acl_x
         self.acl_y = acl_y
         #
-        self.sprites = self.getSprite(spritesheet)
-        self.scaledSprites = self.scaleSprites(self.sprites)
-        self.image = self.scaledSprites[0]
+        self.sprites = self.get_sprites(spritesheet)
+        self.image = self.sprites[4]
+        self.animation = Animation(self.sprites)
         # self.mask = None
         self.rect = spritesheet.image_rect
         # self.direction = "left"
@@ -40,15 +40,11 @@ class Player(GameObject):
         self.rect.x += dir_x
         self.rect.y += dir_y
 
-    def getSprite(self,spritesheet):
+    def get_sprites(self, spritesheet):
         finn = Spritesheet(spritesheet.image)
         finn.get_sprites(200,200)
-        return finn.sprites
+        finnScaled = finn.scaleSprites(0.64)
+        return finnScaled
     
-    def scaleSprites(self, sprites):
-        scaledSprites = []
-        for sprite in sprites:
-            scaledSprites.append(pygame.transform.scale_by(sprite, 0.32))
-        return scaledSprites
-
-    # def update(self):
+    def update(self):
+        self.image = self.animation.update()

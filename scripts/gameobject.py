@@ -4,3 +4,6 @@ class GameObject:
         self.y = y
         self.image = sprite.image
         self.image_rect = sprite.image_rect
+
+    def update(self):
+        pass
