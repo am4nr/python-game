@@ -61,18 +61,3 @@ class Sprite:
     def __repr__(self) -> str:
         return f"{self.asset}"
 
-
-class Animation:
-    pass
-
-
-class Audio:
-    pass
-
-
-class gameObject:
-    def __init__(self, x, y, sprite):
-        self.x = x
-        self.y = y
-        self.image = sprite.image
-        self.image_rect = sprite.image_rect

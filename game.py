@@ -2,7 +2,7 @@ import sys
 import pygame
 from scripts.flyweight import Flyweight, Asset
 from scripts.settings import *
-import scripts.main_character as main_character
+import scripts.player as player
 from scripts.tiles import Tileset, Tilemap
 
 
@@ -22,8 +22,8 @@ class Game:
         pygame.display.set_caption("Animal Adventure")
         self.screen = pygame.display.set_mode((WIDTH, HEIGHT), pygame.SCALED)
         self.sprites = []
-        self.player = main_character.Entity(
-            50, 50, 0, 0, 0, 0, Asset("Sprite", "characters/finn/finn_idle.png")
+        self.player = player.Player(
+            50, 50, Asset("Sprite", "characters/finn/finn_idle_alt.png")
         )
         self.clock = pygame.time.Clock()
         self.flyweight = Flyweight()
@@ -45,7 +45,7 @@ class Game:
 
             # Render
             self.screen.fill((0, 0, 0))
-            self.screen.blit(self.player.image, self.player.rect)
+            self.screen.blit(self.player.image, (0, HEIGHT - 2 * 64), self.player.rect)
 
             pygame.display.flip()
 
