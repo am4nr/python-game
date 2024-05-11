@@ -82,13 +82,8 @@ class Tilemap:
     def loadTilesets(self, game):
         if "tileset" not in game.flyweight.collections:
             game.flyweight.collections["tileset"] = {}
-        print(game.flyweight.collections)
             
         for tileset in self.tilesets:
-            print(tileset)
-            print(tileset["name"])
-            
-                
             if tileset["name"] not in game.flyweight.collections["tileset"]:
                 game.flyweight.collections["tileset"][tileset["name"]] = Tileset(tileset["name"])
                 

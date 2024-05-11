@@ -50,7 +50,7 @@
       ],
       "height": 20,
       "id": 1,
-      "name": "Kachelebene 1 (Hintergrund)",
+      "name": "background",
       "opacity": 1,
       "type": "tilelayer",
       "visible": true,
@@ -92,7 +92,7 @@
       ],
       "height": 20,
       "id": 2,
-      "name": "Kachelebene 2 (Wolken)",
+      "name": "parallax",
       "opacity": 1,
       "type": "tilelayer",
       "visible": true,
@@ -131,7 +131,7 @@
       ],
       "height": 20,
       "id": 3,
-      "name": "Kachelebene 3 ",
+      "name": "solid",
       "opacity": 1,
       "type": "tilelayer",
       "visible": true,
@@ -170,7 +170,7 @@
       ],
       "height": 20,
       "id": 4,
-      "name": "Start",
+      "name": "gameobjects",
       "opacity": 1,
       "type": "tilelayer",
       "visible": true,
@@ -188,27 +188,27 @@
   "tilesets": [
     {
       "firstgid": 1,
-      "source": "BG.tsx"
+      "source": "BG.json"
     },
     {
       "firstgid": 714,
-      "source": "C2010klein.tsx"
+      "source": "C2010klein.json"
     },
     {
       "firstgid": 750,
-      "source": "C2013klein.tsx"
+      "source": "C2013klein.json"
     },
     {
       "firstgid": 786,
-      "source": "C2011.tsx"
+      "source": "C2011.json"
     },
     {
       "firstgid": 858,
-      "source": "TilesetForrest.tsx"
+      "source": "TilesetForrest.json"
     },
     {
       "firstgid": 918,
-      "source": "Start (Idle).tsx"
+      "source": "Start (Idle).json"
     }
   ],
   "tilewidth": 32,
