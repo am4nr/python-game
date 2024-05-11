@@ -1,14 +1,14 @@
-{ "columns":31,
+{ "columns":1,
  "image":"..\/background\/BG.png",
  "imageheight":750,
  "imagewidth":1000,
  "margin":0,
  "name":"BG",
  "spacing":0,
- "tilecount":713,
+ "tilecount":1,
  "tiledversion":"1.10.2",
- "tileheight":32,
- "tilewidth":32,
+ "tileheight":750,
+ "tilewidth":1000,
  "type":"tileset",
  "version":"1.10"
 }

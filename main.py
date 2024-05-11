@@ -21,20 +21,27 @@ class Game:
     def __init__(self):
         pygame.init()
 
-        pygame.display.set_caption("Animal Adventure")
+        pygame.display.set_caption(TITLE)
         self.screen = pygame.display.set_mode((WIDTH, HEIGHT), pygame.SCALED)
-        self.sprites = []
+        self.assets = Flyweight(self)
         self.player = main_character.Entity(
-            50, 50, 0, 0, 0, 0, Asset("Sprite", "characters/finn/finn_idle.png", x=0,y=0)
+            50,
+            50,
+            0,
+            0,
+            0,
+            0,
+            self.assets.get("Sprite", "characters/finn/finn_idle.png", x=0, y=0),
         )
         self.clock = pygame.time.Clock()
-        self.flyweight = Flyweight()
-        test_level = Asset("Tilemap", "Test-Level", game=self)
+        #test_level = self.assets.get("Tilemap", "Test-Level")
+        #test_level = Asset(self, "Tilemap", "Test-Level")
+        TilesetForrest = self.assets.get("Tileset","TilesetForrest")
 
-        print(self.flyweight)
+        #print(self.assets)
 
     def draw_grid(self):
-        for line in range(0, math.ceil(WIDTH/TILE_SIZE)):
+        for line in range(0, math.ceil(WIDTH / TILE_SIZE)):
             pygame.draw.line(
                 self.screen,
                 (255, 255, 255),
