@@ -18,30 +18,36 @@ def str_to_class(classname):
 class Flyweight:
     __instance = None
     collections = {}
+
     def __new__(cls, game):
         if cls.__instance is None:
             cls.__instance = object.__new__(cls)
         return cls.__instance
-    
+
     def __init__(self, game):
         self.game = game
-        
+
     def __repr__(self):
         return "\n".join("{}\t{}".format(k, v) for k, v in self.collections.items())
-    
+
     def get(self, asset_type, asset, **kwargs):
         if asset_type not in self.collections:
             self.collections[asset_type] = {}
-            
+
         if asset in self.collections[asset_type]:
             return asset
-        
+
         if asset_type == "Image":
-            self.collections[asset_type][asset] = pygame.image.load(os.path.join(assets_folder, *asset.replace("..","").split("/")))
+            self.collections[asset_type][asset] = pygame.image.load(
+                os.path.join(assets_folder, *asset.replace("..", "").split("/"))
+            )
             return self.collections[asset_type][asset]
-        
-        self.collections[asset_type][asset] = Asset(self.game, asset_type, asset, **kwargs)
+
+        self.collections[asset_type][asset] = Asset(
+            self.game, asset_type, asset, **kwargs
+        )
         return self.collections[asset_type][asset]
+
 
 class Asset:
     def __new__(cls, game, asset_type, asset, **kwargs):
@@ -56,6 +62,7 @@ class Asset:
 
         self.__init__(**kwargs)
         return self
+
 
 # Sprite Factory ist in __new__ eingebaut, __new__ wird vor __init__ ausgeführt und handhabt die Erstellung einer Instanz hingegen __init__ handhabt die Instanziierung von einer Instanz
 class Sprite(pygame.sprite.Sprite):
