@@ -20,7 +20,7 @@ class Entity(gameObject):
         self.y = y
         # Image
         self.image = sprite.image
-        self.image_rect = sprite.image_rect
+        self.rect = sprite.rect
         # Velocity
         self.vel_x = vel_x
         self.vel_y = vel_y

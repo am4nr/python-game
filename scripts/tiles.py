@@ -33,6 +33,9 @@ class Tileset:
     def __init__(self, tileset):
         pass
 
+    def load_tiles(self):
+        pass
+
     def __repr__(self):
         return f"{{name: {self.name}}}, {{image: {self.image}}}, {{type: {self.type}}}, {{image_height: {self.image_height}}}, {{image_width: {self.image_width}}}, {{columns: {self.columns}}}, {{tile_height: {self.tile_height}}}, {{tile_width: {self.tile_width}}}, {{tile_count: {self.tile_count}}}, {{margin: {self.margin}}}, {{spacing: {self.spacing}}}, {{tiles: {self.tiles}}}, {{tiled_version: {self.tiled_version}}}, {{version: {self.version}}}"
 
@@ -40,8 +43,8 @@ class Tileset:
 class Tilemap:
     def __new__(cls, tilemap):
         self = object.__new__(Tilemap)
-        tmap = os.path.join(assets_folder,"maps", tilemap + ".json")
-        
+        tmap = os.path.join(assets_folder, "maps", tilemap + ".json")
+
         with open(tmap) as tm:
             self.json = json.load(tm)
         self.compression_level = self.json["compressionlevel"]
@@ -68,7 +71,7 @@ class Tilemap:
         self.tiled_version = self.json["tiledversion"]
         self.version = self.json["version"]
         return self
-        
+
     def __init__(self, tilemap, game):
         pass
 

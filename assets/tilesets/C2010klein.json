@@ -1,0 +1,14 @@
+{ "columns":9,
+ "image":"..\/background\/C2010.png",
+ "imageheight":150,
+ "imagewidth":300,
+ "margin":0,
+ "name":"C2010klein",
+ "spacing":0,
+ "tilecount":36,
+ "tiledversion":"1.10.2",
+ "tileheight":32,
+ "tilewidth":32,
+ "type":"tileset",
+ "version":"1.10"
+}

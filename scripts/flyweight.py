@@ -1,30 +1,21 @@
 import pygame
 import os
 import sys
-from scripts.tiles import Tilemap, Tileset
+from scripts.tiles import Tilemap, Tileset, Tile
 
 # Dateisystem
 scripts_folders = os.path.dirname(__file__)
 game_folder = os.path.join(scripts_folders, os.pardir)
 assets_folder = os.path.join(game_folder, "assets")
 
-
+#helper um später in der Asset class um anhand des asset_type's die entsprechende class dafür zu suchen und zu erstellen
 def str_to_class(classname):
     return getattr(sys.modules[__name__], classname)
 
-
-# to do: def get_tiles_dict()
-
-
-# Flyweight als singleton, damit nicht mehr als ein Flyweight erstellt werden kann -> jede instanz von Flyweight ist die selbe
+#Flyweight als singleton, damit nicht mehr als ein Flyweight erstellt werden kann -> jede Instanz von Flyweight ist die selbe
 class Flyweight:
     __instance = None
     collections = {
-        "sprite": {},
-        "animation": {},
-        "audio": {},
-        "tileset": {},
-        "tilemap": {},
     }
 
     def __new__(cls):
@@ -33,33 +24,40 @@ class Flyweight:
         return cls.__instance
 
     def __repr__(self):
-        return f"assets:\n {{sprite: {self.collections['sprite']}}},\n {{animation: {self.collections['animation']}}},\n {{audio: {self.collections['audio']}}},\n {{tileset: {self.collections['tileset']}}},\n {{tilemap: {self.collections['tilemap']}}}"
+        return "\n".join("{}\t{}".format(k, v) for k, v in self.collections.items())
 
 
 class Asset:
     def __new__(cls, asset_type, asset, **kwargs):
+        if Flyweight.collections.get(asset_type.lower()) == None:
+            Flyweight.collections[asset_type.lower()] = {}
         self = Flyweight.collections.get(asset_type.lower()).get(asset)
         if self is None:
             self = Flyweight.collections[asset_type.lower()][asset] = str_to_class(
                 asset_type
             ).__new__(cls, asset, **kwargs)
-
         return self
 
 
-# Sprite Factory ist in __new__ eingebaut, __new__ wird vor __init__ ausgeführt und händelt die erstellung einer instanz hingegen __init__ händelt die instanzierung von einer instanz
-class Sprite:
-    def __new__(cls, asset):
+# Sprite Factory ist in __new__ eingebaut, __new__ wird vor __init__ ausgeführt und handhabt die Erstellung einer Instanz hingegen __init__ handhabt die Instanziierung von einer Instanz
+class Sprite(pygame.sprite.Sprite):
+    def __new__(cls, asset, x, y):
         asset_path = os.path.join(assets_folder, *asset.split("/"))
         self = object.__new__(Sprite)
         self.asset = asset
 
         self.image = pygame.image.load(asset_path).convert_alpha()
-        self.image_rect = self.image.get_rect()
+        self.rect = self.image.get_rect()
+        self.rect.x = x
+        self.rect.y = y
         return self
-
+    
+    def __init__(self, x, y):
+        self.rect.x = x
+        self.rect.y = y
+        
     def __repr__(self) -> str:
-        return f"{self.asset}"
+        return f"{{asset : {self.asset}}},\n{{image: <pygame.surface>}},\n{{image_rect: <pygame.surface>}}"
 
 
 class Animation:

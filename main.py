@@ -5,6 +5,7 @@ from scripts.flyweight import Flyweight, Asset
 from scripts.settings import *  # noqa: F403
 import scripts.main_character as main_character
 from scripts.tiles import Tileset, Tilemap  # noqa: F401
+import math
 
 
 class Game:
@@ -24,7 +25,7 @@ class Game:
         self.screen = pygame.display.set_mode((WIDTH, HEIGHT), pygame.SCALED)
         self.sprites = []
         self.player = main_character.Entity(
-            50, 50, 0, 0, 0, 0, Asset("Sprite", "characters/finn/finn_idle.png")
+            50, 50, 0, 0, 0, 0, Asset("Sprite", "characters/finn/finn_idle.png", x=0,y=0)
         )
         self.clock = pygame.time.Clock()
         self.flyweight = Flyweight()
@@ -32,6 +33,21 @@ class Game:
         test_level = Asset("Tilemap", "Test-Level")
 
         print(self.flyweight)
+
+    def draw_grid(self):
+        for line in range(0, math.ceil(WIDTH/TILE_SIZE)):
+            pygame.draw.line(
+                self.screen,
+                (255, 255, 255),
+                (0, line * TILE_SIZE),
+                (WIDTH, line * TILE_SIZE),
+            )
+            pygame.draw.line(
+                self.screen,
+                (255, 255, 255),
+                (line * TILE_SIZE, 0),
+                (line * TILE_SIZE, HEIGHT),
+            )
 
     def run(self):
         while True:
@@ -46,9 +62,11 @@ class Game:
             self.clock.tick(FPS)
 
             # Render
-            self.screen.fill((0, 0, 0))
-            self.screen.blit(self.player.image, self.player.image_rect)
 
+            self.screen.fill((0, 0, 0))
+            self.draw_grid()
+
+            self.screen.blit(self.player.image, self.player.rect)
             pygame.display.flip()
 
 
