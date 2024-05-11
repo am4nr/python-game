@@ -7,7 +7,7 @@ assets_folder = os.path.join(game_folder, "assets")
 
 
 class Tileset:
-    def __new__(cls, tileset):
+    def __new__(cls, tileset, **kwargs):
         self = object.__new__(Tileset)
         tset = os.path.join(assets_folder, "tilesets", tileset + ".json")
 
@@ -41,12 +41,13 @@ class Tileset:
 
 
 class Tilemap:
-    def __new__(cls, tilemap):
+    def __new__(cls, tilemap, **kwargs):
         self = object.__new__(Tilemap)
         tmap = os.path.join(assets_folder, "maps", tilemap + ".json")
 
         with open(tmap) as tm:
             self.json = json.load(tm)
+            
         self.compression_level = self.json["compressionlevel"]
         self.height = self.json["height"]
         self.width = self.json["width"]
@@ -64,7 +65,7 @@ class Tilemap:
             source = tileset["source"]
             firstgid = tileset["firstgid"]
             name = os.path.splitext(source)[0]
-            data = {"name": name, "firstgid": firstgid}
+            data = {"name": name, "offset": firstgid-1}
             self.tilesets.append(data)
 
         self.type = self.json["type"]
@@ -72,8 +73,24 @@ class Tilemap:
         self.version = self.json["version"]
         return self
 
-    def __init__(self, tilemap, game):
-        pass
+    def __init__(self, game):
+        self.loadTilesets(game)
 
     def __repr__(self):
         return f"{{compression_level: {self.compression_level}}}, {{height: {self.height}}}, {{infinite: {self.infinite}}}, {{layers: {{...}}}}, {{next_layer_id: {self.next_layer_id}}}, {{next_object_id: {self.next_object_id}}}, {{orientation: {self.orientation}}}, {{render_order: {self.render_order}}}, {{tile_height: {self.tile_height}}}, {{tile_width: {self.tile_width}}}, {{tilesets: {self.tilesets}}}, {{type: {self.type}}}, {{tiled_version: {self.tiled_version}}}, {{version: {self.version}}}"
+    
+    def loadTilesets(self, game):
+        if "tileset" not in game.flyweight.collections:
+            game.flyweight.collections["tileset"] = {}
+        print(game.flyweight.collections)
+            
+        for tileset in self.tilesets:
+            print(tileset)
+            print(tileset["name"])
+            
+                
+            if tileset["name"] not in game.flyweight.collections["tileset"]:
+                game.flyweight.collections["tileset"][tileset["name"]] = Tileset(tileset["name"])
+                
+class Tile:
+    pass

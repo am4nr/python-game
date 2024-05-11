@@ -32,10 +32,13 @@ class Asset:
         if Flyweight.collections.get(asset_type.lower()) == None:
             Flyweight.collections[asset_type.lower()] = {}
         self = Flyweight.collections.get(asset_type.lower()).get(asset)
+        
         if self is None:
             self = Flyweight.collections[asset_type.lower()][asset] = str_to_class(
                 asset_type
             ).__new__(cls, asset, **kwargs)
+            
+        self.__init__(**kwargs)
         return self
 
 

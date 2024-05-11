@@ -29,8 +29,7 @@ class Game:
         )
         self.clock = pygame.time.Clock()
         self.flyweight = Flyweight()
-        terrain = Asset("Tileset", "terrain")
-        test_level = Asset("Tilemap", "Test-Level")
+        test_level = Asset("Tilemap", "Test-Level", game=self)
 
         print(self.flyweight)
 
