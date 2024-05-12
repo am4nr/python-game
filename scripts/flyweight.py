@@ -1,7 +1,7 @@
 import pygame
 import os
 import sys
-from scripts.tiles import Tilemap, Tileset, Tile
+from scripts.tiles import Tilemap, Tileset, Level
 
 # Dateisystem
 scripts_folders = os.path.dirname(__file__)

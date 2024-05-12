@@ -4,7 +4,7 @@ import pygame
 from scripts.flyweight import Flyweight, Asset
 from scripts.settings import *  # noqa: F403
 import scripts.main_character as main_character
-from scripts.tiles import Tileset, Tilemap  # noqa: F401
+from scripts.tiles import Tileset, Tilemap, Level  # noqa: F401
 import math
 
 
@@ -36,9 +36,10 @@ class Game:
         self.clock = pygame.time.Clock()
         # test_level = self.assets.get("Tilemap", "Test-Level")
         # test_level = Asset(self, "Tilemap", "Test-Level")
-        TilesetForrest = self.assets.get("Tileset", "TilesetForrest")
-
-        # print(self.assets)
+        #TilesetForrest = self.assets.get("Tileset", "TilesetForrest")
+        TestLvl = self.assets.get("Tilemap", "Test-Level")
+        TestLevel = Level(self,TestLvl)
+        #print(self.assets)
 
     def draw_grid(self):
         for line in range(0, math.ceil(WIDTH / TILE_SIZE)):

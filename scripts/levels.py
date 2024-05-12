@@ -1,4 +1,4 @@
-class Level:
+class Levels:
     def __init__(self, game, tilemap):
         self.game
         self.tilemap = tilemap

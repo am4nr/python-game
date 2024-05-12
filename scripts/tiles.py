@@ -61,7 +61,8 @@ class Tileset:
     def __repr__(self):
         return f"{{name: {self.name}}}, {{image: {self.image}}}, {{type: {self.type}}}, {{image_height: {self.image_height}}}, {{image_width: {self.image_width}}}, {{columns: {self.columns}}}, {{tile_height: {self.tile_height}}}, {{tile_width: {self.tile_width}}}, {{tile_count: {self.tile_count}}}, {{margin: {self.margin}}}, {{spacing: {self.spacing}}}, {{tiles: {self.tiles}}}, {{tiled_version: {self.tiled_version}}}, {{version: {self.version}}}"
 
-
+    def get_tiles(self):
+        return self.tiles
 class Tilemap:
     def __new__(cls, game, tilemap, **kwargs):
         self = object.__new__(Tilemap)
@@ -108,10 +109,26 @@ class Tilemap:
 
         for tileset in self.tilesets:
             if tileset["name"] not in game.assets.collections["tileset"]:
-                game.assets.collections["tileset"][tileset["name"]] = Tileset(
-                    game, tileset["name"]
-                )
+                game.assets.collections["tileset"][tileset["name"]] = game.assets.get("Tileset", tileset["name"])
 
 
-class Tile:
-    pass
+class Level:
+    def __new__(cls, game, tilemap, **kwargs):
+        self = object.__new__(Level)
+        self.game = game
+        self.layers = tilemap.layers
+        self.tilesets = tilemap.tilesets
+        self.tiles = []
+        self.loadTiles()
+        
+    def loadTiles(self):
+        counter = 0
+        # hier ist es noch ein Tilemap.Tilesets dict
+        for ts in self.tilesets:
+            #hier wird es eine Tileset Instanz
+            tileset = self.game.assets.get("Tileset", ts["name"])
+            print(tileset.get_tiles())
+            """ for tile in tileset.get_tiles:
+                self.tiles[counter] = self.tile
+                counter += 1 """
+        print(self.tiles)
