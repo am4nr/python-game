@@ -19,17 +19,34 @@ class Game:
     def __init__(self):
         pygame.init()
 
-        pygame.display.set_caption("Animal Adventure")
+        pygame.display.set_caption(TITLE)
         self.screen = pygame.display.set_mode((WIDTH, HEIGHT), pygame.SCALED)
         self.sprites = []
         self.player = player.Player(
             50, 50, Asset("Sprite", "characters/finn/finn_idle_alt.png")
         )
         self.clock = pygame.time.Clock()
-        self.flyweight = Flyweight()
-        terrain = Asset("Tileset", "terrain")
+        # test_level = self.assets.get("Tilemap", "Test-Level")
+        #test_level = Asset(self, "Tilemap", "Test-Level")
+        #TilesetForrest = self.assets.get("Tileset", "TilesetForrest")
+        TestLvl = self.assets.get("Tilemap", "Test-Level")
+        TestLevel = Level(self,TestLvl)
+        #print(self.assets)
 
-        print(self.flyweight)
+    def draw_grid(self):
+        for line in range(0, math.ceil(WIDTH / TILE_SIZE)):
+            pygame.draw.line(
+                self.screen,
+                (255, 255, 255),
+                (0, line * TILE_SIZE),
+                (WIDTH, line * TILE_SIZE),
+            )
+            pygame.draw.line(
+                self.screen,
+                (255, 255, 255),
+                (line * TILE_SIZE, 0),
+                (line * TILE_SIZE, HEIGHT),
+            )
 
     def run(self):
         while True:
@@ -59,6 +76,9 @@ class Game:
             # Render
             self.screen.fill((173,216,230))
             self.screen.blit(self.player.image, (0, HEIGHT - 2 * 64), self.player.rect)
+
+            self.screen.fill((0, 0, 0))
+            self.draw_grid()
 
             pygame.display.flip()
 
