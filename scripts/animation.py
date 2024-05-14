@@ -1,5 +1,5 @@
 class Animation:
-    def __init__(self, images, img_dur = 10, loop = True):
+    def __init__(self, images, img_dur = 12, loop = True):
         self.images = images
         self.loop = loop
         self.img_duration = img_dur

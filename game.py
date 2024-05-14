@@ -57,7 +57,7 @@ class Game:
 
 
             # Render
-            self.screen.fill((0, 0, 0))
+            self.screen.fill((173,216,230))
             self.screen.blit(self.player.image, (0, HEIGHT - 2 * 64), self.player.rect)
 
             pygame.display.flip()
