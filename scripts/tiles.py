@@ -29,7 +29,7 @@ class Tileset:
         self.margin = self.json["margin"]
         self.spacing = self.json["spacing"]
         self.animation_frames = self.json["tiles"] if "tiles" in self.json else []
-        self.tiles = {}
+        self.tiles = []
         self.tiled_version = self.json["tiledversion"]
         self.version = self.json["version"]
         self.load_tiles()
@@ -44,7 +44,7 @@ class Tileset:
             col = math.floor(tile - row * self.columns)
             surf = pygame.Surface((self.tile_width, self.tile_height)).convert_alpha()
             
-            self.tiles[tile] = surf.blit(
+            self.tiles.append(surf.blit(
                 self.image,
                 (0, 0),
                 (
@@ -53,7 +53,7 @@ class Tileset:
                     self.tile_width,
                     self.tile_height,
                 ),
-            )
+            ))
 
     def __repr__(self):
         return f"{{name: {self.name}}}, {{image: {self.image}}}, {{type: {self.type}}}, {{image_height: {self.image_height}}}, {{image_width: {self.image_width}}}, {{columns: {self.columns}}}, {{tile_height: {self.tile_height}}}, {{tile_width: {self.tile_width}}}, {{tile_count: {self.tile_count}}}, {{margin: {self.margin}}}, {{spacing: {self.spacing}}}, {{tiles: {self.tiles}}}, {{tiled_version: {self.tiled_version}}}, {{version: {self.version}}}"
@@ -81,6 +81,7 @@ class Tilemap:
         self.tile_height = self.json["tileheight"]
         self.tile_width = self.json["tilewidth"]
         self.tilesets = []
+        self.tiles = []
 
         for tileset in self.json["tilesets"]:
             source = tileset["source"]
@@ -95,37 +96,31 @@ class Tilemap:
         return self
 
     def __init__(self):
-        self.loadTilesets(self.game)
+        self.loadTilesets()
 
     def __repr__(self):
         return f"{{compression_level: {self.compression_level}}}, {{height: {self.height}}}, {{infinite: {self.infinite}}}, {{layers: {{...}}}}, {{next_layer_id: {self.next_layer_id}}}, {{next_object_id: {self.next_object_id}}}, {{orientation: {self.orientation}}}, {{render_order: {self.render_order}}}, {{tile_height: {self.tile_height}}}, {{tile_width: {self.tile_width}}}, {{tilesets: {self.tilesets}}}, {{type: {self.type}}}, {{tiled_version: {self.tiled_version}}}, {{version: {self.version}}}"
 
-    def loadTilesets(self, game):
-        if "tileset" not in game.assets.collections:
-            game.assets.collections["tileset"] = {}
-
+    def loadTilesets(self):
         for tileset in self.tilesets:
-            if tileset["name"] not in game.assets.collections["tileset"]:
-                game.assets.collections["tileset"][tileset["name"]] = game.assets.get("Tileset", tileset["name"])
-
-
+            tiles  = self.game.assets.get("Tileset", tileset["name"])
+            for tile in tiles.get_tiles():
+                self.tiles.append(tile)
+        print(self.tiles)
+        print(len(self.tiles))
 class Level:
     def __new__(cls, game, tilemap, **kwargs):
         self = object.__new__(Level)
         self.game = game
-        self.layers = tilemap.layers
-        self.tilesets = tilemap.tilesets
-        self.tiles = []
-        self.loadTiles()
+        self.tilemap = tilemap
+        self.layers = {}
+        self.loadLayers()
         
-    def loadTiles(self):
-        counter = 0
-        # hier ist es noch ein Tilemap.Tilesets dict
-        for ts in self.tilesets:
-            #hier wird es eine Tileset Instanz
-            tileset = self.game.assets.get("Tileset", ts["name"])
-            # print(tileset.get_tiles())
-            """ for tile in tileset.get_tiles:
-                self.tiles[counter] = self.tile
-                counter += 1
-        print(self.tiles)
+    def loadLayers(self):
+        for layer in self.tilemap.layers:
+            print(layer["name"])
+            layername = layer["name"]
+            self.layers[layername] = [pygame.sprite.Group, layer["data"]]
+            print(self.layers)
+            """ for tile in self.layer[self.tilemap.layers.name]:
+                self.layer[self.tilemap.layers.name][0].add(self.tilemap.tiles[tile]) """
