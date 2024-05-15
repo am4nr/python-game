@@ -1,9 +1,11 @@
 import sys
+
 import pygame
 from scripts.flyweight import Flyweight, Asset
-from scripts.settings import *
+from scripts.settings import *  # noqa: F403
 import scripts.player as player
-from scripts.tiles import Tileset, Tilemap
+from scripts.tiles import Tileset, Tilemap, Level  # noqa: F401
+import math
 
 
 class Game:
@@ -21,10 +23,8 @@ class Game:
 
         pygame.display.set_caption(TITLE)
         self.screen = pygame.display.set_mode((WIDTH, HEIGHT), pygame.SCALED)
-
-        self.player = player.Player(
-            50, 50, Asset("Sprite", "characters/finn/finn_idle_alt.png")
-        )
+        self.assets = Flyweight(self)
+        self.player = player.Player(50, 50, self.assets.get("Sprite", "characters/finn/finn_idle_alt.png"))
         self.clock = pygame.time.Clock()
         # test_level = self.assets.get("Tilemap", "Test-Level")
         #test_level = Asset(self, "Tilemap", "Test-Level")
@@ -55,31 +55,18 @@ class Game:
                 if event.type == pygame.QUIT:
                     pygame.quit()
                     sys.exit()
-                if event.type == pygame.KEYDOWN:
-                    if event.key == pygame.K_LEFT:
-                        pass
-                    if event.key == pygame.K_RIGHT:
-                        pass
-                    if event.key == pygame.K_SPACE:
-                        pass
-
-                if event.type == pygame.KEYUP:
-                    pass
-
 
             # Update
             pygame.display.update()
             self.player.update()
             self.clock.tick(FPS)
 
-
             # Render
-            self.screen.fill((173,216,230))
-            self.screen.blit(self.player.image, (0, HEIGHT - 2 * 64), self.player.rect)
 
             self.screen.fill((0, 0, 0))
             self.draw_grid()
 
+            self.screen.blit(self.player.image, (0, HEIGHT - 2 * 64), self.player.rect)
             pygame.display.flip()
 
 

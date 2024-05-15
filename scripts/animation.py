@@ -10,9 +10,7 @@ class Animation:
         self.frame += 1
         if self.frame == self.img_duration:
             self.frame = 0
-            print(self.currentAnimIdx)
             self.currentAnimIdx += 1
-            print(self.currentAnimIdx)
             if self.currentAnimIdx > len(self.images) - 1:
                 self.currentAnimIdx = 0
         return self.images[self.currentAnimIdx]

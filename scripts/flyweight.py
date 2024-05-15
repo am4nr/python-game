@@ -2,7 +2,6 @@ import pygame
 import os
 import sys
 from scripts.tiles import Tilemap, Tileset, Level
-from scripts.main_character import Entity
 
 # Dateisystem
 scripts_folders = os.path.dirname(__file__)
@@ -76,9 +75,9 @@ class Sprite(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         return self
 
-    def __init__(self, x, y):
-        self.rect.x = x
-        self.rect.y = y
+    # def __init__(self, x = 0, y = 0):
+    #     self.rect.x = x
+    #     self.rect.y = y
 
     def __repr__(self) -> str:
         return f"{{asset : {self.asset}}},\n{{image: <pygame.surface>}},\n{{image_rect: <pygame.surface>}}"

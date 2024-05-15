@@ -127,7 +127,7 @@ class Level:
         for ts in self.tilesets:
             #hier wird es eine Tileset Instanz
             tileset = self.game.assets.get("Tileset", ts["name"])
-            print(tileset.get_tiles())
+            # print(tileset.get_tiles())
             """ for tile in tileset.get_tiles:
                 self.tiles[counter] = self.tile
                 counter += 1 """

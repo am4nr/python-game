@@ -33,7 +33,7 @@ class Player(GameObject):
         self.image = self.sprites[4]
         self.animation = Animation(self.sprites)
         # self.mask = None
-        self.rect = spritesheet.image_rect
+        self.rect = spritesheet.rect
         # self.direction = "left"
 
     def move(self, dir_x, dir_y):
