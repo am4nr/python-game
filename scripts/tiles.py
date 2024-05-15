@@ -124,3 +124,6 @@ class Level:
             print(self.layers)
             """ for tile in self.layer[self.tilemap.layers.name]:
                 self.layer[self.tilemap.layers.name][0].add(self.tilemap.tiles[tile]) """
+
+class Tile(pygame.sprite.Sprite):
+    pass
