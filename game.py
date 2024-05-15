@@ -1,11 +1,9 @@
 import sys
-
 import pygame
 from scripts.flyweight import Flyweight, Asset
-from scripts.settings import *  # noqa: F403
+from scripts.settings import *
 import scripts.player as player
-from scripts.tiles import Tileset, Tilemap, Level  # noqa: F401
-import math
+from scripts.tiles import Tileset, Tilemap
 
 
 class Game:
@@ -23,15 +21,17 @@ class Game:
 
         pygame.display.set_caption(TITLE)
         self.screen = pygame.display.set_mode((WIDTH, HEIGHT), pygame.SCALED)
-        self.assets = Flyweight(self)
-        self.player = player.Player(50, 50, self.assets.get("Sprite", "characters/finn/finn_idle_alt.png"))
+
+        self.player = player.Player(
+            50, 50, Asset("Sprite", "characters/finn/finn_idle_alt.png")
+        )
         self.clock = pygame.time.Clock()
-        #test_level = self.assets.get("Tilemap", "Test-Level")
+        # test_level = self.assets.get("Tilemap", "Test-Level")
         #test_level = Asset(self, "Tilemap", "Test-Level")
         #TilesetForrest = self.assets.get("Tileset", "TilesetForrest")
         TestLvl = self.assets.get("Tilemap", "Test-Level")
         TestLevel = Level(self,TestLvl)
-        print(self.assets)
+        #print(self.assets)
 
     def draw_grid(self):
         for line in range(0, math.ceil(WIDTH / TILE_SIZE)):
@@ -55,18 +55,31 @@ class Game:
                 if event.type == pygame.QUIT:
                     pygame.quit()
                     sys.exit()
+                if event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_LEFT:
+                        pass
+                    if event.key == pygame.K_RIGHT:
+                        pass
+                    if event.key == pygame.K_SPACE:
+                        pass
+
+                if event.type == pygame.KEYUP:
+                    pass
+
 
             # Update
             pygame.display.update()
             self.player.update()
             self.clock.tick(FPS)
 
+
             # Render
+            self.screen.fill((173,216,230))
+            self.screen.blit(self.player.image, (0, HEIGHT - 2 * 64), self.player.rect)
 
             self.screen.fill((0, 0, 0))
             self.draw_grid()
 
-            self.screen.blit(self.player.image, (0, HEIGHT - 2 * 64), self.player.rect)
             pygame.display.flip()
 
 
