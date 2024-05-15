@@ -24,7 +24,7 @@ class Game:
         pygame.display.set_caption(TITLE)
         self.screen = pygame.display.set_mode((WIDTH, HEIGHT), pygame.SCALED)
         self.assets = Flyweight(self)
-        self.player = player.Player(50, 50, self.assets.get("Sprite", "characters/finn/finn_idle_alt.png"))
+        self.player = player.Player(self.assets.get("Sprite", "characters/finn/finn_idle_alt.png"), 50, 50, 0, 0, 0.1, 0.1, 5, 5)
         self.clock = pygame.time.Clock()
         # test_level = self.assets.get("Tilemap", "Test-Level")
         #test_level = Asset(self, "Tilemap", "Test-Level")
@@ -56,17 +56,6 @@ class Game:
                     pygame.quit()
                     sys.exit()
 
-                if event.type == pygame.KEYDOWN:
-                    if event.key == pygame.K_LEFT:
-                        pass
-                    if event.key == pygame.K_RIGHT:
-                        pass
-                    if event.key == pygame.K_SPACE:
-                        pass
-
-                if event.type == pygame.KEYUP:
-                    pass
-
             # Update
             pygame.display.update()
             self.player.update()
@@ -77,7 +66,7 @@ class Game:
             self.screen.fill((0, 0, 0))
             self.draw_grid()
 
-            self.screen.blit(self.player.image, (0, HEIGHT - 2 * 64), self.player.rect)
+            self.screen.blit(self.player.image, self.player.rect)
             pygame.display.flip()
 
 
