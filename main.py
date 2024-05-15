@@ -34,12 +34,12 @@ class Game:
             self.assets.get("Sprite", "characters/finn/finn_idle.png", x=0, y=0),
         )
         self.clock = pygame.time.Clock()
-        # test_level = self.assets.get("Tilemap", "Test-Level")
+        #test_level = self.assets.get("Tilemap", "Test-Level")
         #test_level = Asset(self, "Tilemap", "Test-Level")
         #TilesetForrest = self.assets.get("Tileset", "TilesetForrest")
         TestLvl = self.assets.get("Tilemap", "Test-Level")
         TestLevel = Level(self,TestLvl)
-        #print(self.assets)
+        print(self.assets)
 
     def draw_grid(self):
         for line in range(0, math.ceil(WIDTH / TILE_SIZE)):

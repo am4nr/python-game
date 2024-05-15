@@ -42,8 +42,9 @@ class Tileset:
         for tile in range(0, self.tile_count):
             row = math.floor(tile / self.columns)
             col = math.floor(tile - row * self.columns)
-            tile = pygame.Surface((self.tile_width, self.tile_height)).convert_alpha()
-            self.tiles[tile] = tile.blit(
+            surf = pygame.Surface((self.tile_width, self.tile_height)).convert_alpha()
+            
+            self.tiles[tile] = surf.blit(
                 self.image,
                 (0, 0),
                 (
@@ -53,10 +54,6 @@ class Tileset:
                     self.tile_height,
                 ),
             )
-            print(
-                f"{self.name}: {{tile: {tile}, x: {col * self.tile_width}, y: {row * self.tile_height}}}"
-            )
-        print(f"List length: {len(self.tiles)} - Tile Count: {self.tile_count}")
 
     def __repr__(self):
         return f"{{name: {self.name}}}, {{image: {self.image}}}, {{type: {self.type}}}, {{image_height: {self.image_height}}}, {{image_width: {self.image_width}}}, {{columns: {self.columns}}}, {{tile_height: {self.tile_height}}}, {{tile_width: {self.tile_width}}}, {{tile_count: {self.tile_count}}}, {{margin: {self.margin}}}, {{spacing: {self.spacing}}}, {{tiles: {self.tiles}}}, {{tiled_version: {self.tiled_version}}}, {{version: {self.version}}}"
@@ -127,8 +124,8 @@ class Level:
         for ts in self.tilesets:
             #hier wird es eine Tileset Instanz
             tileset = self.game.assets.get("Tileset", ts["name"])
-            print(tileset.get_tiles())
-            """ for tile in tileset.get_tiles:
+            #print(tileset.get_tiles())
+            for tile in tileset.get_tiles:
                 self.tiles[counter] = self.tile
-                counter += 1 """
+                counter += 1
         print(self.tiles)
