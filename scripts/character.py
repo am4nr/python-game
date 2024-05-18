@@ -5,8 +5,8 @@ from scripts.command import RunLeft, RunRight, Jump
 vec = pygame.math.Vector2
 
 class Character():
-    def __init__(self, sprites, x, y, acc, friction):
-        self.pos = vec(x, y)
+    def __init__(self, sprites, acc, friction):
+        self.pos = vec(WIDTH / 2, HEIGHT / 2)
         self.vel = vec(0, 0)
         self.acc = vec(0, 0)
         self.speed = acc
