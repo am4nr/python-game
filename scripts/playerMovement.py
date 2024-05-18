@@ -14,18 +14,18 @@ class CharacterMovement:
         character.acc_x = 0
 
         if mirror:
-            character.acc_x = -character.speed
+            character.acc.x = -character.speed
         else:
-            character.acc_x = character.speed
+            character.acc.x = character.speed
         
-        if character.acc_x != 0:
-            character.acc_x *= 0.7071
+        if character.acc.x != 0:
+            character.acc.x *= 0.7071
         
 
 class CharacterRun(CharacterMovement):
     def execute(self, character: 'Character', mirror: bool):
         self.accelerate(character, mirror)
-        character.acc_x += character.vel_x * character.friction
-        character.vel_x += character.acc_x
-        character.pos_x += character.vel_x + 0.5 * character.acc_x
-        character.rect.x = character.pos_x
+        character.acc.x += character.vel.x * character.friction
+        character.vel.x += character.acc.x
+        character.pos.x += character.vel.x + 0.5 * character.acc.x
+        character.rect.x = character.pos.x

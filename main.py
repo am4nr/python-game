@@ -26,7 +26,7 @@ class Game:
         self.assets = Flyweight(self)
         self.sprites = CharacterSpriteManager()
         self.character_sprites = self.sprites.handle_spritesheetDictTransformation(self.sprites.get_spritesheets(self.assets, "characters/finn/", "Sprite"), 200, 200, 0.32)
-        self.character = Character(self.character_sprites, 50, 50, 0.75, -0.12, 5, 5)
+        self.character = Character(self.character_sprites, 50, 50, 0.75, -0.12)
 
         self.clock = pygame.time.Clock()
         # test_level = self.assets.get("Tilemap", "Test-Level")
