@@ -22,14 +22,14 @@ class RunLeft(PlayerCommand):
         flippedSprites = []
         for sprite in character.sprites["run"]:
            flippedSprites.append(pygame.transform.flip(sprite, True, False))
-        character.animation.change_image(flippedSprites)
+        character.animation.get_image(flippedSprites)
 
 class RunRight(PlayerCommand):
     def execute(self, character: 'Character'):
         # move char
         CharacterRun().execute(character,  False)
         # render image
-        character.animation.change_image(character.sprites["run"])
+        character.animation.get_image(character.sprites["run"])
 
 class Jump(PlayerCommand):
     def execute(self, character: 'Character'):
