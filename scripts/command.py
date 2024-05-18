@@ -1,28 +1,40 @@
-# from scripts.player import Player
+from typing import TYPE_CHECKING
+if TYPE_CHECKING:
+    from scripts.character import Character
+from scripts.playerMovement import CharacterRun
+import pygame
+class PlayerCommand():
+    __instance = None
 
-class Command():
-    def __init__(self, gameObject):
-        self.gameObject = gameObject
+    def __new__(cls):
+        if cls.__instance is None:
+            cls.__instance = object.__new__(cls)
+        return cls.__instance
+    
+    def execute(self, character: 'Character'):
+        raise NotImplementedError
 
-    def execute(self):
+class RunLeft(PlayerCommand):
+    def execute(self, character: 'Character'):
+        # move char
+        CharacterRun().execute(character, True)
+        # render image
+        flippedSprites = []
+        for sprite in character.sprites["run"]:
+           flippedSprites.append(pygame.transform.flip(sprite, True, False))
+        character.animation.change_image(flippedSprites)
+
+class RunRight(PlayerCommand):
+    def execute(self, character: 'Character'):
+        # move char
+        CharacterRun().execute(character,  False)
+        # render image
+        character.animation.change_image(character.sprites["run"])
+
+class Jump(PlayerCommand):
+    def execute(self, character: 'Character'):
         pass
 
-class MoveLeft(Command):
-    def execute(self):
-        if self.vel_x < self.max_vel_x:
-            self.rect.x -= self.vel_x
-            self.vel_x += self.acl_x
-        elif self.vel_x >= self.max_vel_x:
-            self.rect.x -= self.max_vel_x
-
-class MoveRight(Command):
-    def execute(self):
-        if self.vel_x < self.max_vel_x:
-            self.rect.x += self.vel_x
-            self.vel_x += self.acl_x
-        elif self.vel_x >= self.max_vel_x:
-            self.rect.x += self.max_vel_x
-
-class Jump(Command):
-    def execute(self):
+class Attack(PlayerCommand):
+    def execute(self, character: 'Character'):
         pass

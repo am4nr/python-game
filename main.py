@@ -1,11 +1,11 @@
 import sys
-
 import pygame
-from scripts.flyweight import Flyweight, Asset
+from scripts.flyweight import Flyweight
 from scripts.settings import *  # noqa: F403
-import scripts.player as player
+from scripts.character import Character
 from scripts.tiles import Tileset, Tilemap, Level  # noqa: F401
 import math
+from scripts.characterSpriteManager import CharacterSpriteManager
 
 
 class Game:
@@ -24,7 +24,10 @@ class Game:
         pygame.display.set_caption(TITLE)
         self.screen = pygame.display.set_mode((WIDTH, HEIGHT), pygame.SCALED)
         self.assets = Flyweight(self)
-        self.player = player.Player(self.assets.get("Sprite", "characters/finn/finn_idle_alt.png"), 50, 50, 0, 0, 0.1, 0.1, 5, 5)
+        self.sprites = CharacterSpriteManager()
+        self.character_sprites = self.sprites.handle_spritesheetDictTransformation(self.sprites.get_spritesheets(self.assets, "characters/finn/", "Sprite"), 200, 200, 0.32)
+        self.character = Character(self.character_sprites, 50, 50, 0.75, -0.12, 5, 5)
+
         self.clock = pygame.time.Clock()
         # test_level = self.assets.get("Tilemap", "Test-Level")
         #test_level = Asset(self, "Tilemap", "Test-Level")
@@ -58,7 +61,7 @@ class Game:
 
             # Update
             pygame.display.update()
-            self.player.update()
+            self.character.update()
             self.clock.tick(FPS)
 
             # Render
@@ -66,7 +69,7 @@ class Game:
             self.screen.fill((0, 0, 0))
             self.draw_grid()
 
-            self.screen.blit(self.player.image, self.player.rect)
+            self.screen.blit(self.character.image, self.character.rect)
             pygame.display.flip()
 
 
