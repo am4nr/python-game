@@ -26,11 +26,14 @@ class Game:
             50, 50, self.assets.get("Sprite", "characters/finn/finn_idle_alt.png")
         )
         self.clock = pygame.time.Clock()
+        
+        print(tracemalloc.get_traced_memory())
         self.levels = [
             self.assets.get("Level", "Test-Level"),
             self.assets.get("Level", "Test-Level2"),
         ]
         self.current_level = 0
+        print(tracemalloc.get_traced_memory())
 
     def draw_grid(self):
         for line in range(0, math.ceil(WIDTH / TILE_SIZE)):
@@ -61,13 +64,11 @@ class Game:
                             self.current_level = len(self.levels) - 1
                         else:
                             self.current_level = self.current_level - 1
-                        print(tracemalloc.get_traced_memory())
                     if keys[pygame.K_2]:
                         if self.current_level == len(self.levels) - 1:
                             self.current_level = 0
                         else:
                             self.current_level = self.current_level + 1
-                        print(tracemalloc.get_traced_memory())
 
             self.player.update()
             self.clock.tick(FPS)
@@ -78,7 +79,7 @@ class Game:
 
             for layer in self.levels[self.current_level].get_layers().values():
                 layer["group"].draw(self.screen)
-
+            print(tracemalloc.get_traced_memory())
             self.screen.blit(self.player.image, self.player.rect)
             pygame.display.update()
             pygame.display.flip()

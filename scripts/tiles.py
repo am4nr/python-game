@@ -126,7 +126,6 @@ class Level:
 
     def load_layers(self):
         width = self.tilemap.width
-        height = self.tilemap.height
 
         for layer in self.tilemap.layers:
             layername = layer["name"]
