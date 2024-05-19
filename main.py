@@ -6,7 +6,7 @@ from scripts.settings import *
 import scripts.player as player
 from scripts.tiles import Tileset, Tilemap, Level
 import math
-
+import tracemalloc
 
 class Game:
     __instance = None
@@ -17,6 +17,7 @@ class Game:
         return cls.__instance
 
     def __init__(self):
+        tracemalloc.start()
         pygame.init()
         pygame.display.set_caption(TITLE)
         self.screen = pygame.display.set_mode((WIDTH, HEIGHT), pygame.SCALED)
@@ -51,6 +52,7 @@ class Game:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     pygame.quit()
+                    tracemalloc.stop()
                     sys.exit()
                 if event.type == pygame.KEYDOWN:
                     keys = pygame.key.get_pressed()
@@ -76,10 +78,9 @@ class Game:
                 layer["group"].draw(self.screen)
 
             self.screen.blit(self.player.image, self.player.rect)
-
+            print(tracemalloc.get_traced_memory())
             pygame.display.update()
             pygame.display.flip()
-
 
 game = Game()
 game.run()
