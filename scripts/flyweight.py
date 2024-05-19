@@ -8,8 +8,10 @@ scripts_folders = os.path.dirname(__file__)
 game_folder = os.path.join(scripts_folders, os.pardir)
 assets_folder = os.path.join(game_folder, "assets")
 
+
 def str_to_class(classname):
     return getattr(sys.modules[__name__], classname)
+
 
 class Flyweight:
     __instance = None
@@ -48,6 +50,7 @@ class Flyweight:
         )
         return self.collections[asset_type][asset]
 
+
 class Asset:
     def __new__(cls, game, asset_type, asset, **kwargs):
         if Flyweight.collections.get(asset_type) is None:
@@ -61,6 +64,7 @@ class Asset:
         self.__init__(game, asset, **kwargs)
         return self
 
+
 # Sprite Factory
 class Sprite(pygame.sprite.Sprite):
     def __new__(cls, game, image, **kwargs):
@@ -70,6 +74,6 @@ class Sprite(pygame.sprite.Sprite):
         return self
 
     def __init__(self, game, image, **kwargs):
-        #super().__init__()
+        # super().__init__()
         self.image = image
         self.rect = self.image.get_rect()

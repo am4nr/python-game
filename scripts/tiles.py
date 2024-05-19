@@ -8,6 +8,7 @@ scripts_folders = os.path.dirname(__file__)
 game_folder = os.path.join(scripts_folders, os.pardir)
 assets_folder = os.path.join(game_folder, "assets")
 
+
 class Tileset:
     def __init__(self, game, tileset):
         tset = os.path.join(assets_folder, "tilesets", tileset + ".json")
@@ -37,12 +38,24 @@ class Tileset:
         for tile in range(self.tile_count):
             row = math.floor(tile / self.columns)
             col = math.floor(tile - row * self.columns)
-            surf = pygame.Surface((self.tile_width, self.tile_height), pygame.SRCALPHA).convert_alpha()
-            surf.blit(self.image, (0, 0), ((col * self.tile_width), (row * self.tile_height), self.tile_width, self.tile_height))
+            surf = pygame.Surface(
+                (self.tile_width, self.tile_height), pygame.SRCALPHA
+            ).convert_alpha()
+            surf.blit(
+                self.image,
+                (0, 0),
+                (
+                    (col * self.tile_width),
+                    (row * self.tile_height),
+                    self.tile_width,
+                    self.tile_height,
+                ),
+            )
             self.tiles.append(Tile(0, 0, surf))
 
     def get_tiles(self):
         return self.tiles
+
 
 class Tile(pygame.sprite.Sprite):
     def __init__(self, x, y, image):
@@ -53,6 +66,7 @@ class Tile(pygame.sprite.Sprite):
 
     def set_position(self, x, y):
         self.rect.topleft = (x, y)
+
 
 class Tilemap:
     def __init__(self, game, tilemap):
@@ -116,7 +130,10 @@ class Level:
 
         for layer in self.tilemap.layers:
             layername = layer["name"]
-            self.layers[layername] = {"group": pygame.sprite.Group(), "data": layer.get("data", [])}
+            self.layers[layername] = {
+                "group": pygame.sprite.Group(),
+                "data": layer.get("data", []),
+            }
 
             for index, tile_id in enumerate(layer["data"]):
                 if tile_id != 0:
@@ -124,9 +141,11 @@ class Level:
                     if tile:
                         col = index % width
                         row = index // width
-                        tile.set_position(col * self.tilemap.tile_width, row * self.tilemap.tile_height)
+                        tile.set_position(
+                            col * self.tilemap.tile_width,
+                            row * self.tilemap.tile_height,
+                        )
                         self.layers[layername]["group"].add(tile)
 
     def get_layers(self):
         return self.layers
-
