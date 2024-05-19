@@ -22,8 +22,8 @@ class Game:
         self.assets = Flyweight(self)
         self.player = player.Player(50, 50, self.assets.get("Sprite", "characters/finn/finn_idle_alt.png"))
         self.clock = pygame.time.Clock()
-        self.level = self.assets.get("Level", "Test-Level2")
-
+        self.levels = [self.assets.get("Level", "Test-Level"),self.assets.get("Level", "Test-Level2")]
+        self.current_level = self.levels[0]
     def draw_grid(self):
         for line in range(0, math.ceil(WIDTH / TILE_SIZE)):
             pygame.draw.line(
@@ -51,7 +51,14 @@ class Game:
             self.screen.fill((0, 0, 0))
             self.draw_grid()
             
-            for layer in self.level.get_layers().values():
+            #temporary levelchange (später über states)
+            keys = pygame.key.get_pressed()
+            if keys[pygame.K_1]:
+                self.current_level = self.levels[0]
+            if keys[pygame.K_2]:
+                self.current_level = self.levels[1]
+                
+            for layer in self.current_level.get_layers().values():
                 layer["group"].draw(self.screen)
 
             self.screen.blit(self.player.image, self.player.rect.topleft)
