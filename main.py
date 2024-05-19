@@ -72,6 +72,7 @@ class Game:
 
             self.player.update()
             self.clock.tick(FPS)
+            
             self.screen.fill((0, 0, 0))
             self.draw_grid()
 
@@ -79,6 +80,7 @@ class Game:
 
             for layer in self.levels[self.current_level].get_layers().values():
                 layer["group"].draw(self.screen)
+                
             print(tracemalloc.get_traced_memory())
             self.screen.blit(self.player.image, self.player.rect)
             pygame.display.update()
