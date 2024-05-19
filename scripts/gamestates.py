@@ -3,7 +3,8 @@ import sys
 import pygame
 from scripts.flyweight import Flyweight
 from scripts.settings import *
-import scripts.player as player
+import scripts.character as Character
+from scripts.characterSpriteManager import CharacterSpriteManager
 from scripts.tiles import Tileset, Tilemap, Level
 import math
 import tracemalloc
@@ -122,7 +123,9 @@ class Game():
         pygame.display.set_caption(TITLE)
         self.screen = pygame.display.set_mode((WIDTH, HEIGHT), pygame.SCALED)
         self.assets = Flyweight(self)
-        self.player = player.Player(50, 50, self.assets.get("Sprite", "characters/finn/finn_idle_alt.png"))
+        self.sprites = CharacterSpriteManager()
+        self.character_sprites = self.sprites.handle_spritesheetDictTransformation(self.sprites.get_spritesheets(self.assets, "characters/finn/", "Sprite"), 200, 200, 0.32)
+        self.character = Character(self.character_sprites, 0.75, -0.12)
         self.clock = pygame.time.Clock()
         
         print(tracemalloc.get_traced_memory())
