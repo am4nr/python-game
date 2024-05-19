@@ -1,5 +1,5 @@
-WIDTH = 400
-HEIGHT = 300
+WIDTH = 800
+HEIGHT = 640
 FPS = 60
 TITLE = "Animal Adventure"
 TILE_SIZE = 32

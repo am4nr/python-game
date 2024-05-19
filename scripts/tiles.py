@@ -1,3 +1,4 @@
+# tiles.py
 import os
 import json
 import pygame
@@ -9,8 +10,7 @@ assets_folder = os.path.join(game_folder, "assets")
 
 
 class Tileset:
-    def __new__(cls, game, tileset, **kwargs):
-        self = object.__new__(Tileset)
+    def __init__(self, game, tileset):
         tset = os.path.join(assets_folder, "tilesets", tileset + ".json")
 
         with open(tset) as ts:
@@ -29,21 +29,19 @@ class Tileset:
         self.margin = self.json["margin"]
         self.spacing = self.json["spacing"]
         self.animation_frames = self.json["tiles"] if "tiles" in self.json else []
-        self.tiles = {}
+        self.tiles = []
         self.tiled_version = self.json["tiledversion"]
         self.version = self.json["version"]
         self.load_tiles()
-        return self
-
-    def __init__(self):
-        pass
 
     def load_tiles(self):
-        for tile in range(0, self.tile_count):
+        for tile in range(self.tile_count):
             row = math.floor(tile / self.columns)
             col = math.floor(tile - row * self.columns)
-            tile = pygame.Surface((self.tile_width, self.tile_height)).convert_alpha()
-            self.tiles[tile] = tile.blit(
+            surf = pygame.Surface(
+                (self.tile_width, self.tile_height), pygame.SRCALPHA
+            ).convert_alpha()
+            surf.blit(
                 self.image,
                 (0, 0),
                 (
@@ -53,19 +51,25 @@ class Tileset:
                     self.tile_height,
                 ),
             )
-            print(
-                f"{self.name}: {{tile: {tile}, x: {col * self.tile_width}, y: {row * self.tile_height}}}"
-            )
-        print(f"List length: {len(self.tiles)} - Tile Count: {self.tile_count}")
-
-    def __repr__(self):
-        return f"{{name: {self.name}}}, {{image: {self.image}}}, {{type: {self.type}}}, {{image_height: {self.image_height}}}, {{image_width: {self.image_width}}}, {{columns: {self.columns}}}, {{tile_height: {self.tile_height}}}, {{tile_width: {self.tile_width}}}, {{tile_count: {self.tile_count}}}, {{margin: {self.margin}}}, {{spacing: {self.spacing}}}, {{tiles: {self.tiles}}}, {{tiled_version: {self.tiled_version}}}, {{version: {self.version}}}"
+            self.tiles.append(Tile(0, 0, surf))
 
     def get_tiles(self):
         return self.tiles
+
+
+class Tile(pygame.sprite.Sprite):
+    def __init__(self, x, y, image):
+        super().__init__()
+        self.image = image
+        self.rect = self.image.get_rect()
+        self.rect.topleft = (x, y)
+
+    def set_position(self, x, y):
+        self.rect.topleft = (x, y)
+
+
 class Tilemap:
-    def __new__(cls, game, tilemap, **kwargs):
-        self = object.__new__(Tilemap)
+    def __init__(self, game, tilemap):
         tmap = os.path.join(assets_folder, "maps", tilemap + ".json")
 
         with open(tmap) as tm:
@@ -84,51 +88,63 @@ class Tilemap:
         self.tile_height = self.json["tileheight"]
         self.tile_width = self.json["tilewidth"]
         self.tilesets = []
+        self.tiles = []
 
         for tileset in self.json["tilesets"]:
             source = tileset["source"]
             firstgid = tileset["firstgid"]
-            name = os.path.splitext(source)[0]
-            data = {"name": name, "offset": firstgid - 1}
+            name = os.path.splitext(os.path.basename(source))[0]
+            data = {"name": name, "firstgid": firstgid}
             self.tilesets.append(data)
 
         self.type = self.json["type"]
         self.tiled_version = self.json["tiledversion"]
         self.version = self.json["version"]
-        return self
+        self.load_tilesets()
 
-    def __init__(self):
-        self.loadTilesets(self.game)
-
-    def __repr__(self):
-        return f"{{compression_level: {self.compression_level}}}, {{height: {self.height}}}, {{infinite: {self.infinite}}}, {{layers: {{...}}}}, {{next_layer_id: {self.next_layer_id}}}, {{next_object_id: {self.next_object_id}}}, {{orientation: {self.orientation}}}, {{render_order: {self.render_order}}}, {{tile_height: {self.tile_height}}}, {{tile_width: {self.tile_width}}}, {{tilesets: {self.tilesets}}}, {{type: {self.type}}}, {{tiled_version: {self.tiled_version}}}, {{version: {self.version}}}"
-
-    def loadTilesets(self, game):
-        if "tileset" not in game.assets.collections:
-            game.assets.collections["tileset"] = {}
-
+    def load_tilesets(self):
+        self.tiles = []
         for tileset in self.tilesets:
-            if tileset["name"] not in game.assets.collections["tileset"]:
-                game.assets.collections["tileset"][tileset["name"]] = game.assets.get("Tileset", tileset["name"])
+            tileset_obj = Tileset(self.game, tileset["name"])
+            self.tiles.append((tileset["firstgid"], tileset_obj))
+
+    def get_tile(self, tile_id):
+        for firstgid, tileset in reversed(self.tiles):
+            if tile_id >= firstgid:
+                local_tile_id = tile_id - firstgid
+                tile_image = tileset.tiles[local_tile_id].image
+                return Tile(0, 0, tile_image)
+        return None
 
 
 class Level:
-    def __new__(cls, game, tilemap, **kwargs):
-        self = object.__new__(Level)
+    def __init__(self, game, tilemap):
         self.game = game
-        self.layers = tilemap.layers
-        self.tilesets = tilemap.tilesets
-        self.tiles = []
-        self.loadTiles()
-        
-    def loadTiles(self):
-        counter = 0
-        # hier ist es noch ein Tilemap.Tilesets dict
-        for ts in self.tilesets:
-            #hier wird es eine Tileset Instanz
-            tileset = self.game.assets.get("Tileset", ts["name"])
-            # print(tileset.get_tiles())
-            """ for tile in tileset.get_tiles:
-                self.tiles[counter] = self.tile
-                counter += 1 """
-        print(self.tiles)
+        self.tilemap = Tilemap(game, tilemap)
+        self.layers = {}
+        self.load_layers()
+
+    def load_layers(self):
+        width = self.tilemap.width
+
+        for layer in self.tilemap.layers:
+            layername = layer["name"]
+            self.layers[layername] = {
+                "group": pygame.sprite.Group(),
+                "data": layer.get("data", []),
+            }
+
+            for index, tile_id in enumerate(layer["data"]):
+                if tile_id != 0:
+                    tile = self.tilemap.get_tile(tile_id)
+                    if tile:
+                        col = index % width
+                        row = index // width
+                        tile.set_position(
+                            col * self.tilemap.tile_width,
+                            row * self.tilemap.tile_height,
+                        )
+                        self.layers[layername]["group"].add(tile)
+
+    def get_layers(self):
+        return self.layers

@@ -42,7 +42,7 @@ Tilemap {
     {tiled_version: 1.10.2},
     {version: 1.10}
     }
-tileset {
+Tileset {
     'BG':
         {name: BG},
         {image: <Surface(1000x750x32 SW)>},
