@@ -1,45 +1,39 @@
+# main.py
 import sys
-
 import pygame
-from scripts.flyweight import Flyweight, Asset
-from scripts.settings import *  # noqa: F403
-import scripts.main_character as main_character
-from scripts.tiles import Tileset, Tilemap, Level  # noqa: F401
+from scripts.flyweight import Flyweight
+from scripts.settings import *
+import scripts.player as player
+from scripts.tiles import Tileset, Tilemap, Level
 import math
-
+import tracemalloc
 
 class Game:
     __instance = None
 
-    def __new__(
-        cls,
-    ):  # Game soll singleton sein, damit es sich immer um die selbe Instanz von Game handelt
+    def __new__(cls):
         if cls.__instance is None:
             cls.__instance = object.__new__(cls)
         return cls.__instance
 
     def __init__(self):
+        tracemalloc.start()
         pygame.init()
-
         pygame.display.set_caption(TITLE)
         self.screen = pygame.display.set_mode((WIDTH, HEIGHT), pygame.SCALED)
         self.assets = Flyweight(self)
-        self.player = main_character.Entity(
-            50,
-            50,
-            0,
-            0,
-            0,
-            0,
-            self.assets.get("Sprite", "characters/finn/finn_idle.png", x=0, y=0),
+        self.player = player.Player(
+            50, 50, self.assets.get("Sprite", "characters/finn/finn_idle_alt.png")
         )
         self.clock = pygame.time.Clock()
-        # test_level = self.assets.get("Tilemap", "Test-Level")
-        # test_level = Asset(self, "Tilemap", "Test-Level")
-        #TilesetForrest = self.assets.get("Tileset", "TilesetForrest")
-        TestLvl = self.assets.get("Tilemap", "Test-Level")
-        TestLevel = Level(self,TestLvl)
-        #print(self.assets)
+        
+        print(tracemalloc.get_traced_memory())
+        self.levels = [
+            self.assets.get("Level", "Test-Level"),
+            self.assets.get("Level", "Test-Level2"),
+        ]
+        self.current_level = 0
+        print(tracemalloc.get_traced_memory())
 
     def draw_grid(self):
         for line in range(0, math.ceil(WIDTH / TILE_SIZE)):
@@ -58,24 +52,39 @@ class Game:
 
     def run(self):
         while True:
-            # Events
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     pygame.quit()
+                    tracemalloc.stop()
                     sys.exit()
+                if event.type == pygame.KEYDOWN:
+                    keys = pygame.key.get_pressed()
+                    if keys[pygame.K_1]:
+                        if self.current_level == 0:
+                            self.current_level = len(self.levels) - 1
+                        else:
+                            self.current_level = self.current_level - 1
+                    if keys[pygame.K_2]:
+                        if self.current_level == len(self.levels) - 1:
+                            self.current_level = 0
+                        else:
+                            self.current_level = self.current_level + 1
 
-            # Update
-            pygame.display.update()
+            self.player.update()
             self.clock.tick(FPS)
-
-            # Render
-
+            
             self.screen.fill((0, 0, 0))
             self.draw_grid()
 
-            self.screen.blit(self.player.image, self.player.rect)
-            pygame.display.flip()
+            # temporary levelchange (später über states)
 
+            for layer in self.levels[self.current_level].get_layers().values():
+                layer["group"].draw(self.screen)
+                
+            print(tracemalloc.get_traced_memory())
+            self.screen.blit(self.player.image, self.player.rect)
+            pygame.display.update()
+            pygame.display.flip()
 
 game = Game()
 game.run()
