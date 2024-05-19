@@ -27,19 +27,8 @@ class CharacterMovement:
         raise NotImplementedError
         
 class CharacterRun(CharacterMovement):
-    def accelerate(self, axis, character: 'Character', mirror):
-        character.acc[axis]= 0
-
-        if mirror:
-            character.acc[axis] = -character.speed
-        else:
-            character.acc[axis] = character.speed
-        
-        if character.acc[axis] != 0:
-            character.acc[axis] *= 0.7071
-
     def execute(self, character: 'Character', mirror):
-        # self.accelerate(0, character, mirror)
+        self.accelerate(0, character, mirror)
         character.acc.x += character.vel.x * character.friction
         character.vel.x += character.acc.x
         character.pos.x += character.vel.x + 0.5 * character.acc.x

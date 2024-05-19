@@ -21,19 +21,19 @@ class Character():
         # self.jump_count = 10
 
     def update(self):
-        # self.gravity()
+        self.gravity()
         self.handle_Playerinput()
         self.image = self.animation.update()
         
     
-    # def gravity(self):
-    #     if self.state != 'jump':
-    #         CharacterFall().execute(self, False)
-    #         #temporary handle screen boundaries
-    #         if self.rect.bottom > HEIGHT:
-    #             self.rect.bottom = HEIGHT
-    #             self.pos.y = HEIGHT
-    #             self.acc.y = 0
+    def gravity(self):
+        if self.state != 'jump':
+            CharacterFall().execute(self, False)
+            #temporary handle screen boundaries
+            if self.rect.bottom > HEIGHT:
+                self.rect.bottom = HEIGHT
+                self.pos.y = HEIGHT
+                self.acc.y = 0
         
     def handle_Playerinput(self):
         key_pressed = False

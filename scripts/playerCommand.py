@@ -19,14 +19,13 @@ class PlayerCommand():
 class RunLeft(PlayerCommand):
     def execute(self, character: 'Character'):
         character.state.changeState(RunningLeft)
-        CharacterRun().execute(self.character, False)
+        CharacterRun().execute(character, True)
 
 
 class RunRight(PlayerCommand):
     def execute(self, character: 'Character'):
         character.state.changeState(RunningRight)
-        RunningRight(character).update()
-
+        CharacterRun().execute(character, False)
 
 
 # class Jump(PlayerCommand):

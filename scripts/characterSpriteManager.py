@@ -3,11 +3,14 @@ import os
 from pathlib import Path
 from scripts.flyweight import *
 class CharacterSpriteManager:
-    def get_spritesheets(self, assetmanager, folder, assetType):
+    def __init__(self, assetmanager):
+        self.assetmanager = assetmanager
+
+    def get_spritesheets(self, folder):
         self.path = os.path.join(os.getcwd(), "assets", folder)
         self.spritesheets = {}
         for filename in os.listdir(self.path):
-            self.spritesheets[filename.split('.')[0]] = assetmanager.get(assetType, folder + filename)
+            self.spritesheets[filename.split('.')[0]] = self.assetmanager.get('Image', folder + filename)
         return self.spritesheets
     
     def handle_spritesheetDictTransformation(self, spritesheets, width, height, factor = 1):
@@ -22,5 +25,7 @@ class CharacterSpriteManager:
             surface = pygame.Surface((width,height), pygame.SRCALPHA, 32)
             rect = pygame.Rect(i * width, 0, width, height)
             surface.blit(spritesheet, (0,0), rect)
-            self.sprites.append(pygame.transform.scale_by(surface, factor))
+            sprite = self.assetmanager.get("Sprite", pygame.transform.scale_by(surface, factor))
+            self.sprites.append(sprite)
+            
         return self.sprites

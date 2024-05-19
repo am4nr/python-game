@@ -31,11 +31,11 @@ class RunningRight(Context):
         self.character = character
 
     def enter(self):
-        CharacterRun().accelerate(0,self.character, False)
+        # CharacterRun().accelerate(0,self.character, False)
         self.character.animation.reset(self.character.sprites["run"])
 
-    def update(self):
-        CharacterRun().execute(self.character, False)
+    # def update(self):
+    #     CharacterRun().execute(self.character, False)
 
 
 class RunningLeft(Context):
@@ -43,7 +43,7 @@ class RunningLeft(Context):
         self.character = character
 
     def enter(self):
-        CharacterRun().execute(self.character, True)
+        # CharacterRun().execute(self.character, True)
         flippedSprites = []
         for sprite in self.character.sprites["run"]:
            flippedSprites.append(pygame.transform.flip(sprite, True, False))

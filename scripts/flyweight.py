@@ -27,7 +27,7 @@ class Flyweight:
 
     def __repr__(self):
         return "\n".join("{}\t{}".format(k, v) for k, v in self.collections.items())
-
+#assets.get("Sprite", <rect>)
     def get(self, asset_type, asset, **kwargs):
         if asset_type not in self.collections:
             self.collections[asset_type] = {}
