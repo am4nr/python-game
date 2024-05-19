@@ -61,11 +61,13 @@ class Game:
                             self.current_level = len(self.levels) - 1
                         else:
                             self.current_level = self.current_level - 1
+                        print(tracemalloc.get_traced_memory())
                     if keys[pygame.K_2]:
                         if self.current_level == len(self.levels) - 1:
                             self.current_level = 0
                         else:
                             self.current_level = self.current_level + 1
+                        print(tracemalloc.get_traced_memory())
 
             self.player.update()
             self.clock.tick(FPS)
@@ -78,7 +80,6 @@ class Game:
                 layer["group"].draw(self.screen)
 
             self.screen.blit(self.player.image, self.player.rect)
-            print(tracemalloc.get_traced_memory())
             pygame.display.update()
             pygame.display.flip()
 
