@@ -29,9 +29,9 @@ class Game:
         #test_level = self.assets.get("Tilemap", "Test-Level")
         #test_level = Asset(self, "Tilemap", "Test-Level")
         #TilesetForrest = self.assets.get("Tileset", "TilesetForrest")
-        TestLvl = self.assets.get("Tilemap", "Test-Level")
-        TestLevel = Level(self,TestLvl)
-        #print(self.assets)
+        #TestLvl = self.assets.get("Tilemap", "Test-Level")
+        self.level = self.assets.get("Level","Test-Level")
+        print(self.level)
 
     def draw_grid(self):
         for line in range(0, math.ceil(WIDTH / TILE_SIZE)):
@@ -57,16 +57,21 @@ class Game:
                     sys.exit()
 
             # Update
-            pygame.display.update()
             self.player.update()
             self.clock.tick(FPS)
-
-            # Render
-
             self.screen.fill((0, 0, 0))
             self.draw_grid()
+            level_layers = self.level.getLayers()
+            #print(level_layers["group"])
+            for layer in level_layers:
+                print(self.level.layers[layer]["group"])
+                #print(layer)
+                self.level.layers[layer]["group"].draw(self.screen)
+            # Render
 
             self.screen.blit(self.player.image, (0, HEIGHT - 2 * 64), self.player.rect)
+            
+            pygame.display.update()
             pygame.display.flip()
 
 
