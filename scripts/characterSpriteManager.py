@@ -16,7 +16,7 @@ class CharacterSpriteManager:
     def handle_spritesheetDictTransformation(self, spritesheets, width, height, factor = 1):
         self.spritelists = {}
         for  key, value in spritesheets.items():
-            self.spritelists[key] = self.get_sprites(value.image, width, height, factor)
+            self.spritelists[key] = self.get_sprites(value, width, height, factor)
         return self.spritelists
 
     def get_sprites(self, spritesheet, width, height, factor = 1):
@@ -25,6 +25,7 @@ class CharacterSpriteManager:
             surface = pygame.Surface((width,height), pygame.SRCALPHA, 32)
             rect = pygame.Rect(i * width, 0, width, height)
             surface.blit(spritesheet, (0,0), rect)
+            print(type(pygame.transform.scale_by(surface,factor)))
             sprite = self.assetmanager.get("Sprite", pygame.transform.scale_by(surface, factor))
             self.sprites.append(sprite)
             
