@@ -31,18 +31,23 @@ class Character(pygame.sprite.Sprite):
 
     def update(self):
         self.gravity()
-        self.collision.handle_vertical_collision(self)
-        self.handle_Playerinput()
         self.image = self.animation.update()
         self.mask = pygame.mask.from_surface(self.image)
+        self.collision.handle_vertical_collision(self)
+        self.handle_Playerinput()
 
     def gravity(self):
+
+        # if self.collision.handle_vertical_collision(self):
+        #     # self.vel.y = 0
+        #     self.acc.y = 0
+        #     self.jumps = 2
+        # else:
         self.vel.y = GRAVITY
         VerticalMovement().execute(self, False)
         #temporary handle screen boundaries
         if self.rect.bottom > HEIGHT:
             self.rect.bottom = HEIGHT
-            self.pos.y = HEIGHT
             self.acc.y = 0
 
     def handle_Playerinput(self):
