@@ -21,6 +21,7 @@ class Collision:
                 if character.vel.y > 0:
                     # character.rect.bottom = collided_sprite.rect.top
                     character.pos.y = collided_sprite.rect.top
+                    # character.rect.bottom = character.pos.y
                     character.vel.y = 0
                     character.acc.y = 0
                     character.jumps = 2

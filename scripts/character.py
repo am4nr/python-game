@@ -21,10 +21,10 @@ class Character(pygame.sprite.Sprite):
         self.animation = Animation()
         self.state = CharacterState(self)
         self.image = self.sprites["idle"][0].image
-        self.mask = pygame.mask.from_surface(self.image)
-        self.rect = self.mask.get_rect()
-        self.rect.left = CHARACTER_START_POS_X
-        self.rect.bottom = CHARACTER_START_POS_Y
+        # self.mask = pygame.mask.from_surface(self.image)
+        self.rect = self.image.get_rect()
+        # self.rect.left = CHARACTER_START_POS_X
+        # self.rect.bottom = CHARACTER_START_POS_Y
         self.jumps = 2
         self.animation.get_images(self.sprites["idle"], False)
         self.collision = Collision(self.game)
@@ -32,9 +32,10 @@ class Character(pygame.sprite.Sprite):
     def update(self):
         self.gravity()
         self.image = self.animation.update()
-        self.mask = pygame.mask.from_surface(self.image)
+        # self.mask = pygame.mask.from_surface(self.image)
         # self.collision.handle_vertical_collision(self)
         self.handle_Playerinput()
+        print(self.pos.y, self.rect.y, self.rect.bottom)
 
     def gravity(self):
 
