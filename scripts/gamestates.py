@@ -134,9 +134,9 @@ class Game:
 
         self.levels = [
             self.assets.get("Tilemap", "Test-Level"),
-            #self.assets.get("Level", "Test-Level2"),
+            self.assets.get("Tilemap", "Test-Level2"),
         ]
-        self.current_level = 1
+        self.current_level = 0
         # print(tracemalloc.get_traced_memory())
         self.state = PlayState()
 

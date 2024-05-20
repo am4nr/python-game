@@ -39,9 +39,7 @@ class Tileset:
         for tile in range(self.tile_count):
             row = math.floor(tile / self.columns)
             col = math.floor(tile - row * self.columns)
-            surf = pygame.Surface(
-                (self.tile_width, self.tile_height), pygame.SRCALPHA
-            ).convert_alpha()
+            surf = pygame.Surface((self.tile_width, self.tile_height), pygame.SRCALPHA).convert_alpha()
             surf.blit(
                 self.image,
                 (0, 0),
@@ -109,17 +107,17 @@ class Tilemap:
     def load_tilesets(self):
         for tileset in self.tilesets:
             tileset_obj = self.game.assets.get("Tileset", tileset["name"])
-            print(self.tilesets)
+            # print(self.tilesets)
             for index, tile in enumerate(tileset_obj.get_tiles()):
                 firstgid = tileset['firstgid']
-                print(f"{tileset['name']}")
-                print(f"firstgid: {tileset['firstgid']}")
-                print(f"index: {index}")
-                print(tile)
+                # print(f"{tileset['name']}")
+                # print(f"firstgid: {tileset['firstgid']}")
+                # print(f"index: {index}")
+                # print(tile)
                 self.tiles[firstgid+index] = tile
             #self.tilesset[tileset["name"]] = {"firstgid":tileset["firstgid"], "tileset": tileset_obj}
             #self.tiles.append((tileset["firstgid"], tileset_obj))
-        print(self.tiles)
+        # print(self.tiles)
         
     def load_layers(self):
         width = self.width
@@ -139,7 +137,7 @@ class Tilemap:
                     tile.rect = [col * self.tile_width, row * self.tile_height]
                     self.layers[layername]["group"].add(tile)
             
-        print(self.layers)
+        # print(self.layers)
         
     def get_tile(self, tile_id):
         return self.tiles[tile_id]

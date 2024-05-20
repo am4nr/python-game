@@ -39,4 +39,4 @@ class VerticalMovement(Movement):
         character.acc.y += character.vel.y * character.friction
         character.vel.y += character.acc.y
         character.pos.y += character.vel.y + 0.5 * character.acc.y
-        character.rect.y = character.pos.y
+        character.rect.bottom = character.pos.y
