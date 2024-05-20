@@ -13,8 +13,8 @@ import tracemalloc
 class GameState(metaclass=ABCMeta):
     @abstractmethod
     def enterState(self):
-        pass
-
+        pass 
+        
     @abstractmethod
     def exitState(self):
         pass
@@ -33,20 +33,20 @@ class GameState(metaclass=ABCMeta):
 
 
 class MainMenuState(GameState):
-    def enterState(self):
+    def enterState(self, game):
         pass
 
-    def exitState(self):
+    def exitState(self, game):
         pass
 
-    def event(self,event):
+    def event(self, game, event):
         pass
 
-    def update(self):
+    def update(self, game):
         pass
 
-    def render(self):
-        pass
+    def render(self, game):
+        game.screen.fill((255, 255, 255))
 
 
 class PlayState(GameState):
@@ -72,7 +72,7 @@ class PlayState(GameState):
 
     def update(self, game):
         game.character.update()
-        game.clock.tick(FPS)
+        
 
     def render(self, game):
         game.screen.fill((0, 0, 0))
@@ -135,7 +135,6 @@ class Game:
         self.levels = [
             self.assets.get("Tilemap", "Test-Level"),
             self.assets.get("Tilemap", "Test-Level2"),
-            self.assets.get("Tilemap", "Level2"),
         ]
         self.current_level = 0
         # print(tracemalloc.get_traced_memory())
@@ -154,6 +153,7 @@ class Game:
 
     def update(self):
         self.state.update(self)
+        self.clock.tick(FPS)
 
     def render(self):
         self.state.render(self)
