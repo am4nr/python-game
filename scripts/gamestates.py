@@ -39,7 +39,7 @@ class MainMenuState(GameState):
     def exitState(self):
         pass
 
-    def event(self):
+    def event(self,event):
         pass
 
     def update(self):
@@ -139,7 +139,7 @@ class Game:
         ]
         self.current_level = 0
         # print(tracemalloc.get_traced_memory())
-        self.state = PlayState()
+        self.state = MainMenuState()
 
     def changeState(self, newState):
         self.state = newState
