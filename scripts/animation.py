@@ -27,7 +27,6 @@ class Animation:
 
     def get_surfaces(self, sprites):
         self.images = []
-        print(sprites)
         for sprite in sprites:
             self.images.append(sprite.image)
 

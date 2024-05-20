@@ -4,12 +4,14 @@ from scripts.animation import Animation
 from scripts.playerCommand import RunLeft, RunRight, Jump
 from scripts.characterMovement import VerticalMovement
 from scripts.characterState import CharacterState, Idle
+from scripts.collision import Collision
 
 vec = pygame.math.Vector2
 
 
 class Character(pygame.sprite.Sprite):
-    def __init__(self, sprites, acc, friction):
+    def __init__(self, game, sprites, acc, friction):
+        self.game = game
         self.pos = vec(CHARACTER_START_POS_X, CHARACTER_START_POS_Y)
         self.vel = vec(0, 0)
         self.acc = vec(0, 0)
@@ -25,9 +27,11 @@ class Character(pygame.sprite.Sprite):
         self.rect.bottom = CHARACTER_START_POS_Y
         self.jumps = 2
         self.animation.get_images(self.sprites["idle"], False)
+        self.collision = Collision(self.game)
 
     def update(self):
         self.gravity()
+        self.collision.handle_vertical_collision(self)
         self.handle_Playerinput()
         self.image = self.animation.update()
         self.mask = pygame.mask.from_surface(self.image)

@@ -121,24 +121,25 @@ class Game:
         self.screen = pygame.display.set_mode((WIDTH, HEIGHT), pygame.SCALED)
         self.assets = Flyweight(self)
         self.sprites = CharacterSpriteManager(self.assets)
-        self.character_sprites = self.sprites.handle_spritesheetDictTransformation(
-            self.sprites.get_spritesheets("characters/finn/"),
-            200,
-            200,
-            0.32,
-        )
-        self.character = Character(self.character_sprites, 0.75, -0.12)
-        self.clock = pygame.time.Clock()
-
-        # print(tracemalloc.get_traced_memory())
+        self.state = PlayState()
 
         self.levels = [
             self.assets.get("Tilemap", "Test-Level"),
             self.assets.get("Tilemap", "Test-Level2"),
         ]
         self.current_level = 0
+        
+        self.character_sprites = self.sprites.handle_spritesheetDictTransformation(
+            self.sprites.get_spritesheets("characters/finn/"),
+            200,
+            200,
+            0.32,
+        )
+        self.character = Character(self, self.character_sprites, 0.75, -0.12)
+        self.clock = pygame.time.Clock()
+
         # print(tracemalloc.get_traced_memory())
-        self.state = PlayState()
+        # print(tracemalloc.get_traced_memory())
 
     def changeState(self, newState):
         self.state = newState
