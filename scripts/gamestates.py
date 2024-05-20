@@ -93,7 +93,7 @@ class PlayState(GameState):
         for layer in game.levels[game.current_level].get_layers().values():
             layer["group"].draw(game.screen)
 
-        print(tracemalloc.get_traced_memory())
+        # print(tracemalloc.get_traced_memory())
         game.screen.blit(game.character.image, game.character.rect)
 
 
@@ -131,14 +131,14 @@ class Game:
         self.character = Character(self.character_sprites, 0.75, -0.12)
         self.clock = pygame.time.Clock()
 
-        print(tracemalloc.get_traced_memory())
+        # print(tracemalloc.get_traced_memory())
 
         self.levels = [
             self.assets.get("Level", "Test-Level"),
             self.assets.get("Level", "Test-Level2"),
         ]
         self.current_level = 1
-        print(tracemalloc.get_traced_memory())
+        # print(tracemalloc.get_traced_memory())
         self.state = PlayState()
 
     def changeState(self, newState):

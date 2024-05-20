@@ -2,7 +2,7 @@ from typing import TYPE_CHECKING
 if TYPE_CHECKING:
     from scripts.character import Character
 from scripts.characterState import RunningLeft, RunningRight
-from scripts.characterMovement import CharacterRun, CharacterJump
+from scripts.characterMovement import HorizontalMovement, VerticalMovement
 
 
 class PlayerCommand():
@@ -18,21 +18,25 @@ class PlayerCommand():
 
 class RunLeft(PlayerCommand):
     def execute(self, character: 'Character'):
-        character.state.changeState(RunningLeft)
-        CharacterRun().execute(character, True)
-
+        character.state.changeState(character, RunningLeft)
+        HorizontalMovement().execute(character, True)
 
 class RunRight(PlayerCommand):
     def execute(self, character: 'Character'):
         character.state.changeState(RunningRight)
-        CharacterRun().execute(character, False)
+        HorizontalMovement().execute(character, False)
 
+class Jump(PlayerCommand):
+    def execute(self, character: 'Character'):
+        character.state.changeState(Jump)
+        VerticalMovement().execute(character, True)
+        
+class Attack(PlayerCommand):
+    def execute(self, character: 'Character'):
+        pass
 
-# class Jump(PlayerCommand):
-#     def execute(self, character: 'Character'):
-#         CharacterJump().execute(character, True)
-#         character.animation.get_image(character.sprites["jump"])
+class Dash(PlayerCommand):
+    pass
 
-# class Attack(PlayerCommand):
-#     def execute(self, character: 'Character'):
-#         pass
+class Duck(PlayerCommand):
+    pass
