@@ -34,7 +34,7 @@ class CharacterSpriteManager:
             surface.blit(spritesheet, (0, 0), rect)
             # mask = pygame.mask.from_surface(surface)
             # non_transparent_rect = mask.get_bounding_rects()
-            surface = surface.subsurface(surface.get_bounding_rect(min_alpha=3)).copy()
+            surface = surface.subsurface(surface.get_bounding_rect(min_alpha=1)).copy()
             # rect = surface.get_rect(topleft=(rect.x + non_transparent_rect.x, rect.y + non_transparent_rect.y))
 
             sprite = self.assetmanager.get(
