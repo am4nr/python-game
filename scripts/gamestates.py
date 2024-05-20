@@ -56,20 +56,19 @@ class PlayState(GameState):
     def exitState(self, game):
         pass
 
-    def event(self, game):
-        for event in pygame.event.get():
-            if event.type == pygame.KEYDOWN:
-                keys = pygame.key.get_pressed()
-                if keys[pygame.K_1]:
-                    if game.current_level == 0:
-                        game.current_level = len(game.levels) - 1
-                    else:
-                        game.current_level = game.current_level - 1
-                if keys[pygame.K_2]:
-                    if game.current_level == len(game.levels) - 1:
-                        game.current_level = 0
-                    else:
-                        game.current_level = game.current_level + 1
+    def event(self, game, event):
+        if event.type == pygame.KEYDOWN:
+            keys = pygame.key.get_pressed()
+            if keys[pygame.K_1]:
+                if game.current_level == 0:
+                    game.current_level = len(game.levels) - 1
+                else:
+                    game.current_level = game.current_level - 1
+            if keys[pygame.K_2]:
+                if game.current_level == len(game.levels) - 1:
+                    game.current_level = 0
+                else:
+                    game.current_level = game.current_level + 1
 
     def update(self, game):
         game.character.update()
@@ -93,8 +92,8 @@ class PlayState(GameState):
         for layer in game.levels[game.current_level].get_layers().values():
             layer["group"].draw(game.screen)
 
-        print(tracemalloc.get_traced_memory())
-        game.screen.blit(game.character.image, game.character.rect)
+        #print(tracemalloc.get_traced_memory())
+        #game.screen.blit(game.character.image.rect, game.character.rect)
 
 
 class GameOver(GameState):
@@ -134,10 +133,10 @@ class Game:
         print(tracemalloc.get_traced_memory())
 
         self.levels = [
-            self.assets.get("Level", "Test-Level"),
-            self.assets.get("Level", "Test-Level2"),
+            self.assets.get("Tilemap", "Test-Level"),
+            #self.assets.get("Level", "Test-Level2"),
         ]
-        self.current_level = 1
+        self.current_level = 0
         print(tracemalloc.get_traced_memory())
         self.state = PlayState()
 
@@ -150,7 +149,7 @@ class Game:
                 pygame.quit()
                 tracemalloc.stop()
                 sys.exit()
-        self.state.event(self)
+            self.state.event(self, event)
 
     def update(self):
         self.state.update(self)

@@ -16,7 +16,7 @@ class Character():
         self.sprites = sprites
         self.image = self.sprites["idle"][0]
         self.animation = Animation(self.sprites["idle"])
-        self.rect = self.image.get_rect()
+        self.rect = self.image.image.get_rect()
         self.state = Context(self)
         # self.jump_count = 10
 

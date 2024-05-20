@@ -11,6 +11,7 @@ class Context:
         self.currentState.interface()
     def changeState(self, newState):
         if (self.currentState != newState): 
+            self.currentState.exitState(self)
             self.currentState = newState
             self.currentState.enter(self)
             # self.currentState.exit()
@@ -24,6 +25,9 @@ class Idle(Context):
 
     def enter(self):
         self.character.animation.reset(self.character.sprites["idle"])
+    
+    def exitState(self):
+        pass
 
 
 class RunningRight(Context):
@@ -33,7 +37,9 @@ class RunningRight(Context):
     def enter(self):
         # CharacterRun().accelerate(0,self.character, False)
         self.character.animation.reset(self.character.sprites["run"])
-
+        
+    def exitState(self):
+        self.character.animation.reset(self.character.sprites["idle"])
     # def update(self):
     #     CharacterRun().execute(self.character, False)
 
@@ -46,9 +52,11 @@ class RunningLeft(Context):
         # CharacterRun().execute(self.character, True)
         flippedSprites = []
         for sprite in self.character.sprites["run"]:
-           flippedSprites.append(pygame.transform.flip(sprite, True, False))
+           flippedSprites.append(pygame.transform.flip(sprite.rect, True, False))
         self.character.animation.reset(flippedSprites)
 
+    def exitState(self):
+        self.character.animation.reset(self.character.sprites["idle"])
 
 # class Jumping(CharacterContext):
 #     def enter(self, character, mirror):

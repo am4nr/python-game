@@ -1,18 +1,17 @@
-# flyweight.py
 import pygame
 import os
 import sys
 from scripts.tiles import Tilemap, Tileset, Level
-
+vec = pygame.math.Vector2
 scripts_folders = os.path.dirname(__file__)
 game_folder = os.path.join(scripts_folders, os.pardir)
 assets_folder = os.path.join(game_folder, "assets")
 
-
+# diese funktion sucht in dem Module nach Klassen mit x namen damit diese später dynamisch erstellt werden
 def str_to_class(classname):
     return getattr(sys.modules[__name__], classname)
 
-
+# flyweight als singleton damit es nur eine Instanz vom "assetmanager" gibt
 class Flyweight:
     __instance = None
     collections = {}
@@ -27,7 +26,12 @@ class Flyweight:
 
     def __repr__(self):
         return "\n".join("{}\t{}".format(k, v) for k, v in self.collections.items())
-#assets.get("Sprite", <rect>)
+
+    # Flyweight.get prüft ob es in den collections schon die Art von Assets gibt, wenn nicht
+    # wird eine neue collection dafür erstellt, wenn es diese collection schon gibt, wird geprüft,
+    # ob es das asset bereits gibt, wenn nicht wird das erstellt
+    # Image's sind ein special case der manuell geprüft wird sonst wird einfach die allgemeine
+    # Asset Klasse benutzt um zu prüfen ob das asset erstellt oder instanziert werden muss
     def get(self, asset_type, asset, **kwargs):
         if asset_type not in self.collections:
             self.collections[asset_type] = {}
@@ -41,16 +45,13 @@ class Flyweight:
             ).convert_alpha()
             return self.collections[asset_type][asset]
 
-        if asset_type == "Sprite":
-            sprite_image = self.get("Image", asset)
-            return Sprite(self.game, sprite_image)
-
         self.collections[asset_type][asset] = Asset(
             self.game, asset_type, asset, **kwargs
         )
         return self.collections[asset_type][asset]
 
-
+# Konstruktor und Initiator sind getrennt, Konstruktor setzt intrinsische values, Initiator 
+# setzt extrinsische Werte und funktioniert dadurch als Factory (?)
 class Asset:
     def __new__(cls, game, asset_type, asset, **kwargs):
         if Flyweight.collections.get(asset_type) is None:
@@ -65,15 +66,21 @@ class Asset:
         return self
 
 
-# Sprite Factory
+# Muss noch überarbeitet werden, damit der Charakter diese auch richtig benutzen kann
 class Sprite(pygame.sprite.Sprite):
     def __new__(cls, game, image, **kwargs):
         self = object.__new__(Sprite)
-        self.image = image
-        self.rect = self.image.get_rect()
+        if isinstance(image, pygame.surface.Surface):
+            self.image = image
+        else:
+            self.image = image
+            self.rect = self.image.get_rect()
         return self
 
     def __init__(self, game, image, **kwargs):
-        # super().__init__()
-        self.image = image
-        self.rect = self.image.get_rect()
+        pygame.sprite.Sprite.__init__(self)
+        if isinstance(image, pygame.surface.Surface):
+            self.image = image
+        else:
+            self.image = image
+            self.rect = self.image.get_rect()
