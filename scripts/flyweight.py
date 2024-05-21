@@ -2,12 +2,13 @@ import pygame
 import os
 import sys
 from scripts.tiles import Tilemap, Tileset, Level
+
 vec = pygame.math.Vector2
 scripts_folders = os.path.dirname(__file__)
 game_folder = os.path.join(scripts_folders, os.pardir)
 assets_folder = os.path.join(game_folder, "assets")
 
-# diese funktion sucht in dem Module nach Klassen mit x namen damit diese später dynamisch erstellt werden
+# diese function sucht in dem Module nach Klassen mit x name damit diese später dynamisch erstellt werden
 def str_to_class(classname):
     return getattr(sys.modules[__name__], classname)
 
@@ -18,11 +19,9 @@ class Flyweight:
 
     def __new__(cls, game):
         if cls.__instance is None:
-            cls.__instance = object.__new__(cls)
+            cls.__instance = super(Flyweight, cls).__new__(cls)
+            cls.__instance.__game = game
         return cls.__instance
-
-    def __init__(self, game):
-        self.game = game
 
     def __repr__(self):
         return "\n".join("{}\t{}".format(k, v) for k, v in self.collections.items())
@@ -40,20 +39,18 @@ class Flyweight:
             return self.collections[asset_type][asset]
 
         if asset_type == "Image":
-            self.collections[asset_type][asset] = pygame.image.load(
-                os.path.join(assets_folder, *asset.replace("..", "").split("/"))
-            ).convert_alpha()
-            return self.collections[asset_type][asset]
+            asset_obj = pygame.image.load(os.path.join(assets_folder, *asset.replace("..", "").split("/"))).convert_alpha()
+        else:
+            asset_class = str_to_class(asset_type)
+            asset_obj = asset_class(self.__game, asset, **kwargs)
 
-        self.collections[asset_type][asset] = Asset(
-            self.game, asset_type, asset, **kwargs
-        )
-        return self.collections[asset_type][asset]
+        self.collections[asset_type][asset] = asset_obj
+        return asset_obj
 
 # Konstruktor und Initiator sind getrennt, Konstruktor setzt intrinsische values, Initiator 
 # setzt extrinsische Werte und funktioniert dadurch als Factory (?)
 class Asset:
-    def __new__(cls, game, asset_type, asset, **kwargs):
+    """ def __new__(cls, game, asset_type, asset, **kwargs):
         if Flyweight.collections.get(asset_type) is None:
             Flyweight.collections[asset_type] = {}
         self = Flyweight.collections.get(asset_type).get(asset)
@@ -63,24 +60,22 @@ class Asset:
             self = asset_class.__new__(asset_class, game, asset)
 
         self.__init__(game, asset, **kwargs)
-        return self
+        return self """
+    def __init__(self,game,asset, **kwargs):
+        self.game = game
+        self.asset = asset
+        self.kwargs = kwargs
 
 
 # Muss noch überarbeitet werden, damit der Charakter diese auch richtig benutzen kann
 class Sprite(pygame.sprite.Sprite):
-    def __new__(cls, game, image, **kwargs):
-        self = object.__new__(Sprite)
-        if isinstance(image, pygame.surface.Surface):
-            self.image = image
-        else:
-            self.image = image
-            self.rect = self.image.get_rect()
-        return self
-
     def __init__(self, game, image, **kwargs):
-        pygame.sprite.Sprite.__init__(self)
+        super().__init__()
+        
         if isinstance(image, pygame.surface.Surface):
             self.image = image
         else:
-            self.image = image
-            self.rect = self.image.get_rect()
+            self.image = game.assets.get("Image",image)
+        
+        self.rect = self.image.get_rect()
+        self.kwargs = kwargs

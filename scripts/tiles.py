@@ -36,7 +36,7 @@ class Tileset:
 
     # Tileset wird in Tiles (Sprites) gesplittet
     def load_tiles(self):
-        for tile in range(self.tile_count):
+        """ for tile in range(self.tile_count):
             row = math.floor(tile / self.columns)
             col = math.floor(tile - row * self.columns)
             surf = pygame.Surface(
@@ -53,7 +53,24 @@ class Tileset:
                 ),
             )
             # self.game.assets.get("Sprite",surf)
-            self.tiles.append(self.game.assets.get("Sprite", surf))
+            self.tiles.append(self.game.assets.get("Sprite", surf)) """
+        for tile in range(self.tile_count):
+            row = math.floor(tile / self.columns)
+            col = math.floor(tile - row * self.columns)
+            surf = pygame.Surface(
+                (self.tile_width, self.tile_height), pygame.SRCALPHA
+            ).convert_alpha()
+            surf.blit(
+                self.image,
+                (0, 0),
+                (
+                    (col * self.tile_width),
+                    (row * self.tile_height),
+                    self.tile_width,
+                    self.tile_height,
+                ),
+            )
+            self.tiles.append(surf)
 
     def get_tiles(self):
         return self.tiles
@@ -110,13 +127,8 @@ class Tilemap:
     def load_tilesets(self):
         for tileset in self.tilesets:
             tileset_obj = self.game.assets.get("Tileset", tileset["name"])
-            # print(self.tilesets)
             for index, tile in enumerate(tileset_obj.get_tiles()):
                 firstgid = tileset["firstgid"]
-                # print(f"{tileset['name']}")
-                # print(f"firstgid: {tileset['firstgid']}")
-                # print(f"index: {index}")
-                # print(tile)
                 self.tiles[firstgid + index] = tile
             # self.tilesset[tileset["name"]] = {"firstgid":tileset["firstgid"], "tileset": tileset_obj}
             # self.tiles.append((tileset["firstgid"], tileset_obj))
@@ -128,15 +140,13 @@ class Tilemap:
 
         # print(layers)
         for layer in layers:
-            # print(layer)
             layername = layer["name"]
-            # print(layername)
             self.layers[layername] = {
                 "group": pygame.sprite.Group(),
                 "data": layer.get("data", []),
             }
             for index, tile_id in enumerate(layer["data"]):
-                if tile_id != 0:
+                """ if tile_id != 0:
                     tileabs = self.get_tile(tile_id)
                     col = index % width
                     row = index // width
@@ -145,8 +155,20 @@ class Tilemap:
                         self.tile_width,
                         self.tile_width)
                     # tile = self.game.assets.get("Sprite",tileabs,col * self.tile_width, row * self.tile_height,)
-                    self.layers[layername]["group"].add(tileabs)
-
+                    self.layers[layername]["group"].add(tileabs) """
+                    
+                if tile_id != 0:
+                    col = index % width
+                    row = index // width
+                    tile_image = self.get_tile(tile_id)
+                    tile_sprite = self.game.assets.get("Sprite", tile_image)
+                    tile_sprite.rect = pygame.rect.Rect(
+                        col * self.tile_width,
+                        row * self.tile_height,
+                        self.tile_width,
+                        self.tile_height,
+                    )
+                    self.layers[layername]["group"].add(tile_sprite)
         # print(self.layers)
 
     def get_tile(self, tile_id):
