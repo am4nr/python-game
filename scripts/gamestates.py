@@ -111,12 +111,12 @@ class MainMenuState(GameState):
             MENU_TEXT = self.get_font(100).render("MAIN MENU", True, "#b68f40")
             MENU_RECT = MENU_TEXT.get_rect(center=(320, 50))
 
-            PLAY_BUTTON = Button(image=pygame.image.load("assets/XXXXXXXXXX"), pos=(320, 125), 
+            PLAY_BUTTON = Button(game.assets.get("Image","assets/objects/buttons/play_button.png"), pos=(320, 125), 
                                 text_input="PLAY", font=self.get_font(75), base_color="#d7fcd4", hovering_color="White")
             #bitte game.assets.get("Image","assets/XXXXXXXX") benutzen
-            OPTIONS_BUTTON = Button(image=pygame.image.load("assets/XXXXXXXXXX"), pos=(320, 200), 
+            OPTIONS_BUTTON = Button(game.assets.get("Image","assets/objects/buttons/play_button.png"), pos=(320, 200), 
                                 text_input="OPTIONS", font=self.get_font(75), base_color="#d7fcd4", hovering_color="White")
-            QUIT_BUTTON = Button(image=pygame.image.load("assets/XXXXXXXXXX"), pos=(320, 275), 
+            QUIT_BUTTON = Button(game.assets.get("Image","assets/objects/buttons/cancel_button.png"), pos=(320, 275), 
                                 text_input="QUIT", font=self.get_font(75), base_color="#d7fcd4", hovering_color="White")
 
             game.screen.blit(MENU_TEXT, MENU_RECT)
