@@ -37,16 +37,8 @@ class MainMenuState(GameState):
     def enterState(self, game):
 
 
+# für jeden screen ein gamestate (also jede szene, zb play, options, und für quit brauchen wir kein extra state)
 
-
-    # den Abschnitt hier noch bearbeiten (bis siehe unteren Kommentar)
-
-    # import pygame, sys
-    # from button import Button
-
-    # pygame.init()
-        #SCREEN = pygame.display.set_mode((800, 640))
-        #pygame.display.set_caption("Menu")
 
         BG = pygame.image.load("assets/background/BG.png")
 
@@ -55,12 +47,12 @@ class MainMenuState(GameState):
         return pygame.font.Font("assets/font.ttf", size)
 
     def play(self,game):
-        #while True:
+        
         
             PLAY_MOUSE_POS = pygame.mouse.get_pos()
             
-            # render SCREEN = game.screen
-            SCREEN.fill("black")
+            # render 
+            game.screen.fill("black")
 
             PLAY_TEXT = self.get_font(45).render("This is the PLAY screen.", True, "White")
             PLAY_RECT = PLAY_TEXT.get_rect(center=(320, 130))
@@ -70,32 +62,32 @@ class MainMenuState(GameState):
                                 text_input="BACK", font=self.get_font(75), base_color="White", hovering_color="Green")
 
             PLAY_BACK.changeColor(PLAY_MOUSE_POS)
-            PLAY_BACK.update(SCREEN)
+            PLAY_BACK.update(game.screen)
 
             #event
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if PLAY_BACK.checkForInput(PLAY_MOUSE_POS):
                     self.main_menu()
 
-            #pygame.display.update() | passiert automatisch in game class
+          
         
     def options(self,game):
         #while True:
         
             OPTIONS_MOUSE_POS = pygame.mouse.get_pos()
             
-            #render SCREEN = game.screen
-            SCREEN.fill("white")
+            #render game.screen = game.screen
+            game.screen.fill("white")
 
             OPTIONS_TEXT = get_font(45).render("This is the OPTIONS screen.", True, "Black")
             OPTIONS_RECT = OPTIONS_TEXT.get_rect(center=(320, 130))
-            SCREEN.blit(OPTIONS_TEXT, OPTIONS_RECT)
+            game.screen.blit(OPTIONS_TEXT, OPTIONS_RECT)
 
             OPTIONS_BACK = Button(image=None, pos=(320, 230), 
                                 text_input="BACK", font=get_font(75), base_color="Black", hovering_color="Green")
 
             OPTIONS_BACK.changeColor(OPTIONS_MOUSE_POS)
-            OPTIONS_BACK.update(SCREEN)
+            OPTIONS_BACK.update(game.screen)
 
             """ for event in pygame.event.get(): | passiert automatisch in game class
                 if event.type == pygame.QUIT:
@@ -131,7 +123,7 @@ class MainMenuState(GameState):
 
             for button in [PLAY_BUTTON, OPTIONS_BUTTON, QUIT_BUTTON]:
                 button.changeColor(MENU_MOUSE_POS)
-                button.update(SCREEN)
+                button.update(game.screen)
             
             #for event in pygame.event.get(): | passiert automatisch in game class
                 """ if event.type == pygame.QUIT:
@@ -158,17 +150,6 @@ class MainMenuState(GameState):
 # bis hier den Abschnitt bearbeiten
 
 
-
-
-
-
-
-
-
-
-
-
-
     def exitState(self, game):
         pass
 
@@ -183,7 +164,21 @@ class MainMenuState(GameState):
 
 
 
+class OptionsState(GameState):
+    def enterState(self):
+        pass 
+        
+    def exitState(self):
+        pass
 
+    def event(self):
+        pass
+
+    def update(self):
+        pass
+
+    def render(self):
+        pass
 
 
 
