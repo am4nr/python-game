@@ -44,7 +44,7 @@ class MainMenuState(GameState):
 
     def get_font(self, size): # Returns Press-Start-2P in the desired size
         #font fehlt in asset ordner
-        return pygame.font.Font("assets/font.ttf", size)
+        return pygame.font.Font("assets/font/Pacifico.ttf", size)
 
     def play(self,game):
         
@@ -59,9 +59,8 @@ class MainMenuState(GameState):
             
 
 
-
     def main_menu(self,game):
-                    
+        pass             
             
 
 
