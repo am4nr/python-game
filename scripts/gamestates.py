@@ -8,7 +8,7 @@ from scripts.characterSpriteManager import CharacterSpriteManager
 from scripts.tiles import Tileset, Tilemap, Level
 import math
 import tracemalloc
-from button import Button
+from scripts.button import Button
 
 
 class GameState(metaclass=ABCMeta):
