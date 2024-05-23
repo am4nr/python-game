@@ -130,7 +130,7 @@ class Game:
         self.current_level = 0
         
         self.character_sprites = self.sprites.handle_spritesheetDictTransformation(
-            self.sprites.get_spritesheets("characters/finn/"),
+            self.sprites.get_spritesheets("characters", "finn"),
             200,
             200,
             0.32,
