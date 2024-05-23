@@ -90,7 +90,7 @@ class PlayState(GameState):
                 (line * TILE_SIZE, HEIGHT),
             )
         for layer in game.levels[game.current_level].get_layers().values():
-            print(f"rendered layer: {layer}")
+            #print(f"rendered layer: {layer}")
             layer["group"].draw(game.screen)
 
         print(tracemalloc.get_traced_memory())
