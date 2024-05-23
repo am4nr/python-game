@@ -24,12 +24,12 @@ class RunLeft(PlayerCommand):
 class RunRight(PlayerCommand):
     def execute(self, character: 'Character'):
         character.state.changeState(RunningRight)
-        HorizontalMovement().execute(character, False)
+        HorizontalMovement().execute(character)
 
 class Jump(PlayerCommand):
     def execute(self, character: 'Character'):
         character.state.changeState(Jumping)
-        VerticalMovement().execute(character, True)
+        VerticalMovement().execute(character)
         
 class Attack(PlayerCommand):
     def execute(self, character: 'Character'):

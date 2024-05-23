@@ -10,23 +10,23 @@ class Movement:
             cls.__instance = object.__new__(cls)
         return cls.__instance
 
-    def accelerate(self, axis, character: 'Character', mirror):
+    def accelerate(self, axis, character: 'Character'):
         character.acc[axis]= 0
 
-        if mirror:
+        if character.dircetion == "left":
             character.acc[axis] = -character.speed
-        else:
+        elif character.dircetion == "right":
             character.acc[axis] = character.speed
         
         if character.acc[axis] != 0:
             character.acc[axis] *= 0.7071
 
-    def execute(self, character: 'Character', mirror):
+    def execute(self, character: 'Character'):
         raise NotImplementedError
         
 class HorizontalMovement(Movement):
-    def execute(self, character: 'Character', mirror):
-        self.accelerate(0, character, mirror)
+    def execute(self, character: 'Character'):
+        self.accelerate(0, character)
         character.acc.x += character.vel.x * character.friction
         character.vel.x += character.acc.x
         character.pos.x += character.vel.x + 0.5 * character.acc.x
@@ -34,8 +34,8 @@ class HorizontalMovement(Movement):
 
 
 class VerticalMovement(Movement):
-    def execute(self, character: 'Character', mirror):
-        self.accelerate(1, character, mirror)
+    def execute(self, character: 'Character'):
+        self.accelerate(1, character)
         character.acc.y += character.vel.y * character.friction
         character.vel.y += character.acc.y
         character.pos.y += character.vel.y + 0.5 * character.acc.y

@@ -191,9 +191,10 @@ class PlayState(GameState):
                 (line * TILE_SIZE, HEIGHT),
             )
         for layer in game.levels[game.current_level].get_layers().values():
+            print(f"rendered layer: {layer}")
             layer["group"].draw(game.screen)
 
-        # print(tracemalloc.get_traced_memory())
+        print(tracemalloc.get_traced_memory())
         game.screen.blit(game.character.image, game.character.rect)
 
 class GameOver(GameState):
@@ -222,22 +223,25 @@ class Game:
         self.screen = pygame.display.set_mode((WIDTH, HEIGHT), pygame.SCALED)
         self.assets = Flyweight(self)
         self.sprites = CharacterSpriteManager(self.assets)
-        self.character_sprites = self.sprites.handle_spritesheetDictTransformation(
-            self.sprites.get_spritesheets("characters", "finn"),
-            200,
-            200,
-            0.32,
-        )
-        self.character = Character(self.character_sprites, 0.75, -0.12)
-        self.clock = pygame.time.Clock()
-
-        # print(tracemalloc.get_traced_memory())
+        self.state = PlayState()
 
         self.levels = [
             self.assets.get("Tilemap", "Test-Level"),
             self.assets.get("Tilemap", "Test-Level2"),
         ]
         self.current_level = 0
+        
+        self.character_sprites = self.sprites.handle_spritesheetDictTransformation(
+            self.sprites.get_spritesheets("characters", "finn"),
+            self.sprites.get_spritesheets("characters", "finn"),
+            200,
+            200,
+            0.32,
+        )
+        self.character = Character(self, self.character_sprites, 0.75, -0.12)
+        self.clock = pygame.time.Clock()
+
+        # print(tracemalloc.get_traced_memory())
         # print(tracemalloc.get_traced_memory())
         self.state = None
         self.changeState(MainMenuState())
