@@ -191,7 +191,7 @@ class PlayState(GameState):
                 (line * TILE_SIZE, HEIGHT),
             )
         for layer in game.levels[game.current_level].get_layers().values():
-            print(f"rendered layer: {layer}")
+            #print(f"rendered layer: {layer}")
             layer["group"].draw(game.screen)
 
         print(tracemalloc.get_traced_memory())
@@ -232,7 +232,6 @@ class Game:
         self.current_level = 0
         
         self.character_sprites = self.sprites.handle_spritesheetDictTransformation(
-            self.sprites.get_spritesheets("characters", "finn"),
             self.sprites.get_spritesheets("characters", "finn"),
             200,
             200,

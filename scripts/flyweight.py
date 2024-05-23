@@ -39,10 +39,18 @@ class Flyweight:
             return self.collections[asset_type][asset]
 
         if asset_type == "Image":
-            self.collections[asset_type][asset] = pygame.image.load(
+            asset_obj = pygame.image.load(os.path.join(assets_folder, *asset.replace("..", "").split("/"))).convert_alpha()
+        else:
+            asset_class = str_to_class(asset_type)
+            asset_obj = asset_class(self.__game, asset, **kwargs)
+
+        self.collections[asset_type][asset] = asset_obj
+        return asset_obj
+    
+        self.collections[asset_type][asset] = pygame.image.load(
                 os.path.join(assets_folder, *asset.replace("..", "").replace("\\","/").split("/"))
             ).convert_alpha()
-            return self.collections[asset_type][asset]
+        return self.collections[asset_type][asset]
 
         self.collections[asset_type][asset] = Asset(
             self.game, asset_type, asset, **kwargs
