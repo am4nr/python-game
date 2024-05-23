@@ -244,7 +244,7 @@ class Game:
         self.assets = Flyweight(self)
         self.sprites = CharacterSpriteManager(self.assets)
         self.character_sprites = self.sprites.handle_spritesheetDictTransformation(
-            self.sprites.get_spritesheets("characters/finn/"),
+            self.sprites.get_spritesheets("characters", "finn"),
             200,
             200,
             0.32,
