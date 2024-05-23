@@ -4,7 +4,7 @@ import sys
 from scripts.tiles import Tilemap, Tileset, Level
 vec = pygame.math.Vector2
 scripts_folders = os.path.dirname(__file__)
-game_folder = os.path.join(scripts_folders, os.pardir)
+game_folder = os.getcwd()
 assets_folder = os.path.join(game_folder, "assets")
 
 # diese funktion sucht in dem Module nach Klassen mit x namen damit diese später dynamisch erstellt werden
@@ -41,7 +41,7 @@ class Flyweight:
 
         if asset_type == "Image":
             self.collections[asset_type][asset] = pygame.image.load(
-                os.path.join(assets_folder, *asset.replace("..", "").split("/"))
+                os.path.join(assets_folder, *asset.replace("..", "").replace("\\","/").split("/"))
             ).convert_alpha()
             return self.collections[asset_type][asset]
 

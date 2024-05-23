@@ -243,7 +243,7 @@ class Game:
         self.changeState(MainMenuState())
 
     def changeState(self, newState):
-        self.state.exitState(self)
+    #    self.state.exitState(self)
         self.state = newState
         self.state.enterState(self)
 
