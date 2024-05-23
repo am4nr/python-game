@@ -47,56 +47,42 @@ class MainMenuState(GameState):
         return pygame.font.Font("assets/font/Pacifico.ttf", size)
 
     def play(self,game):
-        
-        
-            PLAY_MOUSE_POS = pygame.mouse.get_pos()
-            
-          
+         pass
         
     def options(self,game):
-        
-            OPTIONS_MOUSE_POS = pygame.mouse.get_pos()
+        pass
             
-
-
     def main_menu(self,game):
         pass             
-            
-
 
     def exitState(self, game):
         pass
 
-
-
     def event(self, game, event):
         if event.type == pygame.MOUSEBUTTONDOWN:
-            if PLAY_BACK.checkForInput(PLAY_MOUSE_POS):
+            if PLAY_BACK.checkForInput(game.mousepos):
                 self.main_menu()
         
          #event
         if event.type == pygame.MOUSEBUTTONDOWN:
-            if OPTIONS_BACK.checkForInput(OPTIONS_MOUSE_POS):
+            if OPTIONS_BACK.checkForInput(game.mousepos):
                     main_menu()
 
     # der part kommt in die event methode (mainmenu.event())
-        if game.event.type == pygame.MOUSEBUTTONDOWN:
-            if PLAY_BUTTON.checkForInput(MENU_MOUSE_POS):
+        if event.type == pygame.MOUSEBUTTONDOWN:
+            if PLAY_BUTTON.checkForInput(game.mousepos):
                 play()
-            if OPTIONS_BUTTON.checkForInput(MENU_MOUSE_POS):
+            if OPTIONS_BUTTON.checkForInput(game.mousepos):
                 options()
-            if QUIT_BUTTON.checkForInput(MENU_MOUSE_POS):
+            if QUIT_BUTTON.checkForInput(game.mousepos):
                 pygame.quit()
                 sys.exit()
-
 
     def update(self, game):
         pass
 
-
     def render(self, game):
         game.screen.fill((255, 255, 255))
-
 
         PLAY_TEXT = self.get_font(45).render("This is the PLAY screen.", True, "White")
         PLAY_RECT = PLAY_TEXT.get_rect(center=(320, 130))
@@ -104,8 +90,8 @@ class MainMenuState(GameState):
 
         PLAY_BACK = Button(image=None, pos=(320, 230), 
                                 text_input="BACK", font=self.get_font(75), base_color="White", hovering_color="Green")
-
-        PLAY_BACK.changeColor(PLAY_MOUSE_POS)
+        
+        PLAY_BACK.changeColor(game.mousepos)
         PLAY_BACK.update(game.screen)
 
 #render game.screen = game.screen
@@ -118,13 +104,11 @@ class MainMenuState(GameState):
         OPTIONS_BACK = Button(image=None, pos=(320, 230), 
                             text_input="BACK", font=get_font(75), base_color="Black", hovering_color="Green")
 
-        OPTIONS_BACK.changeColor(OPTIONS_MOUSE_POS)
+        OPTIONS_BACK.changeColor(game.mousepos)
         OPTIONS_BACK.update(game.screen)
 
  #der part kommt in die render methode (mainmenu.render())
         game.screen.blit(BG, (0, 0))
-
-        MENU_MOUSE_POS = pygame.mouse.get_pos()
 
         MENU_TEXT = self.get_font(100).render("MAIN MENU", True, "#b68f40")
         MENU_RECT = MENU_TEXT.get_rect(center=(320, 50))
@@ -139,7 +123,7 @@ class MainMenuState(GameState):
         game.screen.blit(MENU_TEXT, MENU_RECT)
 
         for button in [PLAY_BUTTON, OPTIONS_BUTTON, QUIT_BUTTON]:
-            button.changeColor(MENU_MOUSE_POS)
+            button.changeColor(game.mousepos)
             button.update(game.screen)        
 
 
@@ -158,17 +142,6 @@ class OptionsState(GameState):
 
     def render(self):
         pass
-
-
-
-
-
-
-
-
-
-
-
 
 
 class PlayState(GameState):
@@ -217,7 +190,6 @@ class PlayState(GameState):
         # print(tracemalloc.get_traced_memory())
         game.screen.blit(game.character.image, game.character.rect)
 
-
 class GameOver(GameState):
     def enterState(self):
         pass
@@ -237,6 +209,7 @@ class GameOver(GameState):
 
 class Game:
     def __init__(self):
+        self.mousepos
         tracemalloc.start()
         pygame.init()
         pygame.display.set_caption(TITLE)
@@ -274,8 +247,10 @@ class Game:
             self.state.event(self, event)
 
     def update(self):
+        self.mousepos=pygame.mouse.get_pos()  
         self.state.update(self)
         self.clock.tick(FPS)
+
 
     def render(self):
         self.state.render(self)
