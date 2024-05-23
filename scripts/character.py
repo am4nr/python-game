@@ -28,6 +28,7 @@ class Character(pygame.sprite.Sprite):
         self.jumps = 2
         self.animation.get_images(self.sprites["idle"], False)
         self.collision = Collision(self.game)
+        self.dircetion = "right"
 
     def update(self):
         self.gravity()
@@ -41,7 +42,7 @@ class Character(pygame.sprite.Sprite):
 
         if not self.collision.handle_vertical_collision(self):
             self.vel.y = GRAVITY
-            VerticalMovement().execute(self, False)
+            VerticalMovement().execute(self)
         #temporary handle screen boundaries
         # if self.rect.bottom > HEIGHT:
         #     self.rect.bottom = HEIGHT

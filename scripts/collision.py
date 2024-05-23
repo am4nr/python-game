@@ -25,6 +25,9 @@ class Collision:
                     character.vel.y = 0
                     character.acc.y = 0
                     character.jumps = 2
+                    self.character.animation.get_images(
+                        self.character.sprites["run"], True
+                    )
                 elif character.vel.y < 0:
                     character.rect.top = collided_sprite.rect.bottom
                     character.vel.y = 1
