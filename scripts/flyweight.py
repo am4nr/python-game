@@ -30,7 +30,7 @@ class Flyweight:
     # wird eine neue collection dafür erstellt, wenn es diese collection schon gibt, wird geprüft,
     # ob es das asset bereits gibt, wenn nicht wird das erstellt
     # Image's sind ein special case der manuell geprüft wird sonst wird einfach die allgemeine
-    # Asset Klasse benutzt um zu prüfen ob das asset erstellt oder instanziiert werden muss
+    # Asset Klasse benutzt um zu prüfen ob das asset erstellt oder instanziert werden muss
     def get(self, asset_type, asset, **kwargs):
         if asset_type not in self.collections:
             self.collections[asset_type] = {}
