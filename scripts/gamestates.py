@@ -39,8 +39,8 @@ class MainMenuState(GameState):
 
 # für jeden screen ein gamestate (also jede szene, zb play, options, und für quit brauchen wir kein extra state)
 
-
-        BG = pygame.image.load("assets/background/BG.png")
+    def get_bg(self, game):
+        return game.assets.get("Image", "background/BG.png")
 
     def get_font(self, size): # Returns Press-Start-2P in the desired size
         #font fehlt in asset ordner
@@ -97,27 +97,28 @@ class MainMenuState(GameState):
 #render game.screen = game.screen
         game.screen.fill("white")
 
-        OPTIONS_TEXT = get_font(45).render("This is the OPTIONS screen.", True, "Black")
+        OPTIONS_TEXT = self.get_font(45).render("This is the OPTIONS screen.", True, "Black")
         OPTIONS_RECT = OPTIONS_TEXT.get_rect(center=(320, 130))
         game.screen.blit(OPTIONS_TEXT, OPTIONS_RECT)
 
         OPTIONS_BACK = Button(image=None, pos=(320, 230), 
-                            text_input="BACK", font=get_font(75), base_color="Black", hovering_color="Green")
+                            text_input="BACK", font=self.get_font(75), base_color="Black", hovering_color="Green")
 
         OPTIONS_BACK.changeColor(game.mousepos)
         OPTIONS_BACK.update(game.screen)
 
  #der part kommt in die render methode (mainmenu.render())
+        BG=self.get_bg(game)
         game.screen.blit(BG, (0, 0))
 
         MENU_TEXT = self.get_font(100).render("MAIN MENU", True, "#b68f40")
         MENU_RECT = MENU_TEXT.get_rect(center=(320, 50))
 
-        PLAY_BUTTON = Button(game.assets.get("Image","assets/objects/buttons/play_button.png"), pos=(320, 125), 
+        PLAY_BUTTON = Button(game.assets.get("Image","objects/buttons/play_button.png"), pos=(320, 125), 
                                 text_input="PLAY", font=self.get_font(75), base_color="#d7fcd4", hovering_color="White")
-        OPTIONS_BUTTON = Button(game.assets.get("Image","assets/objects/buttons/play_button.png"), pos=(320, 200), 
+        OPTIONS_BUTTON = Button(game.assets.get("Image","objects/buttons/play_button.png"), pos=(320, 200), 
                                 text_input="OPTIONS", font=self.get_font(75), base_color="#d7fcd4", hovering_color="White")
-        QUIT_BUTTON = Button(game.assets.get("Image","assets/objects/buttons/cancel_button.png"), pos=(320, 275), 
+        QUIT_BUTTON = Button(game.assets.get("Image","objects/buttons/cancel_button.png"), pos=(320, 275), 
                                 text_input="QUIT", font=self.get_font(75), base_color="#d7fcd4", hovering_color="White")
 
         game.screen.blit(MENU_TEXT, MENU_RECT)
@@ -209,7 +210,7 @@ class GameOver(GameState):
 
 class Game:
     def __init__(self):
-        self.mousepos
+        self.mousepos=None
         tracemalloc.start()
         pygame.init()
         pygame.display.set_caption(TITLE)
