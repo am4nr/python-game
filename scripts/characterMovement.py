@@ -34,16 +34,16 @@ class HorizontalMovement(Movement):
             self.accelerate(0, character)
             character.acc.x -= character.vel.x * character.friction
             character.vel.x -= character.acc.x
-            character.pos.x -= character.vel.x + 0.5 * character.acc.x
-            character.rect.x = character.pos.x
+            character.rect.x -= character.vel.x + 0.5 * character.acc.x
+            #character.rect.x = character.pos.x
             
         if right:
             character.direction = "right"
             self.accelerate(0, character)
             character.acc.x += character.vel.x * character.friction
             character.vel.x += character.acc.x
-            character.pos.x += character.vel.x + 0.5 * character.acc.x
-            character.rect.x = character.pos.x
+            character.rect.x += character.vel.x + 0.5 * character.acc.x
+            #character.rect.x = character.pos.x
 
 
 class VerticalMovement(Movement):
@@ -51,5 +51,5 @@ class VerticalMovement(Movement):
         self.accelerate(1, character)
         character.acc.y += character.vel.y * character.friction
         character.vel.y += character.acc.y
-        character.pos.y += character.vel.y + 0.5 * character.acc.y
-        character.rect.bottom = character.pos.y
+        character.rect.y += character.vel.y + 0.5 * character.acc.y
+        #character.rect.bottom = character.pos.y

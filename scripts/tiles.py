@@ -2,7 +2,7 @@ import os
 import json
 import pygame
 import math
-
+from scripts.utils import trim_surface
 scripts_folders = os.path.dirname(__file__)
 game_folder = os.path.join(scripts_folders, os.pardir)
 assets_folder = os.path.join(game_folder, "assets")
@@ -41,7 +41,7 @@ class Tileset:
                 self.tile_height,
             ),
         )
-        return surf
+        return trim_surface(surf)
 
 class Tilemap:
     def __init__(self, game, tilemap):
@@ -82,6 +82,7 @@ class Tilemap:
                     if tile_surf is not None:
                         col = index % self.width
                         row = index // self.width
+                        #tile_surf.fill("White")
                         tile_sprite = self.game.assets.get("Sprite", tile_surf)
                         tile_sprite.rect = pygame.rect.Rect(
                             col * self.tile_width,

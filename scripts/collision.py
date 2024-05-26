@@ -14,28 +14,30 @@ class Collision:
         self.collided = False
 
     def handle_vertical_collision(self, character: "Character"):
+        #character.on_ground = False
         collided_sprite = pygame.sprite.spritecollideany(character, self.solid_layer)
-
+        
         if collided_sprite:
-            if pygame.sprite.collide_mask(character, collided_sprite):
-                if character.vel.y > 0:
+            if pygame.sprite.collide_rect(character, collided_sprite):
+                if character.rect.bottom >= collided_sprite.rect.top:
                     # character.rect.bottom = collided_sprite.rect.top
-                    character.pos.y = collided_sprite.rect.top
+                    character.rect.bottom = collided_sprite.rect.top
                     # character.rect.bottom = character.pos.y
                     character.vel.y = 0
                     character.acc.y = 0
                     character.jumps = 2
                     
-                    """ self.character.animation.get_images(
-                        self.character.sprites["run"], True
-                    ) """
+                    #self.character.animation.get_images(self.character.sprites["run"], True)
+                    print("collision1")
+                    character.on_ground = True
                     
-                elif character.vel.y < 0:
+                elif character.rect.top <= collided_sprite.rect.bottom:
                     character.rect.top = collided_sprite.rect.bottom
                     character.vel.y = 1
-                return True
-        return False
-
+                    character.on_ground = False
+                    print("collision2")
+        else:
+            character.on_ground = False
     def handle_horizontal_collision(self, character: "Character", objects):
         
         character.pos.x += self.vel.x * 2

@@ -1,8 +1,11 @@
 import pygame
+from scripts.utils import trim_surface
+
+
 
 class Animation:
     def __init__(self):
-        self.img_dur = 12
+        self.img_dur = 10
         self.frame = 0
         self.currentAnimIdx = 0
         self.images = []
@@ -14,7 +17,7 @@ class Animation:
             self.currentAnimIdx += 1
         if self.currentAnimIdx >= len(self.images) - 1:
             self.currentAnimIdx = 0
-        return self.images[self.currentAnimIdx]
+        return trim_surface(self.images[self.currentAnimIdx])
 
     def get_images(self, sprites, flip):
         if flip:

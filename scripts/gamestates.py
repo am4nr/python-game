@@ -197,7 +197,7 @@ class PlayState(GameState):
             #print(f"rendered layer: {layer}")
             layer["group"].draw(game.screen)
 
-        print(tracemalloc.get_traced_memory())
+        #print(tracemalloc.get_traced_memory())
         game.screen.blit(game.character.image, game.character.rect)
 
 class GameOver(GameState):
