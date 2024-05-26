@@ -28,14 +28,14 @@ class Character(pygame.sprite.Sprite):
         self.jumps = 2
         self.animation.get_images(self.sprites["idle"], False)
         self.collision = Collision(self.game)
-        self.dircetion = "right"
+        self.direction = "right"
 
     def update(self):
         self.gravity()
         self.image = self.animation.update()
+        self.handle_Playerinput()
         # self.mask = pygame.mask.from_surface(self.image)
         # self.collision.handle_vertical_collision(self)
-        self.handle_Playerinput()
         print(self.pos.y, self.rect.y, self.rect.bottom)
 
     def gravity(self):
@@ -50,13 +50,13 @@ class Character(pygame.sprite.Sprite):
 
     def handle_Playerinput(self):
         key_pressed = False
-        keystate = pygame.key.get_pressed()
-        if keystate[pygame.K_LEFT]:
+        keystate = self.game.keystate
+        if keystate[pygame.K_LEFT] or keystate[pygame.K_a]:
             key_pressed = True
 
             RunLeft().execute(self)
 
-        if keystate[pygame.K_RIGHT]:
+        if keystate[pygame.K_RIGHT] or keystate[pygame.K_d]:
             key_pressed = True
 
             RunRight().execute(self)

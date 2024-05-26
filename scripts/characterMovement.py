@@ -11,11 +11,11 @@ class Movement:
         return cls.__instance
 
     def accelerate(self, axis, character: 'Character'):
-        character.acc[axis]= 0
-
-        if character.dircetion == "left":
+        character.acc[axis] = 0
+        
+        if character.direction == "left":
             character.acc[axis] = -character.speed
-        elif character.dircetion == "right":
+        elif character.direction == "right":
             character.acc[axis] = character.speed
         
         if character.acc[axis] != 0:
@@ -25,12 +25,25 @@ class Movement:
         raise NotImplementedError
         
 class HorizontalMovement(Movement):
-    def execute(self, character: 'Character'):
-        self.accelerate(0, character)
-        character.acc.x += character.vel.x * character.friction
-        character.vel.x += character.acc.x
-        character.pos.x += character.vel.x + 0.5 * character.acc.x
-        character.rect.x = character.pos.x
+    def execute(self, character: 'Character', **kwargs):
+        left = kwargs.get("left", False)
+        right = kwargs.get("right", False)
+        
+        if left:
+            character.direction = "left"
+            self.accelerate(0, character)
+            character.acc.x -= character.vel.x * character.friction
+            character.vel.x -= character.acc.x
+            character.pos.x -= character.vel.x + 0.5 * character.acc.x
+            character.rect.x = character.pos.x
+            
+        if right:
+            character.direction = "right"
+            self.accelerate(0, character)
+            character.acc.x += character.vel.x * character.friction
+            character.vel.x += character.acc.x
+            character.pos.x += character.vel.x + 0.5 * character.acc.x
+            character.rect.x = character.pos.x
 
 
 class VerticalMovement(Movement):

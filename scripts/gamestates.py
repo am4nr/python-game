@@ -42,11 +42,11 @@ class MainMenuState(GameState):
         self.buttons["OPTIONS_BACK"] = Button(image=None, pos=(320, 230), 
                             text_input="BACK", font=self.get_font(75), base_color="Black", hovering_color="Green")
         
-        self.buttons["PLAY_BUTTON"] = Button(game.assets.get("Image","objects/buttons/play_button.png"), pos=(320, 125), 
+        self.buttons["PLAY_BUTTON"] = Button(game.assets.get("Image","objects/buttons/play_button.png"), pos=(WIDTH/2, HEIGHT/4+50), 
                                 text_input="PLAY", font=self.get_font(75), base_color="#d7fcd4", hovering_color="White")
-        self.buttons["OPTIONS_BUTTON"] = Button(game.assets.get("Image","objects/buttons/play_button.png"), pos=(320, 200), 
+        self.buttons["OPTIONS_BUTTON"] = Button(game.assets.get("Image","objects/buttons/play_button.png"), pos=(WIDTH/2, 2*HEIGHT/4+50), 
                                 text_input="OPTIONS", font=self.get_font(75), base_color="#d7fcd4", hovering_color="White")
-        self.buttons["QUIT_BUTTON"] = Button(game.assets.get("Image","objects/buttons/cancel_button.png"), pos=(320, 275), 
+        self.buttons["QUIT_BUTTON"] = Button(game.assets.get("Image","objects/buttons/cancel_button.png"), pos=(WIDTH/2, 3*HEIGHT/4+50), 
                                 text_input="QUIT", font=self.get_font(75), base_color="#d7fcd4", hovering_color="White")
 
         #main_menu()
@@ -80,7 +80,7 @@ class MainMenuState(GameState):
         #event
         if event.type == pygame.MOUSEBUTTONDOWN:
             if self.buttons["OPTIONS_BACK"].checkForInput(game.mousepos):
-                self.main_menu()
+                self.main_menu(game)
 
     # der part kommt in die event methode (mainmenu.event())
         if event.type == pygame.MOUSEBUTTONDOWN:
@@ -93,10 +93,18 @@ class MainMenuState(GameState):
                 sys.exit()
 
     def update(self, game):
-        pass
+        
+        """ self.buttons["PLAY_BACK"].changeColor(game.mousepos)
+        self.buttons["PLAY_BACK"].update(game.screen)
+        self.buttons["OPTIONS_BACK"].changeColor(game.mousepos)
+        self.buttons["OPTIONS_BACK"].update(game.screen) """
+        
+        for button in [self.buttons["PLAY_BUTTON"], self.buttons["OPTIONS_BUTTON"], self.buttons["QUIT_BUTTON"]]:
+            button.changeColor(game.mousepos)
+            button.update(game.screen)  
 
     def render(self, game):
-        game.screen.fill((255, 255, 255))
+        #game.screen.fill((255, 255, 255))
 
         PLAY_TEXT = self.get_font(45).render("This is the PLAY screen.", True, "White")
         PLAY_RECT = PLAY_TEXT.get_rect(center=(320, 130))
@@ -104,26 +112,21 @@ class MainMenuState(GameState):
 
         
         
-        self.buttons["PLAY_BACK"].changeColor(game.mousepos)
-        self.buttons["PLAY_BACK"].update(game.screen)
-
-#render game.screen = game.screen
-        game.screen.fill("white")
+        
 
         OPTIONS_TEXT = self.get_font(45).render("This is the OPTIONS screen.", True, "Black")
         OPTIONS_RECT = OPTIONS_TEXT.get_rect(center=(320, 130))
         game.screen.blit(OPTIONS_TEXT, OPTIONS_RECT)
 
 
-        self.buttons["OPTIONS_BACK"].changeColor(game.mousepos)
-        self.buttons["OPTIONS_BACK"].update(game.screen)
+        
 
         #der part kommt in die render methode (mainmenu.render())
         BG=self.get_bg(game)
         game.screen.blit(BG, (0, 0))
 
         MENU_TEXT = self.get_font(100).render("MAIN MENU", True, "#b68f40")
-        MENU_RECT = MENU_TEXT.get_rect(center=(320, 50))
+        MENU_RECT = MENU_TEXT.get_rect(center=(WIDTH/2, 100))
 
         
         game.screen.blit(MENU_TEXT, MENU_RECT)
@@ -216,7 +219,6 @@ class GameOver(GameState):
 
 class Game:
     def __init__(self):
-        self.mousepos = None
         tracemalloc.start()
         pygame.init()
         pygame.display.set_caption(TITLE)
@@ -224,6 +226,9 @@ class Game:
         self.assets = Flyweight(self)
         self.sprites = CharacterSpriteManager(self.assets)
         self.state = PlayState()
+        
+        self.mousepos = pygame.mouse.get_pos()
+        self.keystate = pygame.key.get_pressed()
 
         self.levels = [
             self.assets.get("Tilemap", "Test-Level"),
@@ -259,7 +264,8 @@ class Game:
             self.state.event(self, event)
 
     def update(self):
-        self.mousepos=pygame.mouse.get_pos()  
+        self.keystate = pygame.key.get_pressed()
+        self.mousepos = pygame.mouse.get_pos()  
         self.state.update(self)
         self.clock.tick(FPS)
 
