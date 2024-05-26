@@ -50,7 +50,7 @@ class Jumping(CharacterState):
     def enter(self):
         self.character.animation.get_images(self.character.sprites["jump"], False)
     # def exitState(self):
-    #     self.changeState(Idle)
+    #     self.changeState(Land)
 
 
 # class Falling(CharacterState):
