@@ -2,9 +2,10 @@ import os
 import json
 import pygame
 import math
-from scripts.utils import trim_surface
+from scripts.Utils.utils import trim_surface
+
 scripts_folders = os.path.dirname(__file__)
-game_folder = os.path.join(scripts_folders, os.pardir)
+game_folder = os.getcwd()
 assets_folder = os.path.join(game_folder, "assets")
 
 class Tileset:
@@ -46,7 +47,6 @@ class Tileset:
 class Tilemap:
     def __init__(self, game, tilemap):
         tmap = os.path.join(assets_folder, "maps", tilemap + ".json")
-
         with open(tmap) as tm:
             self.json = json.load(tm)
 

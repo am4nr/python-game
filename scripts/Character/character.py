@@ -1,10 +1,10 @@
 import pygame
-from scripts.settings import *
-from scripts.animation import Animation
-from scripts.playerCommand import RunLeft, RunRight, Jump
-from scripts.characterMovement import VerticalMovement
-from scripts.characterState import CharacterState, Idle
-from scripts.collision import Collision
+from scripts.Utils.settings import *
+from scripts.Utils.animation import Animation
+from scripts.Character.playerCommand import RunLeft, RunRight, Jump
+from scripts.Character.characterMovement import VerticalMovement
+from scripts.Character.characterState import CharacterState, Idle
+from scripts.Utils.collision import Collision
 
 vec = pygame.math.Vector2
 

@@ -2,7 +2,7 @@ import pygame
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
-    from scripts.character import Character
+    from scripts.Character.character import Character
 
 
 class Collision:

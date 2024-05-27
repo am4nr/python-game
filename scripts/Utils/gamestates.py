@@ -1,14 +1,14 @@
 from abc import ABCMeta, abstractmethod
 import sys
 import pygame
-from scripts.flyweight import Flyweight
-from scripts.settings import *
-from scripts.character import Character
-from scripts.characterSpriteManager import CharacterSpriteManager
-from scripts.tiles import Tileset, Tilemap, Level
+from scripts.Utils.flyweight import Flyweight
+from scripts.Utils.settings import *
+from scripts.Character.character import Character
+from scripts.Character.characterSpriteManager import CharacterSpriteManager
+from scripts.Level.tiles import Tileset, Tilemap, Level
 import math
 import tracemalloc
-from scripts.button import Button
+from scripts.UI.button import Button
 
 
 class GameState(metaclass=ABCMeta):

@@ -1,5 +1,5 @@
 import pygame
-from scripts.utils import trim_surface
+from scripts.Utils.utils import trim_surface
 
 
 
