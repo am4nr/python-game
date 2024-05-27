@@ -37,7 +37,7 @@ class MainMenuState(GameState):
     buttons = {}
 
     def enterState(self, game):
-        self.buttons["PLAY_BACK"] = Button(
+        """ self.buttons["PLAY_BACK"] = Button(
             image=None,
             pos=(320, 230),
             text_input="BACK",
@@ -54,7 +54,7 @@ class MainMenuState(GameState):
             base_color="Black",
             hovering_color="Green",
         )
-
+ """
         self.buttons["PLAY_BUTTON"] = Button(
             game.assets.get("Image", "objects/buttons/play_button.png"),
             pos=(WIDTH / 2, HEIGHT / 4 + 50),

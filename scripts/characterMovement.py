@@ -10,12 +10,15 @@ class Movement:
             cls.__instance = object.__new__(cls)
         return cls.__instance
 
-    def accelerate(self, axis, character: 'Character'):
+    def accelerate(self, axis, character: 'Character', **kwargs):
         character.acc[axis] = 0
         
-        if character.direction == "left":
+        left = kwargs.get("left", False)
+        right = kwargs.get("right", False)
+        
+        if left:
             character.acc[axis] = -character.speed
-        elif character.direction == "right":
+        elif right:
             character.acc[axis] = character.speed
         
         if character.acc[axis] != 0:
@@ -28,10 +31,10 @@ class HorizontalMovement(Movement):
     def execute(self, character: 'Character', **kwargs):
         left = kwargs.get("left", False)
         right = kwargs.get("right", False)
+        self.accelerate(0, character, left=left, right=right)
         
         if left:
             character.direction = "left"
-            self.accelerate(0, character)
             character.acc.x -= character.vel.x * character.friction
             character.vel.x -= character.acc.x
             character.rect.x -= character.vel.x + 0.5 * character.acc.x
@@ -39,7 +42,6 @@ class HorizontalMovement(Movement):
             
         if right:
             character.direction = "right"
-            self.accelerate(0, character)
             character.acc.x += character.vel.x * character.friction
             character.vel.x += character.acc.x
             character.rect.x += character.vel.x + 0.5 * character.acc.x

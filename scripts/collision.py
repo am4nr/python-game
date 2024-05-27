@@ -19,9 +19,10 @@ class Collision:
         
         if collided_sprite:
             if pygame.sprite.collide_rect(character, collided_sprite):
-                if character.rect.bottom >= collided_sprite.rect.top:
+                
+                if character.vel.y >= 0:
                     # character.rect.bottom = collided_sprite.rect.top
-                    character.rect.bottom = collided_sprite.rect.top
+                    character.rect.bottom = collided_sprite.rect.top+5
                     # character.rect.bottom = character.pos.y
                     character.vel.y = 0
                     character.acc.y = 0
@@ -31,13 +32,14 @@ class Collision:
                     print("collision1")
                     character.on_ground = True
                     
-                elif character.rect.top <= collided_sprite.rect.bottom:
+                elif character.vel.y < 0:
                     character.rect.top = collided_sprite.rect.bottom
                     character.vel.y = 1
                     character.on_ground = False
                     print("collision2")
         else:
             character.on_ground = False
+            
     def handle_horizontal_collision(self, character: "Character", objects):
         
         character.pos.x += self.vel.x * 2

@@ -82,7 +82,6 @@ class Tilemap:
                     if tile_surf is not None:
                         col = index % self.width
                         row = index // self.width
-                        #tile_surf.fill("White")
                         tile_sprite = self.game.assets.get("Sprite", tile_surf)
                         tile_sprite.rect = pygame.rect.Rect(
                             col * self.tile_width,
@@ -108,7 +107,6 @@ class Level:
         self.game = game
         self.tilemap = Tilemap(game, tilemap)
         self.layers = {}
-        # self.load_layers()
 
 
 """     def load_layers(self):
