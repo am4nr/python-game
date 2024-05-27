@@ -23,24 +23,28 @@ class Character(pygame.sprite.Sprite):
         self.image = self.sprites["idle"][0].image
         # self.mask = pygame.mask.from_surface(self.image)
         self.rect = self.image.get_rect()
+        #self.rect.bottom = self.pos[1]
         # self.rect.left = CHARACTER_START_POS_X
         # self.rect.bottom = CHARACTER_START_POS_Y
         self.jumps = 2
         self.animation.get_images(self.sprites["idle"], False)
         self.collision = Collision(self.game)
-        self.dircetion = "right"
+        self.direction = "right"
+        self.on_ground = False
 
     def update(self):
-        self.gravity()
         self.image = self.animation.update()
-        # self.mask = pygame.mask.from_surface(self.image)
-        # self.collision.handle_vertical_collision(self)
+        #self.rect.bottom = self.pos[1]
+        self.collision.handle_vertical_collision(self)
+        self.gravity()
         self.handle_Playerinput()
-        print(self.pos.y, self.rect.y, self.rect.bottom)
+        # self.mask = pygame.mask.from_surface(self.image)
+        self.collision.handle_vertical_collision(self)
+        #print(self.pos.y, self.rect.y, self.rect.bottom)
 
     def gravity(self):
 
-        if not self.collision.handle_vertical_collision(self):
+        if not self.on_ground:
             self.vel.y = GRAVITY
             VerticalMovement().execute(self)
         #temporary handle screen boundaries
@@ -50,13 +54,13 @@ class Character(pygame.sprite.Sprite):
 
     def handle_Playerinput(self):
         key_pressed = False
-        keystate = pygame.key.get_pressed()
-        if keystate[pygame.K_LEFT]:
+        keystate = self.game.keystate
+        if keystate[pygame.K_LEFT] or keystate[pygame.K_a]:
             key_pressed = True
             # self.direction = 'left'
             RunLeft().execute(self)
 
-        if keystate[pygame.K_RIGHT]:
+        if keystate[pygame.K_RIGHT] or keystate[pygame.K_d]:
             key_pressed = True
             # self.direction = 'right'
             RunRight().execute(self)

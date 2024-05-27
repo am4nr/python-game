@@ -2,7 +2,7 @@ import os
 import json
 import pygame
 import math
-
+from scripts.utils import trim_surface
 scripts_folders = os.path.dirname(__file__)
 game_folder = os.path.join(scripts_folders, os.pardir)
 assets_folder = os.path.join(game_folder, "assets")
@@ -41,7 +41,7 @@ class Tileset:
                 self.tile_height,
             ),
         )
-        return surf
+        return trim_surface(surf)
 
 class Tilemap:
     def __init__(self, game, tilemap):
@@ -107,7 +107,6 @@ class Level:
         self.game = game
         self.tilemap = Tilemap(game, tilemap)
         self.layers = {}
-        # self.load_layers()
 
 
 """     def load_layers(self):
