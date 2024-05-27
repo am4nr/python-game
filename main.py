@@ -1,4 +1,4 @@
-from scripts.Utils.gamestates import Game
+from scripts.gamestates.gamestates import Game
 
 game = Game()
 game.run()

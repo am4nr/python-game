@@ -40,6 +40,11 @@ class Flyweight:
 
         if asset_type == "Image":
             asset_obj = pygame.image.load(os.path.join(assets_folder, *asset.replace("..", "").split("/"))).convert_alpha()
+            
+        elif asset_type == "Sound":
+            asset_obj = pygame.mixer.music.load(os.path.join(assets_folder, *asset.replace("..", "").split("/")))
+            print(asset_obj)
+            
         else:
             asset_class = str_to_class(asset_type)
             asset_obj = asset_class(self.__game, asset, **kwargs)
@@ -47,15 +52,6 @@ class Flyweight:
         self.collections[asset_type][asset] = asset_obj
         return asset_obj
     
-        self.collections[asset_type][asset] = pygame.image.load(
-                os.path.join(assets_folder, *asset.replace("..", "").replace("\\","/").split("/"))
-            ).convert_alpha()
-        return self.collections[asset_type][asset]
-
-        self.collections[asset_type][asset] = Asset(
-            self.game, asset_type, asset, **kwargs
-        )
-        return self.collections[asset_type][asset]
 
 # Konstruktor und Initiator sind getrennt, Konstruktor setzt intrinsische values, Initiator 
 # setzt extrinsische Werte und funktioniert dadurch als Factory (?)
