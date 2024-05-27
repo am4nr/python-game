@@ -1,7 +1,7 @@
 import pygame
 import os
 import sys
-from scripts.tiles import Tilemap, Tileset, Level
+from scripts.Level.tiles import Tilemap, Tileset, Level
 
 vec = pygame.math.Vector2
 scripts_folders = os.path.dirname(__file__)

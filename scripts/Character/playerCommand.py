@@ -1,8 +1,8 @@
 from typing import TYPE_CHECKING
 if TYPE_CHECKING:
-    from scripts.character import Character
-from scripts.characterState import RunningLeft, RunningRight, Jumping
-from scripts.characterMovement import HorizontalMovement, VerticalMovement
+    from scripts.Character.character import Character
+from scripts.Character.characterState import RunningLeft, RunningRight, Jumping
+from scripts.Character.characterMovement import HorizontalMovement, VerticalMovement
 
 
 class PlayerCommand():
