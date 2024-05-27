@@ -53,12 +53,12 @@ class Character(pygame.sprite.Sprite):
         keystate = pygame.key.get_pressed()
         if keystate[pygame.K_LEFT]:
             key_pressed = True
-
+            # self.direction = 'left'
             RunLeft().execute(self)
 
         if keystate[pygame.K_RIGHT]:
             key_pressed = True
-
+            # self.direction = 'right'
             RunRight().execute(self)
 
         if keystate[pygame.K_SPACE] and self.jumps > 0:
