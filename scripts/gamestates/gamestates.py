@@ -1,6 +1,8 @@
 import pygame
 import sys
 
+from pygame import mixer
+
 from scripts.Utils.settings import *
 from scripts.Utils.flyweight import Flyweight
 
@@ -14,8 +16,12 @@ from scripts.gamestates.options_state import OptionsState
 
 class Game:
     def __init__(self):
+        pygame.mixer.pre_init(44100, -16, 2, 512)
+        mixer.init()
+        self.sound = pygame.mixer
+        self.music = pygame.mixer.music
         pygame.init()
-        self.sound = pygame.mixer.init
+        
         
         pygame.display.set_caption(TITLE)
         self.screen = pygame.display.set_mode((WIDTH, HEIGHT), pygame.SCALED)

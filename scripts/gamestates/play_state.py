@@ -6,8 +6,9 @@ from scripts.Utils.settings import *
 class PlayState(GameState):
     def enterState(self, game):
         print("Entered Playstate")
-        """ game.sound = game.assets.get("Sound","music/loop.wav")
-        game.sound.play() """
+        game.music = game.assets.get("Music","music/loop.wav")
+        #game.music.load("assets/music/loop.wav")
+        game.music.play(-1)
 
     def exitState(self, game):
         pass

@@ -31,6 +31,7 @@ class Character(pygame.sprite.Sprite):
         self.collision = Collision(self.game)
         self.direction = "right"
         self.on_ground = False
+        self.sounds_jump = game.assets.get("Sound", "SFX/jump.wav")
 
     def update(self):
         self.image = self.animation.update()
@@ -69,6 +70,7 @@ class Character(pygame.sprite.Sprite):
             key_pressed = True
             self.vel.y = -GRAVITY * 60
             self.jumps -= 1
+            self.sounds_jump.play()
             Jump().execute(self)
 
         # add falling
