@@ -93,7 +93,7 @@ class Tilemap:
 
     def get_tile_surface(self, tile_id):
         for firstgid, tileset in self.tilesets:
-            if tile_id >= firstgid:
+            if tile_id >= firstgid and tile_id <=firstgid+tileset.tile_count:
                 tile_index = tile_id - firstgid
                 return tileset.get_tile_surface(tile_index)
         return None
@@ -102,32 +102,3 @@ class Tilemap:
         return self.layers
 
 
-class Level:
-    def __init__(self, game, tilemap):
-        self.game = game
-        self.tilemap = Tilemap(game, tilemap)
-        self.layers = {}
-
-
-"""     def load_layers(self):
-        width = self.tilemap.width
-
-        for layer in self.tilemap.layers:
-            layername = layer["name"]
-            self.layers[layername] = {
-                "group": pygame.sprite.Group(),
-                "data": layer.get("data", []),
-            }
-
-            for index, tile_id in enumerate(layer["data"]):
-                if tile_id != 0:
-                    tile = self.tilemap.get_tile(tile_id)
-                    if tile:
-                        col = index % width
-                        row = index // width
-                        tile.rect = [col * self.tilemap.tile_width,
-                            row * self.tilemap.tile_height]
-                        self.layers[layername]["group"].add(tile)
-
-    def get_layers(self):
-        return self.layers """

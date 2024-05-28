@@ -57,6 +57,8 @@ class MainMenuState(GameState):
             (game)
         )
         self.bg = game.assets.get("Image", "background/BG.png")
+        
+        self.confirm_sound = game.assets.get("Sound", "SFX/confirmbeep.wav")
 
     # für jeden screen ein gamestate (also jede szene, zb play, options, und für quit brauchen wir kein extra state)
 
@@ -65,6 +67,7 @@ class MainMenuState(GameState):
         return pygame.font.Font("assets/font/Pacifico.ttf", size)
 
     def play(self, game):
+        self.confirm_sound.play()
         game.changeState(game.states["Play"])
 
     def options(self, game):
