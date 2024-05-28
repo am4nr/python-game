@@ -72,24 +72,25 @@ class Tilemap:
 
         for layer in layers:
             layername = layer["name"]
-            self.layers[layername] = {
-                "group": pygame.sprite.Group(),
-                "data": layer.get("data", []),
-            }
-            for index, tile_id in enumerate(layer["data"]):
-                if tile_id != 0:
-                    tile_surf = self.get_tile_surface(tile_id)
-                    if tile_surf is not None:
-                        col = index % self.width
-                        row = index // self.width
-                        tile_sprite = self.game.assets.get("Sprite", tile_surf)
-                        tile_sprite.rect = pygame.rect.Rect(
-                            col * self.tile_width,
-                            row * self.tile_height,
-                            self.tile_width,
-                            self.tile_height,
-                        )
-                        self.layers[layername]["group"].add(tile_sprite)
+            if layername != "gameObjects":
+                self.layers[layername] = {
+                    "group": pygame.sprite.Group(),
+                    "data": layer.get("data", []),
+                }
+                for index, tile_id in enumerate(layer["data"]):
+                    if tile_id != 0:
+                        tile_surf = self.get_tile_surface(tile_id)
+                        if tile_surf is not None:
+                            col = index % self.width
+                            row = index // self.width
+                            tile_sprite = self.game.assets.get("Sprite", tile_surf)
+                            tile_sprite.rect = pygame.rect.Rect(
+                                col * self.tile_width,
+                                row * self.tile_height,
+                                self.tile_width,
+                                self.tile_height,
+                            )
+                            self.layers[layername]["group"].add(tile_sprite)
 
     def get_tile_surface(self, tile_id):
         for firstgid, tileset in self.tilesets:
