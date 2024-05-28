@@ -71,8 +71,8 @@ class Character(pygame.sprite.Sprite):
 
         if keystate[pygame.K_SPACE] and self.jumps > 0:
             key_pressed = True
-            self.vel.y = -GRAVITY * 60
-            self.jumps -= 1
+            # self.vel.y = -GRAVITY * 60
+            # self.jumps -= 1
             self.sounds_jump.play()
             Jump().execute(self)
 
