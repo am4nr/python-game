@@ -24,8 +24,8 @@ class Character(pygame.sprite.Sprite):
         # self.mask = pygame.mask.from_surface(self.image)
         self.rect = self.image.get_rect()
         #self.rect.bottom = self.pos[1]
-        # self.rect.left = CHARACTER_START_POS_X
-        # self.rect.bottom = CHARACTER_START_POS_Y
+        self.rect.left = CHARACTER_START_POS_X
+        self.rect.bottom = CHARACTER_START_POS_Y
         self.jumps = 2
         self.collision = Collision(self.game)
         self.direction = "right"
@@ -36,6 +36,7 @@ class Character(pygame.sprite.Sprite):
         self.sounds_jump = game.assets.get("Sound", "SFX/jump.wav")
 
     def update(self):
+        #print(self.rect.x,self.rect.y)
         self.image = self.animation.update()
         #self.rect.bottom = self.pos[1]
         self.collision.handle_vertical_collision(self)

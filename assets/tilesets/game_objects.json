@@ -1,0 +1,14 @@
+{ "columns":6,
+ "image":"..\/tiles\/game_objects.png",
+ "imageheight":32,
+ "imagewidth":192,
+ "margin":0,
+ "name":"game_objects",
+ "spacing":0,
+ "tilecount":6,
+ "tiledversion":"1.10.2",
+ "tileheight":32,
+ "tilewidth":32,
+ "type":"tileset",
+ "version":"1.10"
+}
