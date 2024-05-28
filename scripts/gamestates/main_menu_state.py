@@ -30,18 +30,18 @@ class MainMenuState(GameState):
         )"""
         self.buttons["PLAY_BUTTON"] = Button(
             game.assets.get("Image", "objects/buttons/play_button.png"),
-            pos=(WIDTH / 2, HEIGHT / 4 + 50),
+            pos=(WIDTH / 2, HEIGHT / 4 + 90),
             text_input="PLAY",
-            font=self.get_font(75),
+            font=self.get_font(30),
             base_color="#d7fcd4",
             hovering_color="White",
             callback=lambda: self.play(game)
         )
         self.buttons["OPTIONS_BUTTON"] = Button(
             game.assets.get("Image", "objects/buttons/play_button.png"),
-            pos=(WIDTH / 2, 2 * HEIGHT / 4 + 50),
+            pos=(WIDTH / 2, 2 * HEIGHT / 4 + 65),
             text_input="OPTIONS",
-            font=self.get_font(75),
+            font=self.get_font(30),
             base_color="#d7fcd4",
             hovering_color="White",
             callback=lambda: self.options(game)
@@ -50,7 +50,7 @@ class MainMenuState(GameState):
             game.assets.get("Image", "objects/buttons/cancel_button.png"),
             pos=(WIDTH / 2, 3 * HEIGHT / 4 + 50),
             text_input="QUIT",
-            font=self.get_font(75),
+            font=self.get_font(30),
             base_color="#d7fcd4",
             hovering_color="White",
             callback=lambda: self.quit(game)

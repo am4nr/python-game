@@ -16,7 +16,7 @@ class OptionsState(GameState):
             text_input="BACK",
             font=self.get_font(40),
             base_color="White",
-            hovering_color="Green",
+            hovering_color="#d7fcd4",
             callback=lambda: self.main_menu(game)
         )
         self.bg = game.assets.get("Image", "background/BG.png")
