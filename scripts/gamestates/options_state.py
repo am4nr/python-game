@@ -12,9 +12,9 @@ class OptionsState(GameState):
     def enterState(self, game):
         self.buttons["PLAY_BACK"] = Button(
             image=None,
-            pos=(320, 230),
+            pos=(400, 550),
             text_input="BACK",
-            font=self.get_font(75),
+            font=self.get_font(40),
             base_color="White",
             hovering_color="Green",
         )
