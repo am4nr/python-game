@@ -26,36 +26,46 @@ class CharacterState():
 
 class Idle(CharacterState):
     def enter(self):
-        self.character.animation.get_images(self.character.sprites["idle"], False)
+        self.character.animation.get_images(self.character.sprites["idle"], self.character.direction)
         
     # def exitState(self, statemachine):
     #     statemachine.changeState(Idle)
     
 
-class RunningRight(CharacterState):
+class Run(CharacterState):
     def enter(self):
-        self.character.animation.get_images(self.character.sprites["run"], False)
+        self.character.animation.get_images(
+            self.character.sprites["run"], self.character.direction
+        )
+#     # def exitState(self):
+#     #     self.changeState(Idle)
+
+
+# class RunningLeft(CharacterState):
+#     def enter(self):
+#         self.character.animation.get_images(
+#             self.character.sprites["run"], self.character.direction
+#         )
+#     # def exitState(self):
+#     #     self.changeState(Idle)
+
+
+class inAir(CharacterState):
+    def enter(self):
+        self.character.animation.get_images(self.character.sprites["jump"], self.character.direction)
     # def exitState(self):
-    #     self.changeState(Idle)
+    #     self.changeState(Land)
 
-
-class RunningLeft(CharacterState):
+class onGround(CharacterState):
     def enter(self):
-        self.character.animation.get_images(self.character.sprites["run"], True)
-    # def exitState(self):
-    #     self.changeState(Idle)
-
-
-class Jumping(CharacterState):
-    def enter(self):
-        self.character.animation.get_images(self.character.sprites["jump"], False)
+        self.character.animation.get_images(self.character.sprites["land"], self.character.direction)
     # def exitState(self):
     #     self.changeState(Land)
 
 
-# class Falling(CharacterState):
-#     def enter(self, character: "Character"):
-#         character.animation.get_images(character.sprites["jump"])
+# class Land(CharacterState):
+#     def enter(self):
+#         self.character.animation.get_images(self.character.sprites["land"], self.character.direction)
 #     def exit(self, character: "Character"):
 #         self.changeState(Idle)
 

@@ -17,12 +17,13 @@ class Animation:
             self.currentAnimIdx += 1
         if self.currentAnimIdx >= len(self.images) - 1:
             self.currentAnimIdx = 0
-        return trim_surface(self.images[self.currentAnimIdx])
+        # return trim_surface(self.images[self.currentAnimIdx])
+        return self.images[self.currentAnimIdx]
 
-    def get_images(self, sprites, flip):
-        if flip:
+    def get_images(self, sprites, direction):
+        if direction == "left":
             self.flip(sprites)
-        else:
+        elif direction == "right":
             self.get_surfaces(sprites)
 
     def get_img_dur(self, img_dur):

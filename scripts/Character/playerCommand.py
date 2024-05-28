@@ -1,8 +1,9 @@
 from typing import TYPE_CHECKING
 if TYPE_CHECKING:
     from scripts.Character.character import Character
-from scripts.Character.characterState import RunningLeft, RunningRight, Jumping
+from scripts.Character.characterState import Run, inAir
 from scripts.Character.characterMovement import HorizontalMovement, VerticalMovement
+from scripts.Utils.settings import *
 
 
 class PlayerCommand():
@@ -18,20 +19,24 @@ class PlayerCommand():
 
 class RunLeft(PlayerCommand):
     def execute(self, character: 'Character'):
-        character.state.changeState(RunningLeft)
-        HorizontalMovement().execute(character, left=True)
+        character.direction = "left"
+        character.state.changeState(Run)
+        HorizontalMovement().execute(character)
 
 class RunRight(PlayerCommand):
     def execute(self, character: 'Character'):
-        character.state.changeState(RunningRight)
-        HorizontalMovement().execute(character, right=True)
+        character.direction = "right"
+        character.state.changeState(Run)
+        HorizontalMovement().execute(character)
 
 class Jump(PlayerCommand):
     def execute(self, character: 'Character'):
-        if character.jumps>0:
-            character.jumps -= 1
-            character.state.changeState(Jumping)
-            VerticalMovement().execute(character)
+        # if character.jumps>0:
+        character.jumping = True
+        character.jumps -= 1
+        character.vel.y = -GRAVITY * 60
+        character.state.changeState(inAir)
+        VerticalMovement().execute(character)
         
 class Attack(PlayerCommand):
     def execute(self, character: 'Character'):

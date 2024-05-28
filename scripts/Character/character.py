@@ -3,7 +3,7 @@ from scripts.Utils.settings import *
 from scripts.Utils.animation import Animation
 from scripts.Character.playerCommand import RunLeft, RunRight, Jump
 from scripts.Character.characterMovement import VerticalMovement
-from scripts.Character.characterState import CharacterState, Idle
+from scripts.Character.characterState import CharacterState, Idle, inAir
 from scripts.Utils.collision import Collision
 
 vec = pygame.math.Vector2
@@ -27,10 +27,12 @@ class Character(pygame.sprite.Sprite):
         # self.rect.left = CHARACTER_START_POS_X
         # self.rect.bottom = CHARACTER_START_POS_Y
         self.jumps = 2
-        self.animation.get_images(self.sprites["idle"], False)
         self.collision = Collision(self.game)
         self.direction = "right"
+        self.jumping = False
         self.on_ground = False
+        self.animation.get_images(self.sprites["idle"], self.direction)
+        self.idle_waiting_time_counter = 0 
 
     def update(self):
         self.image = self.animation.update()
@@ -39,38 +41,37 @@ class Character(pygame.sprite.Sprite):
         self.gravity()
         self.handle_Playerinput()
         # self.mask = pygame.mask.from_surface(self.image)
-        self.collision.handle_vertical_collision(self)
-        #print(self.pos.y, self.rect.y, self.rect.bottom)
+        # self.collision.handle_vertical_collision(self)
+        self.idle_waiting_time_counter += 1
 
     def gravity(self):
 
         if not self.on_ground:
             self.vel.y = GRAVITY
+            self.state.changeState(inAir)
             VerticalMovement().execute(self)
-        #temporary handle screen boundaries
-        # if self.rect.bottom > HEIGHT:
-        #     self.rect.bottom = HEIGHT
-        #     self.acc.y = 0
+            self.jumping = False
+            
+
+
 
     def handle_Playerinput(self):
         key_pressed = False
         keystate = self.game.keystate
         if keystate[pygame.K_LEFT] or keystate[pygame.K_a]:
-            key_pressed = True
-            # self.direction = 'left'
-            RunLeft().execute(self)
+            if self.collision.handle_horizontal_collision(self):
+                key_pressed = True
+                RunLeft().execute(self)
 
         if keystate[pygame.K_RIGHT] or keystate[pygame.K_d]:
-            key_pressed = True
-            # self.direction = 'right'
-            RunRight().execute(self)
+            if self.collision.handle_horizontal_collision(self):
+                key_pressed = True
+                RunRight().execute(self)
 
         if keystate[pygame.K_SPACE] and self.jumps > 0:
             key_pressed = True
-            self.vel.y = -GRAVITY * 60
-            self.jumps -= 1
             Jump().execute(self)
 
-        # add falling
-        # if not key_pressed:
-        #     self.state.changeState(Idle)
+        if not key_pressed and self.on_ground and self.idle_waiting_time_counter >= 12:
+            self.state.changeState(Idle)
+            self.idle_waiting_time_counter = 0

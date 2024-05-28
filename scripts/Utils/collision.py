@@ -1,4 +1,5 @@
 import pygame
+from scripts.Character.characterMovement import HorizontalMovement
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
@@ -27,13 +28,10 @@ class Collision:
                     character.vel.y = 0
                     character.acc.y = 0
                     character.jumps = 2
-                    self.character.animation.get_images(
-                        self.character.sprites["land"], True
-                    )
-                    
-                    #self.character.animation.get_images(self.character.sprites["run"], True)
                     print("collision1")
                     character.on_ground = True
+                    
+                    
                     
                 elif character.vel.y < 0:
                     character.rect.top = collided_sprite.rect.bottom
@@ -43,19 +41,21 @@ class Collision:
         else:
             character.on_ground = False
             
-    def handle_horizontal_collision(self, character: "Character", objects):
+    def handle_horizontal_collision(self, character: "Character"):
         
-        character.pos.x += self.vel.x * 2
-        character.update()
+        # character.pos.x += character.vel.x * 2
+        # character.update()
+        HorizontalMovement().execute(character)
         collided_sprite = pygame.sprite.spritecollideany(character, self.solid_layer)
 
         if collided_sprite:
             if pygame.sprite.collide_mask(character, collided_sprite):
                 self.collided = True
+                print("collision3")
             else:
                 self.collided = False
-        character.pos.x -= self.vel.x * 2
-        character.update()
+        character.pos.x -= character.vel.x * 2
+        # character.update()
         return self.collided
     
 
