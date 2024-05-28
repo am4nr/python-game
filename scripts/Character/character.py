@@ -33,6 +33,7 @@ class Character(pygame.sprite.Sprite):
         self.on_ground = False
         self.animation.get_images(self.sprites["idle"], self.direction)
         self.idle_waiting_time_counter = 0 
+        self.sounds_jump = game.assets.get("Sound", "SFX/jump.wav")
 
     def update(self):
         self.image = self.animation.update()
@@ -70,6 +71,9 @@ class Character(pygame.sprite.Sprite):
 
         if keystate[pygame.K_SPACE] and self.jumps > 0:
             key_pressed = True
+            self.vel.y = -GRAVITY * 60
+            self.jumps -= 1
+            self.sounds_jump.play()
             Jump().execute(self)
 
         if not key_pressed and self.on_ground and self.idle_waiting_time_counter >= 12:

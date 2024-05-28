@@ -32,6 +32,8 @@ class Flyweight:
     # Image's sind ein special case der manuell geprüft wird sonst wird einfach die allgemeine
     # Asset Klasse benutzt um zu prüfen ob das asset erstellt oder instanziert werden muss
     def get(self, asset_type, asset, **kwargs):
+        if isinstance(asset, str):
+            asset_path = os.path.join(assets_folder, *asset.replace("..", "").split("/"))
         if asset_type not in self.collections:
             self.collections[asset_type] = {}
 
@@ -39,7 +41,16 @@ class Flyweight:
             return self.collections[asset_type][asset]
 
         if asset_type == "Image":
-            asset_obj = pygame.image.load(os.path.join(assets_folder, *asset.replace("..", "").split("/"))).convert_alpha()
+            asset_obj = pygame.image.load(asset_path).convert_alpha()
+            
+        elif asset_type == "Sound":
+            mixer = self.__instance.__game.sound
+            asset_obj = mixer.Sound(asset_path)
+            
+        elif asset_type == "Music":
+            mixer = self.__instance.__game.music
+            mixer.load(asset_path)
+            asset_obj = mixer
         else:
             asset_class = str_to_class(asset_type)
             asset_obj = asset_class(self.__game, asset, **kwargs)
@@ -47,15 +58,6 @@ class Flyweight:
         self.collections[asset_type][asset] = asset_obj
         return asset_obj
     
-        self.collections[asset_type][asset] = pygame.image.load(
-                os.path.join(assets_folder, *asset.replace("..", "").replace("\\","/").split("/"))
-            ).convert_alpha()
-        return self.collections[asset_type][asset]
-
-        self.collections[asset_type][asset] = Asset(
-            self.game, asset_type, asset, **kwargs
-        )
-        return self.collections[asset_type][asset]
 
 # Konstruktor und Initiator sind getrennt, Konstruktor setzt intrinsische values, Initiator 
 # setzt extrinsische Werte und funktioniert dadurch als Factory (?)
