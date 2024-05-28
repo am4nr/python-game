@@ -17,6 +17,7 @@ class OptionsState(GameState):
             font=self.get_font(40),
             base_color="White",
             hovering_color="Green",
+            callback=lambda: self.main_menu(game)
         )
         self.bg = game.assets.get("Image", "background/BG.png")
         self.volume_slider = Slider(300, 250, 200, 20, 0, 100, 50)
@@ -53,6 +54,8 @@ class OptionsState(GameState):
                         
         if event.type == pygame.MOUSEBUTTONUP:
             self.volume_slider.hit = False
+
+        
 
     def update(self, game):
         for button_name in self.buttons:
