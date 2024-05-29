@@ -35,14 +35,12 @@ class Character(pygame.sprite.Sprite):
 
     def update(self):
         self.image = self.animation.update()
-        # self.collision.handle_horizontal_collision(self)
         self.collided_x = False
         self.handle_Playerinput()
-        # self.collision.handle_vertical_collision(self)
-        # self.on_ground = False
         self.gravity()
+        self.collision.handle_horizontal_collision(self)
+        self.collision.handle_vertical_collision(self)
         self.idle_waiting_time_counter += 1
-        
 
     def gravity(self):
       
@@ -57,8 +55,6 @@ class Character(pygame.sprite.Sprite):
         key_pressed = False
         keystate = self.game.keystate
        
-        if self.collided_x:
-            print("collided")
         if not self.collided_x:
             if keystate[pygame.K_LEFT] or keystate[pygame.K_a]:
                 key_pressed = True
@@ -67,6 +63,8 @@ class Character(pygame.sprite.Sprite):
             if keystate[pygame.K_RIGHT] or keystate[pygame.K_d]:
                 key_pressed = True
                 RunRight().execute(self)
+        else: 
+            self.collided_x = False
 
         if keystate[pygame.K_SPACE] and self.jumps > 0:
             key_pressed = True
