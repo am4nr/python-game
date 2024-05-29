@@ -14,6 +14,8 @@ from scripts.gamestates.play_state import PlayState
 from scripts.gamestates.main_menu_state import MainMenuState
 from scripts.gamestates.options_state import OptionsState
 
+
+from scripts.Level.levels import LevelManager
 class Game:
     def __init__(self):
         pygame.mixer.pre_init(44100, -16, 2, 512)
@@ -36,11 +38,8 @@ class Game:
         self.mouse_pos = pygame.mouse.get_pos()
         self.keystate = pygame.key.get_pressed()
 
-        self.levels = [
-            self.assets.get("Tilemap", "Test-Level"),
-            self.assets.get("Tilemap", "Test-Level2"),
-        ]
-        self.current_level = 0
+        self.level_manager = LevelManager(self)
+        self.level_manager.set_level("Test-Level")
 
         self.character_sprites = self.sprites.handle_spritesheetDictTransformation(
             self.sprites.get_spritesheets("characters", "finn"),

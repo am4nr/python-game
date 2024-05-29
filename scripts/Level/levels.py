@@ -1,36 +1,29 @@
 import pygame
-
 class LevelManager:
     def __init__(self, game):
         self.game = game
         self.levels = []
         self.current_level = None
-    
-    def set_level(self, level):
-        pass
-    
-    def next_level(self):
-        pass
-    
+
+    def set_level(self, level_name):
+        self.current_level = Level(level_name, self.game)
+        self.current_level.load()
 class Level:
-    __levels = []
-    def __init__(self, tilemap):
-        self.game = LevelManager.game
-        self.tilemap = self.game.assets.get("Tilemap", tilemap )
-        self.tilesets = tilemap.tilesets
+    def __init__(self, level_name, game):
+        self.game = game
+        self.tilemap = game.assets.get("Tilemap", level_name)
+        self.tilesets = self.tilemap.tilesets
         self.tiles = {}
         self.gameObjects = pygame.sprite.Group()
-        
-        LevelManager.levels.append(self)
+        self.levelObjects = []
 
     def load(self):
-        pass
-    
+        self.tilemap.load_layers()
+
     def update(self):
         self.gameObjects.update()
-        
+
     def render(self):
-        for layer in self.tilemap.get_layers().values():
-            layer["group"].draw(self.game.screen)
-            
-        self.gameObjects.draw(self.game.screen)
+        # Render the level tiles and objects
+        for obj in self.levelObjects:
+            obj.render()
