@@ -107,8 +107,10 @@ class Tilemap:
                 "data": gameobjects_layer.get("data", []),
                 "moving_platforms": [],
             }
+            
             for index, tile_id in enumerate(gameobjects_layer["data"]):
                 if tile_id == 64:  # Platform tile ID
+                    print(f"Found moving platform tile at index: {index}")
                     # Get the tile surface from the solid layer
                     solid_tile_id = self.layers["solid"]["data"][index]
                     solid_tile_surf = self.get_tile_surface(solid_tile_id)
@@ -124,15 +126,14 @@ class Tilemap:
                         self.tile_height,
                     )
 
-                    # Add the platform sprite to the game objects layer
-                    self.layers["gameObjects"]["group"].add(platform_sprite)
-
                     # Find the path for the platform
                     path = []
                     self.find_platform_path(gameobjects_layer["data"], index, path)
                     if path:
+                        print(f"Moving platform path: {path}")
                         moving_platform = MovingPlatform(platform_sprite, path, PLATFORM_SPEED)
                         self.layers["gameObjects"]["moving_platforms"].append(moving_platform)
+                        print(f"Added moving platform: {moving_platform}")
 
         # Handle other layers
         for layer in layers:
@@ -168,8 +169,6 @@ class Tilemap:
             return 0 <= row < height and 0 <= col < width
 
         def get_neighbors(index):
-            row = index // width
-            col = index % width
             neighbors = []
             if is_valid_index(index - width):
                 neighbors.append(index - width)  # Up
@@ -191,15 +190,17 @@ class Tilemap:
                     visited.add(current)
                     tile_id = data[current]
                     if tile_id in path_tiles:
+                        current_path = current_path[:]  # Create a new list for each path
                         current_path.append(pygame.rect.Rect(
                             (current % width) * self.tile_width,
                             (current // width) * self.tile_height,
                             self.tile_width,
                             self.tile_height,
                         ))
+                        print(f"Added path coordinate: {current_path[-1]}")
                         for neighbor in get_neighbors(current):
                             if data[neighbor] in path_tiles:
-                                stack.append((neighbor, current_path[:]))
+                                stack.append((neighbor, current_path))
                     else:
                         path.extend(current_path)
 

@@ -9,9 +9,12 @@ class Collision:
     def __init__(self, game):
         self.game = game
         #self.solid_layer = game.levels[game.current_level].get_layers()["solid"]["group"]
-        self.solid_layer = game.level_manager.current_level.tilemap.get_layers()["solid"]["group"]
+        self.solid_layer = game.current_level.tilemap.get_layers()["solid"]["group"]
         self.collided = False
-
+        
+    def update_level(self):
+        self.solid_layer = self.game.current_level.tilemap.get_layers()["solid"]["group"]
+        
     def handle_vertical_collision(self, character: "Character"):
         #character.on_ground = False
         collided_sprite = pygame.sprite.spritecollideany(character, self.solid_layer)
@@ -28,14 +31,14 @@ class Collision:
                     character.jumps = 2
                     
                     #self.character.animation.get_images(self.character.sprites["run"], True)
-                    print("collision1")
+                    #print("collision1")
                     character.on_ground = True
                     
                 elif character.vel.y < 0:
                     character.rect.top = collided_sprite.rect.bottom
                     character.vel.y = 1
                     character.on_ground = False
-                    print("collision2")
+                    #print("collision2")
         else:
             character.on_ground = False
             

@@ -40,6 +40,7 @@ class Game:
 
         self.level_manager = LevelManager(self)
         self.level_manager.set_level("Test-Level")
+        self.current_level = self.level_manager.current_level
 
         self.character_sprites = self.sprites.handle_spritesheetDictTransformation(
             self.sprites.get_spritesheets("characters", "finn"),
