@@ -20,15 +20,15 @@ class PlayerCommand():
 class RunLeft(PlayerCommand):
     def execute(self, character: 'Character'):
         character.direction = "left"
-        # if character.on_ground:
-        character.state.changeState(RunningLeft)
+        if character.on_ground:
+            character.state.changeState(RunningLeft)
         HorizontalMovement().execute(character)
 
 class RunRight(PlayerCommand):
     def execute(self, character: 'Character'):
         character.direction = "right"
-        # if character.on_ground:
-        character.state.changeState(RunningRight)
+        if character.on_ground:
+            character.state.changeState(RunningRight)
         HorizontalMovement().execute(character)
 
 class Jump(PlayerCommand):

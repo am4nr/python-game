@@ -68,7 +68,7 @@ class Jumping(CharacterState):
 
 class Falling(CharacterState):
     def enter(self):
-        self.character.animation.get_images(self.character.sprites["jump"], self.character.direction)
+        self.character.animation.get_images(self.character.sprites["fall"], self.character.direction)
         
         # self.character.rect.update(self.character.pos, self.character.image.get_size())
 

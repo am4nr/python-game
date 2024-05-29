@@ -33,38 +33,49 @@ class Character(pygame.sprite.Sprite):
         self.sounds_jump = game.assets.get("Sound", "SFX/jump.wav")
         self.collided_x = False
 
+
     def update(self):
         self.image = self.animation.update()
         self.collided_x = False
+        # self.on_ground = False
+        self.collision.handle_collision(self)
         self.handle_Playerinput()
         self.gravity()
-        self.collision.handle_horizontal_collision(self)
-        self.collision.handle_vertical_collision(self)
         self.idle_waiting_time_counter += 1
 
+
     def gravity(self):
-      
+
         if not self.on_ground:
-            self.vel.y = GRAVITY
             self.state.changeState(Falling)
-            VerticalMovement().execute(self)
             self.jumping = False
+            self.vel.y = GRAVITY
+            VerticalMovement().execute(self)
+        print(self.on_ground)
             
 
     def handle_Playerinput(self):
         key_pressed = False
         keystate = self.game.keystate
-       
-        if not self.collided_x:
-            if keystate[pygame.K_LEFT] or keystate[pygame.K_a]:
-                key_pressed = True
-                RunLeft().execute(self)
+        
+        # if not self.collided_x:
+        #     if keystate[pygame.K_LEFT] or keystate[pygame.K_a]:
+        #         key_pressed = True
+        #         RunLeft().execute(self)
 
-            if keystate[pygame.K_RIGHT] or keystate[pygame.K_d]:
-                key_pressed = True
-                RunRight().execute(self)
-        else: 
-            self.collided_x = False
+        #     if keystate[pygame.K_RIGHT] or keystate[pygame.K_d]:
+        #         key_pressed = True
+        #         RunRight().execute(self)
+        # else: 
+        #     self.collided_x = False
+
+        if keystate[pygame.K_LEFT] or keystate[pygame.K_a]:
+            key_pressed = True
+            RunLeft().execute(self)
+
+        if keystate[pygame.K_RIGHT] or keystate[pygame.K_d]:
+            key_pressed = True
+            RunRight().execute(self)
 
         if keystate[pygame.K_SPACE] and self.jumps > 0:
             key_pressed = True

@@ -48,5 +48,5 @@ class PlayState(GameState):
         for layer in game.levels[game.current_level].get_layers().values():
             layer["group"].draw(game.screen)
 
-        game.screen.blit(game.character.image, (game.character.rect.x, game.character.rect.bottom - game.character.image.get_height()))
-       
+        game.screen.blit(game.character.image, (game.character.rect.x, game.character.rect.y - game.character.image.get_height()))
+        # game.screen.blit(game.character.image, game.character.rect)

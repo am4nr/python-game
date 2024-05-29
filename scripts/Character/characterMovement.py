@@ -17,6 +17,8 @@ class HorizontalMovement(Movement):
     def execute(self, character: 'Character'):
         character.acc.x = 0
 
+        # character.collision.handle_horizontal_collision(character)
+
         if character.direction == "left":
             character.acc.x = -character.speed
         elif character.direction == "right":
@@ -24,8 +26,6 @@ class HorizontalMovement(Movement):
 
         if character.acc.x != 0:
             character.acc.x *= 0.7071
-
-        # character.collision.handle_horizontal_collision(character)
 
         character.acc.x += character.vel.x * character.friction
         character.vel.x += character.acc.x
@@ -37,15 +37,19 @@ class VerticalMovement(Movement):
     def execute(self, character: 'Character'):
         character.acc.y = 0
 
+
         if character.jumping:
             character.acc.y = -character.speed
-        elif not character.jumping:
+        # elif not character.jumping:
+        #     character.acc.y = character.speed
+        elif not character.jumping and character.on_ground:
+            character.acc.y = 0
+        elif not character.jumping and not character.on_ground:
             character.acc.y = character.speed
             
         if character.acc.y != 0:
             character.acc.y *= 0.7071
 
-        # character.collision.handle_vertical_collision(character)
 
         character.acc.y += character.vel.y * character.friction
         character.vel.y += character.acc.y
