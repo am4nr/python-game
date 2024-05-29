@@ -42,7 +42,8 @@ class Tileset:
                 self.tile_height,
             ),
         )
-        return trim_surface(surf)
+        # return trim_surface(surf)
+        return surf
 
 class Tilemap:
     def __init__(self, game, tilemap):

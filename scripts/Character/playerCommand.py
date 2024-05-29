@@ -1,7 +1,7 @@
 from typing import TYPE_CHECKING
 if TYPE_CHECKING:
     from scripts.Character.character import Character
-from scripts.Character.characterState import Run, inAir
+from scripts.Character.characterState import RunningRight, RunningLeft, Jumping
 from scripts.Character.characterMovement import HorizontalMovement, VerticalMovement
 from scripts.Utils.settings import *
 
@@ -20,13 +20,15 @@ class PlayerCommand():
 class RunLeft(PlayerCommand):
     def execute(self, character: 'Character'):
         character.direction = "left"
-        character.state.changeState(Run)
+        # if character.on_ground:
+        character.state.changeState(RunningLeft)
         HorizontalMovement().execute(character)
 
 class RunRight(PlayerCommand):
     def execute(self, character: 'Character'):
         character.direction = "right"
-        character.state.changeState(Run)
+        # if character.on_ground:
+        character.state.changeState(RunningRight)
         HorizontalMovement().execute(character)
 
 class Jump(PlayerCommand):
@@ -35,7 +37,7 @@ class Jump(PlayerCommand):
         character.jumping = True
         character.jumps -= 1
         character.vel.y = -GRAVITY * 60
-        character.state.changeState(inAir)
+        character.state.changeState(Jumping)
         VerticalMovement().execute(character)
         
 class Attack(PlayerCommand):

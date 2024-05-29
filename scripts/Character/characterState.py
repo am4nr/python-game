@@ -27,47 +27,63 @@ class CharacterState():
 class Idle(CharacterState):
     def enter(self):
         self.character.animation.get_images(self.character.sprites["idle"], self.character.direction)
-        
+        # self.character.rect.update(self.character.pos, self.character.image.get_size())
+
     # def exitState(self, statemachine):
     #     statemachine.changeState(Idle)
     
 
-class Run(CharacterState):
+class RunningRight(CharacterState):
     def enter(self):
         self.character.animation.get_images(
             self.character.sprites["run"], self.character.direction
         )
+        # self.character.rect.update(self.character.pos, self.character.image.get_size())
+
+
 #     # def exitState(self):
 #     #     self.changeState(Idle)
 
 
-# class RunningLeft(CharacterState):
-#     def enter(self):
-#         self.character.animation.get_images(
-#             self.character.sprites["run"], self.character.direction
-#         )
+class RunningLeft(CharacterState):
+    def enter(self):
+        self.character.animation.get_images(
+            self.character.sprites["run"], self.character.direction
+        )
+        # self.character.rect.update(self.character.pos, self.character.image.get_size())
+
+
 #     # def exitState(self):
 #     #     self.changeState(Idle)
 
 
-class inAir(CharacterState):
+class Jumping(CharacterState):
     def enter(self):
         self.character.animation.get_images(self.character.sprites["jump"], self.character.direction)
+        self.character.sounds_jump.play()
+        # self.character.rect.update(self.character.pos, self.character.image.get_size())
+
     # def exitState(self):
     #     self.changeState(Land)
 
-class onGround(CharacterState):
+class Falling(CharacterState):
+    def enter(self):
+        self.character.animation.get_images(self.character.sprites["jump"], self.character.direction)
+        
+        # self.character.rect.update(self.character.pos, self.character.image.get_size())
+
+    # def exitState(self):
+    #     self.changeState(Land)
+
+
+class Landing(CharacterState):
     def enter(self):
         self.character.animation.get_images(self.character.sprites["land"], self.character.direction)
+        # self.character.rect.update(self.character.pos, self.character.image.get_size())
+        
     # def exitState(self):
     #     self.changeState(Land)
 
-
-# class Land(CharacterState):
-#     def enter(self):
-#         self.character.animation.get_images(self.character.sprites["land"], self.character.direction)
-#     def exit(self, character: "Character"):
-#         self.changeState(Idle)
 
 
 #hit

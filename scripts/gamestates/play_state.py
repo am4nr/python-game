@@ -8,7 +8,7 @@ class PlayState(GameState):
         print("Entered Playstate")
         game.music = game.assets.get("Music","music/loop.wav")
         #game.music.load("assets/music/loop.wav")
-        game.music.play(-1)
+        # game.music.play(-1)
 
     def exitState(self, game):
         pass
@@ -48,4 +48,5 @@ class PlayState(GameState):
         for layer in game.levels[game.current_level].get_layers().values():
             layer["group"].draw(game.screen)
 
-        game.screen.blit(game.character.image, game.character.rect)
+        game.screen.blit(game.character.image, (game.character.rect.x, game.character.rect.bottom - game.character.image.get_height()))
+       

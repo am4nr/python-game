@@ -25,10 +25,12 @@ class HorizontalMovement(Movement):
         if character.acc.x != 0:
             character.acc.x *= 0.7071
 
+        # character.collision.handle_horizontal_collision(character)
+
         character.acc.x += character.vel.x * character.friction
         character.vel.x += character.acc.x
-        character.rect.x += character.vel.x + 0.5 * character.acc.x
-            #character.rect.x = character.pos.x
+        character.pos.x += character.vel.x + 0.5 * character.acc.x
+        character.rect.x = character.pos.x
 
 
 class VerticalMovement(Movement):
@@ -43,7 +45,9 @@ class VerticalMovement(Movement):
         if character.acc.y != 0:
             character.acc.y *= 0.7071
 
+        # character.collision.handle_vertical_collision(character)
+
         character.acc.y += character.vel.y * character.friction
         character.vel.y += character.acc.y
-        character.rect.y += character.vel.y + 0.5 * character.acc.y
-        #character.rect.bottom = character.pos.y
+        character.pos.y += character.vel.y + 0.5 * character.acc.y
+        character.rect.y = character.pos.y
