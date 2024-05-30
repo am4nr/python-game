@@ -7,7 +7,7 @@ class PlayState(GameState):
     def enterState(self, game):
         print("Entered Playstate")
         game.music = game.assets.get("Music","music/loop.wav")
-        #game.music.load("assets/music/loop.wav")
+        # game.music.load("assets/music/loop.wav")
         # game.music.play(-1)
 
     def exitState(self, game):
