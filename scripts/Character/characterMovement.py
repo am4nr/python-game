@@ -37,8 +37,6 @@ class VerticalMovement(Movement):
 
         if character.jumping:
             character.acc.y = -character.speed
-        # elif not character.jumping:
-        #     character.acc.y = character.speed
         elif character.on_ground:
             character.acc.y = 0
         elif not character.jumping and not character.on_ground:
