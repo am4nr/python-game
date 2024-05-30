@@ -1,7 +1,7 @@
 import pygame
 from scripts.Utils.settings import *
 from scripts.Utils.animation import Animation
-from scripts.Character.playerCommand import RunLeft, RunRight, Jump
+# from scripts.Character.playerCommand import RunLeft, RunRight, Jump
 from scripts.Character.characterMovement import VerticalMovement
 from scripts.Character.characterState import CharacterState, Idle, RunningLeft, RunningRight, Jumping, Falling, Landing
 from scripts.Utils.collision import Collision
@@ -45,7 +45,7 @@ class Character(pygame.sprite.Sprite):
         self.state.update()
         # print(self.state)
         # print(self.on_ground)
-        self.idle_waiting_time_counter += 1
+        
 
 
     def gravity(self):
@@ -77,6 +77,8 @@ class Character(pygame.sprite.Sprite):
                 self.state.changeState(Jumping)
             # Jump().execute(self)
 
-        if not key_pressed and self.on_ground and self.idle_waiting_time_counter >= 12:
-            self.state.changeState(Idle)
-            self.idle_waiting_time_counter = 0
+        if not key_pressed and self.on_ground:
+            self.idle_waiting_time_counter += 1
+            if self.idle_waiting_time_counter >= 12:
+                self.state.changeState(Idle)
+                self.idle_waiting_time_counter = 0
