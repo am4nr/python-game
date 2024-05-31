@@ -20,6 +20,7 @@ class Game:
         mixer.init()
         self.sound = pygame.mixer
         self.music = pygame.mixer.music
+        
         pygame.init()
         
         
@@ -35,6 +36,7 @@ class Game:
 
         self.mouse_pos = pygame.mouse.get_pos()
         self.keystate = pygame.key.get_pressed()
+        self.events = None
 
         self.levels = [
             self.assets.get("Tilemap", "Test-Level"),
@@ -42,18 +44,18 @@ class Game:
         ]
         self.current_level = 0
 
-        # self.character_sprites = self.sprites.handle_spritesheetDictTransformation(
-        #     self.sprites.get_spritesheets("characters", "finn"),
-        #     200,
-        #     200,
-        #     0.32,
-        # )
         self.character_sprites = self.sprites.handle_spritesheetDictTransformation(
-            self.sprites.get_spritesheets("characters", "quack"),
-            64,
-            64,
+            self.sprites.get_spritesheets("characters", "finn"),
+            200,
+            200,
+            0.32,
         )
-        self.character = Character(self, self.character_sprites, 0.75, -0.12)
+        # self.character_sprites = self.sprites.handle_spritesheetDictTransformation(
+        #     self.sprites.get_spritesheets("characters", "quack"),
+        #     64,
+        #     64,
+        # )
+        self.character = Character(self, self.character_sprites, 200, 400, 0.75, -0.12)
         self.clock = pygame.time.Clock()
         
         self.state = None
@@ -65,11 +67,13 @@ class Game:
         self.state.enterState(self)
 
     def event(self):
-        for event in pygame.event.get():
+        self.events = pygame.event.get()
+        for event in self.events:
             if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
             self.state.event(self, event)
+
 
     def update(self):
         self.keystate = pygame.key.get_pressed()

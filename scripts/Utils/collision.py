@@ -50,7 +50,10 @@ class Collision:
         character.on_ground = False
         
         character.rect.update((character.rect.x, character.rect.bottom - character.image.get_height()), character.image.get_size())
-        character.rect.bottom += 1
+        if character.jumping:
+            character.rect.top -= 1
+        else: 
+            character.rect.bottom += 1
         collision_list = pygame.sprite.spritecollide(character, self.solid_layer, False)
         
         return collision_list
@@ -62,7 +65,7 @@ class Collision:
             if character.vel.y >= 0: 
                 character.on_ground = True
                 character.jumping = False
-                character.pos.y = collided_sprite.rect.top - character.rect.height 
+                character.pos.y = collided_sprite.rect.top - character.rect.height
                 character.rect.y = character.pos.y
                 character.vel.y = 0
                 character.jumps = 2
@@ -71,7 +74,7 @@ class Collision:
             elif character.vel.y < 0:
                 character.pos.y = collided_sprite.rect.bottom 
                 character.rect.y = character.pos.y
-                character.vel.y = 0
+                character.vel.y = 1
                 character.on_ground = False
                 character.jumping = False
             else:
@@ -88,7 +91,9 @@ class Collision:
             (character.rect.x, character.rect.bottom - character.image.get_height()),
             character.image.get_size(),
         )
+    
         character.rect.x += character.vel.x
+
         collision_list= pygame.sprite.spritecollide(character, self.solid_layer, False)
         return collision_list
 
@@ -99,13 +104,13 @@ class Collision:
             for collided_sprite in collision_list:
                 #moving right
                 if character.vel.x > 0: 
-                    character.pos.x = collided_sprite.rect.left - character.rect.width
+                    character.pos.x = collided_sprite.rect.left - character.rect.width 
                     character.rect.x = character.pos.x
                     character.vel.x = 0
 
                 #moving left    
                 elif character.vel.x < 0: 
-                    character.pos.x = collided_sprite.rect.right
+                    character.pos.x = collided_sprite.rect.right 
                     character.rect.x = character.pos.x
                     character.vel.x = 0
 

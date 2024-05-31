@@ -27,6 +27,7 @@ class PlayState(GameState):
                 else:
                     game.current_level = game.current_level + 1
 
+
     def update(self, game):
         game.character.update()
 

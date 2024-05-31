@@ -90,7 +90,7 @@ class RunningLeft(CharacterState):
 class Jumping(CharacterState):
     def enter(self):
         self.character.jumping = True
-        self.character.vel.y = -GRAVITY * 22
+        self.character.vel.y = -120
         self.character.jumps -= 1
         self.character.animation.reset(self.character.sprites["jump"], self.character.direction, False, 6)
         self.character.sounds_jump.play()
@@ -108,7 +108,7 @@ class Jumping(CharacterState):
 class Falling(CharacterState):
     def enter(self):
         # self.character.jumping = False
-        self.character.vel.y = GRAVITY
+        self.character.vel.y = 1
         self.character.animation.reset(self.character.sprites["fall"], self.character.direction)
         
         # self.character.rect.update(

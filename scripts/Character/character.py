@@ -1,5 +1,4 @@
 import pygame
-from scripts.Utils.settings import *
 from scripts.Utils.animation import Animation
 from scripts.Character.playerCommand import RunLeft, RunRight, Jump, NoInput
 from scripts.Character.characterMovement import VerticalMovement
@@ -10,9 +9,9 @@ vec = pygame.math.Vector2
 
 
 class Character(pygame.sprite.Sprite):
-    def __init__(self, game, sprites, acc, friction):
+    def __init__(self, game, sprites, start_pos_x, start_pos_y, acc, friction):
         self.game = game
-        self.pos = vec(200, 400)
+        self.pos = vec(start_pos_x, start_pos_y)
         self.vel = vec(0, 0)
         self.acc = vec(0, 0)
         self.speed = acc
@@ -36,32 +35,41 @@ class Character(pygame.sprite.Sprite):
     def update(self):
         self.image = self.animation.update()
         self.state.update()
+        self.key_pressed = False
         self.collision.resolve_horizontal_collision(self)
+        self.horizontal_move()
         self.collision.resolve_vertical_collision(self)
-        self.handle_playerinput() 
+        self.jump()
+        self.collision.resolve_vertical_collision(self)
         self.gravity()
+        self.handle_idle() 
+        
 
     def gravity(self):
         if not self.on_ground and not self.jumping:
             self.state.changeState(Falling)    
             VerticalMovement().execute(self)
-            
+        
+    def jump (self):
+        for event in self.game.events:
+            if event.type == pygame.KEYUP:
+                if event.key == pygame.K_SPACE:
+                    print("yes")
+                    self.key_pressed = True
+                    Jump().execute(self)
 
-    def handle_playerinput(self):
-        key_pressed = False
+    def horizontal_move(self):
         keystate = self.game.keystate
 
         if keystate[pygame.K_LEFT] or keystate[pygame.K_a]:
-            key_pressed = True
+            self.key_pressed = True
             RunLeft().execute(self)
 
         if keystate[pygame.K_RIGHT] or keystate[pygame.K_d]:
-            key_pressed = True
+            self.key_pressed = True
             RunRight().execute(self)
 
-        if keystate[pygame.K_SPACE]:
-            key_pressed = True
-            Jump().execute(self)
-
-        if not key_pressed: 
+       
+    def handle_idle(self):
+         if not self.key_pressed: 
             NoInput().execute(self)
