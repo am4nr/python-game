@@ -1,12 +1,17 @@
 import pygame
 class MovingPlatform(pygame.sprite.Sprite):
-    def __init__(self, game, tilemap, platform_tiles, tile_width, tile_height, speed):
+    def __init__(self, game, tilemap, platform_tiles, tile_width, tile_height, speed, paths, direction):
         super().__init__()
         self.game = game
         self.tilemap = tilemap
         self.tile_width = tile_width
         self.tile_height = tile_height
         self.speed = speed
+        self.paths = paths
+        self.direction = direction
+        self.current_path_index = 0
+        self.current_path = self.paths[self.current_path_index]
+        self.path_index = 0
         self.create_platform(platform_tiles)
 
     def create_platform(self, platform_tiles):
@@ -41,24 +46,29 @@ class MovingPlatform(pygame.sprite.Sprite):
         self.path = [self.rect.copy()]
 
     def update(self):
-        # Move the platform along its path
-        """ next_rect = self.path[self.index]
-        if self.direction == 0:  # Horizontal movement
-            if self.rect.x < next_rect.x:
-                self.rect.x += self.speed
-            elif self.rect.x > next_rect.x:
-                self.rect.x -= self.speed
-            else:
-                self.index = (self.index + 1) % len(self.path)
-        else:  # Vertical movement
-            if self.rect.y < next_rect.y:
-                self.rect.y += self.speed
-            elif self.rect.y > next_rect.y:
-                self.rect.y -= self.speed
-            else:
-                self.index = (self.index + 1) % len(self.path) """
+        if self.paths:
+            current_pos = (self.rect.x // self.tile_width, self.rect.y // self.tile_height)
+            target_pos = self.current_path[self.path_index]
 
-        self.sprite.rect = self.rect  # Update the sprite's rect
+            if current_pos != target_pos:
+                if self.direction == "horizontal":
+                    if current_pos[0] < target_pos[0]:
+                        self.rect.x += self.speed
+                    elif current_pos[0] > target_pos[0]:
+                        self.rect.x -= self.speed
+                else:  # vertical
+                    if current_pos[1] < target_pos[1]:
+                        self.rect.y += self.speed
+                    elif current_pos[1] > target_pos[1]:
+                        self.rect.y -= self.speed
+            else:
+                self.path_index += 1
+                if self.path_index >= len(self.current_path):
+                    self.current_path_index = (self.current_path_index + 1) % len(self.paths)
+                    self.current_path = self.paths[self.current_path_index]
+                    self.path_index = 0
+
+            self.sprite.rect = self.rect
         
     def draw(self, screen):
         screen.blit(self.sprite.image, self.sprite.rect)

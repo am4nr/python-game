@@ -102,7 +102,8 @@ class Tilemap:
                         platform_tiles = self.flood_fill(game_objects_layer["data"], index, visited)
                         print(platform_tiles)
                         if platform_tiles:
-                            self.create_moving_platform(platform_tiles)
+                            paths, direction = self.generate_paths(platform_tiles)
+                            self.create_moving_platform(platform_tiles,paths,direction)
                             
                             #delete selector tiles
                             for tile in platform_tiles:
@@ -130,6 +131,46 @@ class Tilemap:
                             )
                             self.layers[layer]["group"].add(tile_sprite)
                             
+    def generate_paths(self, platform_tiles):
+        paths = []
+        direction = None
+
+        def dfs(index, path):
+            nonlocal direction
+            row = index // self.width
+            col = index % self.width
+            path.append((col, row))
+
+            neighbors = [
+                (col, row - 1),  # Up
+                (col, row + 1),  # Down
+                (col - 1, row),  # Left
+                (col + 1, row),  # Right
+            ]
+
+            for neighbor_col, neighbor_row in neighbors:
+                neighbor_index = neighbor_row * self.width + neighbor_col
+                if (
+                    0 <= neighbor_col < self.width
+                    and 0 <= neighbor_row < self.height
+                    and neighbor_index in platform_tiles
+                    and (neighbor_col, neighbor_row) not in path
+                ):
+                    if direction is None:
+                        if neighbor_col != col:
+                            direction = "horizontal"
+                        elif neighbor_row != row:
+                            direction = "vertical"
+                    dfs(neighbor_index, path)
+
+        for tile_index in platform_tiles:
+            path = []
+            dfs(tile_index, path)
+            if path:
+                paths.append(path)
+
+        return paths, direction
+
     def flood_fill(self, data, start_index, visited):
         width = self.width
         height = self.height
@@ -164,8 +205,8 @@ class Tilemap:
 
         return platform_tiles
     
-    def create_moving_platform(self, platform_tiles):
-        moving_platform = MovingPlatform(self.game, self, platform_tiles, self.tile_width, self.tile_height, PLATFORM_SPEED)
+    def create_moving_platform(self, platform_tiles, paths, direction):
+        moving_platform = MovingPlatform(self.game, self, platform_tiles, self.tile_width, self.tile_height, PLATFORM_SPEED, paths, direction)
         #print(moving_platform)
         self.layers["gameObjects"]["moving_platforms"].add(moving_platform)
         #print(self.layers["gameObjects"]["moving_platforms"])
