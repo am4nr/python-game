@@ -34,6 +34,7 @@ class RunRight(PlayerCommand):
             character.state.changeState(RunningRight)
         HorizontalMovement().execute(character)
 
+
 class Jump(PlayerCommand):
     def execute(self, character: 'Character'):
         if character.jumps > 0:

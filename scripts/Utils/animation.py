@@ -22,8 +22,8 @@ class Animation:
             if not self.loop:
                 self.done = True
 
-        # return trim_surface(self.images[self.currentAnimIdx])
-        return self.images[self.currentAnimIdx]
+        return trim_surface(self.images[self.currentAnimIdx])
+        #return self.images[self.currentAnimIdx]
     
     def check_done(self):
         return self.done

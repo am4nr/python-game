@@ -44,17 +44,17 @@ class Game:
         ]
         self.current_level = 0
 
-        self.character_sprites = self.sprites.handle_spritesheetDictTransformation(
-            self.sprites.get_spritesheets("characters", "finn"),
-            200,
-            200,
-            0.32,
-        )
         # self.character_sprites = self.sprites.handle_spritesheetDictTransformation(
-        #     self.sprites.get_spritesheets("characters", "quack"),
-        #     64,
-        #     64,
+        #     self.sprites.get_spritesheets("characters", "finn"),
+        #     200,
+        #     200,
+        #     0.32,
         # )
+        self.character_sprites = self.sprites.handle_spritesheetDictTransformation(
+            self.sprites.get_spritesheets("characters", "quack"),
+            64,
+            64,
+        )
         self.character = Character(self, self.character_sprites, 200, 400, 0.75, -0.12)
         self.clock = pygame.time.Clock()
         

@@ -90,9 +90,9 @@ class RunningLeft(CharacterState):
 class Jumping(CharacterState):
     def enter(self):
         self.character.jumping = True
-        self.character.vel.y = -120
+        self.character.vel.y = -30
         self.character.jumps -= 1
-        self.character.animation.reset(self.character.sprites["jump"], self.character.direction, False, 6)
+        self.character.animation.reset(self.character.sprites["jump"], self.character.direction, False, 12)
         self.character.sounds_jump.play()
         # self.character.rect.update(self.character.rect.topleft , self.character.image.get_size())
 

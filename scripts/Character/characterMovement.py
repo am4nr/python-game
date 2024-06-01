@@ -17,7 +17,9 @@ class HorizontalMovement(Movement):
     def execute(self, character: 'Character'):
         character.acc.x = 0
 
-        if character.direction == "left":
+        if character.collided_x:
+            character.acc.x = 0
+        elif character.direction == "left":
             character.acc.x = -character.speed
         elif character.direction == "right":
             character.acc.x = character.speed
@@ -27,9 +29,9 @@ class HorizontalMovement(Movement):
 
         character.acc.x += character.vel.x * character.friction
         character.vel.x += character.acc.x
+        # if not character.collided_x:
         character.pos.x += character.vel.x + 0.5 * character.acc.x
         character.rect.x = character.pos.x
-
 
 class VerticalMovement(Movement):
     def execute(self, character: 'Character'):
@@ -37,7 +39,7 @@ class VerticalMovement(Movement):
 
         if character.jumping:
             character.acc.y = -character.speed
-        elif character.on_ground:
+        elif character.on_ground or character.collided_y:
             character.acc.y = 0
         elif not character.jumping and not character.on_ground:
             character.acc.y = character.speed
@@ -48,5 +50,16 @@ class VerticalMovement(Movement):
 
         character.acc.y += character.vel.y * character.friction
         character.vel.y += character.acc.y
+        # if not character.collided_y:
         character.pos.y += character.vel.y + 0.5 * character.acc.y
         character.rect.y = character.pos.y
+
+# class DoVerticalMovement(Movement):
+#     def execute(self, character: "Character"):
+#         character.pos.y += character.dy
+#         character.rect.y = character.pos.y
+
+# class DoHorizontalMovement(Movement):
+#     def execute(self, character: "Character"):
+#         character.pos.x += character.dx
+#         character.rect.x = character.pos.x
