@@ -33,7 +33,7 @@ class Collision:
 
     def horizontal_collision(self, character: "Character"):
         # for tile in self.solid_layer.sprites():
-        #     if tile.rect.colliderect(character.rect.x + character.vel.x, character.rect.y, character.rect.width, character.rect.height):
+        #     if tile.rect.colliderect(character.rect.x + character.dx, character.rect.y, character.rect.width, character.rect.height):
         collision_list = self.detect_horizontal_collision(character)
         if collision_list:
             for collided_sprite in collision_list:
@@ -76,7 +76,7 @@ class Collision:
 
     def vertical_collision(self, character: "Character"):
         # for tile in self.solid_layer.sprites():
-        # if tile.rect.colliderect(character.rect.x, character.rect.y + character.vel.y, character.rect.width, character.rect.height):
+        # if tile.rect.colliderect(character.rect.x, character.rect.y + character.dy, character.rect.width, character.rect.height):
         # check if below the ground i.e. jumping
         collision_list = self.detect_vertical_collision(character)
         if collision_list:

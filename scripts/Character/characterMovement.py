@@ -32,7 +32,6 @@ class HorizontalMovement(Movement):
 
         character.acc.x += character.vel.x * character.friction
         character.vel.x += character.acc.x
-        # if not character.collided_x:
         character.pos.x += character.vel.x + 0.5 * character.acc.x
         character.rect.x = character.pos.x
 
@@ -53,7 +52,6 @@ class VerticalMovement(Movement):
 
         character.acc.y += character.vel.y * character.friction
         character.vel.y += character.acc.y
-        # if not character.collided_y:
         character.pos.y += character.vel.y + 0.5 * character.acc.y
         character.rect.y = character.pos.y
 
