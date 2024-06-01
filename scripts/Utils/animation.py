@@ -2,7 +2,6 @@ import pygame
 from scripts.Utils.utils import trim_surface
 
 
-
 class Animation:
     def __init__(self):
         self.img_dur = 10
@@ -22,9 +21,9 @@ class Animation:
             if not self.loop:
                 self.done = True
 
-        return trim_surface(self.images[self.currentAnimIdx])
-        #return self.images[self.currentAnimIdx]
-    
+        # return trim_surface(self.images[self.currentAnimIdx])
+        return self.images[self.currentAnimIdx]
+
     def check_done(self):
         return self.done
 
@@ -44,7 +43,7 @@ class Animation:
         for sprite in sprites:
             self.images.append(pygame.transform.flip(sprite.image, True, False))
 
-    def reset(self, sprites, direction, loop = True, img_dur = 12, next_state = None):
+    def reset(self, sprites, direction, loop=True, img_dur=12, next_state=None):
         self.frame = 0
         self.currentAnimIdx = 0
         self.img_dur = img_dur

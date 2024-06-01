@@ -8,7 +8,7 @@ from scripts.Character.characterMovement import HorizontalMovement, VerticalMove
 #     from scripts.Character.character import Character
 
 
-class CharacterState():
+class CharacterState:
     def __init__(self, character):
         self.currentState = Idle
         self.character = character
@@ -18,13 +18,12 @@ class CharacterState():
 
     def update(self):
         self.currentState.update(self)
-        
 
     def exitState(self):
         pass
 
     def changeState(self, newState):
-        if (self.currentState != newState): 
+        if self.currentState != newState:
             self.currentState.exitState(self)
             self.currentState = newState
             self.currentState.enter(self)
@@ -33,7 +32,9 @@ class CharacterState():
 
 class Idle(CharacterState):
     def enter(self):
-        self.character.animation.reset(self.character.sprites["idle"], self.character.direction)
+        self.character.animation.reset(
+            self.character.sprites["idle"], self.character.direction
+        )
         # self.character.rect.update(
         #     self.character.rect.topleft,
         #     self.character.image.get_size(),
@@ -92,7 +93,9 @@ class Jumping(CharacterState):
         self.character.jumping = True
         self.character.vel.y = -30
         self.character.jumps -= 1
-        self.character.animation.reset(self.character.sprites["jump"], self.character.direction, False, 12)
+        self.character.animation.reset(
+            self.character.sprites["jump"], self.character.direction, False, 12
+        )
         self.character.sounds_jump.play()
         # self.character.rect.update(self.character.rect.topleft , self.character.image.get_size())
 
@@ -109,24 +112,28 @@ class Falling(CharacterState):
     def enter(self):
         # self.character.jumping = False
         self.character.vel.y = 1
-        self.character.animation.reset(self.character.sprites["fall"], self.character.direction)
-        
+        self.character.animation.reset(
+            self.character.sprites["fall"], self.character.direction
+        )
+
         # self.character.rect.update(
         #     self.character.rect.topleft,
         #     self.character.image.get_size(),
         # )
 
     def update(self):
-        if self.character.on_ground: 
+        if self.character.on_ground:
             self.character.state.changeState(Landing)
 
     def exitState(self):
-        self.character.vel.y =0
+        self.character.vel.y = 0
 
 
 class Landing(CharacterState):
     def enter(self):
-        self.character.animation.reset(self.character.sprites["land"], self.character.direction, False)
+        self.character.animation.reset(
+            self.character.sprites["land"], self.character.direction, False
+        )
         # self.character.rect.update(
         #     self.character.rect.topleft,
         #     self.character.image.get_size(),
@@ -135,14 +142,14 @@ class Landing(CharacterState):
     def update(self):
         if self.character.animation.check_done():
             self.character.state.changeState(Idle)
+
     def exitState(self):
         pass
-        
 
 
-#hit
-#wallslide
-#attack
-#die
-#powerup
-#doublejump
+# hit
+# wallslide
+# attack
+# die
+# powerup
+# doublejump

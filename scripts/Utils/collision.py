@@ -24,23 +24,23 @@ class Collision:
         elif character.direction == "right":
             character.rect.right += 3
 
-        collision_list= pygame.sprite.spritecollide(character, self.solid_layer, False)
+        collision_list = pygame.sprite.spritecollide(character, self.solid_layer, False)
         if character.direction == "left":
             character.rect.left += 3
         elif character.direction == "right":
             character.rect.right -= 3
         return collision_list
-    
-    def horizontal_collision(self, character: "Character"):
 
+    def horizontal_collision(self, character: "Character"):
         # for tile in self.solid_layer.sprites():
         #     if tile.rect.colliderect(character.rect.x + character.vel.x, character.rect.y, character.rect.width, character.rect.height):
         collision_list = self.detect_horizontal_collision(character)
         if collision_list:
             for collided_sprite in collision_list:
-                
                 if character.vel.x > 0:
-                    character.pos.x = collided_sprite.rect.left - character.rect.width - 3
+                    character.pos.x = (
+                        collided_sprite.rect.left - character.rect.width - 3
+                    )
                     character.rect.x = character.pos.x
                     character.vel.x = 0
                     character.collided_x = True
@@ -75,14 +75,13 @@ class Collision:
         return collision_list
 
     def vertical_collision(self, character: "Character"):
-            
         # for tile in self.solid_layer.sprites():
-            # if tile.rect.colliderect(character.rect.x, character.rect.y + character.vel.y, character.rect.width, character.rect.height):
-                    #check if below the ground i.e. jumping
+        # if tile.rect.colliderect(character.rect.x, character.rect.y + character.vel.y, character.rect.width, character.rect.height):
+        # check if below the ground i.e. jumping
         collision_list = self.detect_vertical_collision(character)
         if collision_list:
             for collided_sprite in collision_list:
-                if character.vel.y >= 0: 
+                if character.vel.y >= 0:
                     character.on_ground = True
                     character.jumping = False
                     character.pos.y = collided_sprite.rect.top - character.rect.height
@@ -91,7 +90,7 @@ class Collision:
                     character.jumps = 2
                     return
 
-                #moving up  
+                # moving up
 
                 elif (
                     character.vel.y < 0
@@ -108,7 +107,3 @@ class Collision:
                     character.jumps = 0
                     character.collided_y = True
                     return
-
-
-
-

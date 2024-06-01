@@ -55,7 +55,7 @@ class Character(pygame.sprite.Sprite):
         self.key_pressed = False
         self.collision.vertical_collision(self)
         self.collision.horizontal_collision(self)
-        self.gravity()  
+        self.gravity()
         self.jump()
         self.horizontal_move()
         # self.update_x_position()

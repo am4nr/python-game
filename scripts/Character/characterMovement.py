@@ -1,6 +1,8 @@
 from typing import TYPE_CHECKING
+
 if TYPE_CHECKING:
     from scripts.Character.character import Character
+
 
 class Movement:
     __instance = None
@@ -10,11 +12,12 @@ class Movement:
             cls.__instance = object.__new__(cls)
         return cls.__instance
 
-    def execute(self, character: 'Character'):
+    def execute(self, character: "Character"):
         raise NotImplementedError
-        
+
+
 class HorizontalMovement(Movement):
-    def execute(self, character: 'Character'):
+    def execute(self, character: "Character"):
         character.acc.x = 0
 
         if character.collided_x:
@@ -33,8 +36,9 @@ class HorizontalMovement(Movement):
         character.pos.x += character.vel.x + 0.5 * character.acc.x
         character.rect.x = character.pos.x
 
+
 class VerticalMovement(Movement):
-    def execute(self, character: 'Character'):
+    def execute(self, character: "Character"):
         character.acc.y = 0
 
         if character.jumping:
@@ -43,16 +47,16 @@ class VerticalMovement(Movement):
             character.acc.y = 0
         elif not character.jumping and not character.on_ground:
             character.acc.y = character.speed
-            
+
         if character.acc.y != 0:
             character.acc.y *= 0.7071
-
 
         character.acc.y += character.vel.y * character.friction
         character.vel.y += character.acc.y
         # if not character.collided_y:
         character.pos.y += character.vel.y + 0.5 * character.acc.y
         character.rect.y = character.pos.y
+
 
 # class DoVerticalMovement(Movement):
 #     def execute(self, character: "Character"):
