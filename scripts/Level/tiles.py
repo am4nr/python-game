@@ -2,8 +2,9 @@ import os
 import json
 import pygame
 import math
+from scripts.Utils.settings import *
 from scripts.Utils.utils import trim_surface
-
+from scripts.GameObjects.platform import MovingPlatform
 scripts_folders = os.path.dirname(__file__)
 game_folder = os.getcwd()
 assets_folder = os.path.join(game_folder, "assets")
@@ -24,33 +25,38 @@ class Tileset:
         self.tile_count = self.json["tilecount"]
 
     def get_tile_surface(self, tile_id):
-        if tile_id < 0 or tile_id >= self.tile_count:
-            return None
+        if self.name == "game_objects":
+            objects = ["player", "collectable", "plat_horizontal", "plat_select", "plat_vertical", "enemy", "goal"]
+            return objects[tile_id]
+        else:   
+            if tile_id < 0 or tile_id >= self.tile_count:
+                return None
 
-        row = math.floor(tile_id / self.columns)
-        col = math.floor(tile_id - row * self.columns)
-        surf = pygame.Surface(
-            (self.tile_width, self.tile_height), pygame.SRCALPHA
-        ).convert_alpha()
-        surf.blit(
-            self.image,
-            (0, 0),
-            (
-                (col * self.tile_width),
-                (row * self.tile_height),
-                self.tile_width,
-                self.tile_height,
-            ),
-        )
-        return trim_surface(surf)
-        #return surf
-
+            row = math.floor(tile_id / self.columns)
+            col = math.floor(tile_id - row * self.columns)
+            surf = pygame.Surface(
+                (self.tile_width, self.tile_height), pygame.SRCALPHA
+            ).convert_alpha()
+            surf.blit(
+                self.image,
+                (0, 0),
+                (
+                    (col * self.tile_width),
+                    (row * self.tile_height),
+                    self.tile_width,
+                    self.tile_height,
+                ),
+            )
+            #return trim_surface(surf)
+            return surf
+        
 class Tilemap:
     def __init__(self, game, tilemap):
-        tmap = os.path.join(assets_folder, "maps", tilemap + ".json")
-        with open(tmap) as tm:
+        self.tmap = os.path.join(assets_folder, "maps", tilemap + ".json")
+        with open(self.tmap) as tm:
             self.json = json.load(tm)
-
+        pygame.font.init()
+        self.font = pygame.font.SysFont('Arial',15)
         self.game = game
         self.width = self.json["width"]
         self.height = self.json["height"]
@@ -66,32 +72,170 @@ class Tilemap:
             tileset_obj = self.game.assets.get("Tileset", name)
             self.tilesets.append((firstgid, tileset_obj))
 
-        self.load_layers()
-
+        #self.load_layers()
+        
     def load_layers(self):
-        layers = self.json["layers"]
+        self.prepare_layers()
+        self.load_game_object_layer()
+        self.load_tile_layers()
+        
+    def prepare_layers(self):
+        for layer in self.json["layers"]:
+            #print(layer["name"])
+            self.layers.update({layer["name"]:{
+                "group":pygame.sprite.Group(),
+                "data": layer.get("data",[]),
+                }})
+            #if layer["name"] == "solid":
+            #    print(self.layers[layer["name"]]["data"])
+            
+    def load_game_object_layer(self):
+        #print(self.tmap)
+        game_objects_layer = self.layers["gameObjects"]
+        paths = self.get_paths()
+        if game_objects_layer:
+            game_objects_layer["moving_platforms"] = pygame.sprite.Group()
 
-        for layer in layers:
-            layername = layer["name"]
-            self.layers[layername] = {
-                "group": pygame.sprite.Group(),
-                "data": layer.get("data", []),
-            }
-            for index, tile_id in enumerate(layer["data"]):
-                if tile_id != 0:
-                    tile_surf = self.get_tile_surface(tile_id)
-                    if tile_surf is not None:
-                        col = index % self.width
-                        row = index // self.width
-                        tile_sprite = self.game.assets.get("Sprite", tile_surf)
-                        tile_sprite.rect = pygame.rect.Rect(
-                            col * self.tile_width,
-                            row * self.tile_height,
-                            self.tile_width,
-                            self.tile_height,
-                        )
-                        self.layers[layername]["group"].add(tile_sprite)
+            visited = set()  # Keep track of visited tiles
+            for index, tile_id in enumerate(game_objects_layer["data"]):
+                if tile_id != 0 and index not in visited:
+                    object_type = self.get_tile_surface(tile_id)
+                    if object_type == "plat_select":
+                        platform_tiles = self.flood_fill(game_objects_layer["data"], index, visited)
+                        #print(f"Platform tiles: {platform_tiles}")  # Debug print
+                        if platform_tiles:
+                            # delete selector tiles
+                            for tile in platform_tiles:
+                                game_objects_layer["data"][tile] = 0
+                                
+                            
+                                tile_neighbors = self.get_neighbors(tile)
+                                for path in paths:
+                                    for tile_neighbor in tile_neighbors:
+                                        if tile_neighbor in path:
+                                            path, direction = self.convert_path(path)
+                                            self.create_moving_platform(platform_tiles,path,direction)
+                                            print(path)
+                                            #print(f"path: {self.convert_path(path)}")
+                                            #print(f"platform: {platform_tiles}")
+                                            break
+    def convert_path(self, path):
+        tile_size = self.tile_height
+        width = self.width
+        converted_path = []
+        direction = None
+        
+        for step in path:
+            row = step // width
+            col = step % width
+            converted_path.append([col*tile_size,row*tile_size])
+            
+        if converted_path[0][0] == converted_path[1][0]:
+            direction = "vertical"
+            converted_path.sort(key=lambda x: x[1])
+        elif converted_path[0][1] == converted_path[1][1]:
+            direction = "horizontal"
+            converted_path.sort(key=lambda x: x[0])
+        return converted_path,direction
+    
+    def get_paths(self):
+        game_objects_offset = 0
+        for tileset in self.tilesets:
+            if tileset[1].name == "game_objects":
+                game_objects_offset = tileset[0]-1
+        gameObjects = self.layers["gameObjects"]["data"]
+        all_path_tiles = []
+        paths = []
+        visited = set()
+        for index, gameObject in enumerate(gameObjects):
+            if gameObject == 3+game_objects_offset:
+                all_path_tiles.append({index:"plat_horizontal"})
+            if gameObject == 5+game_objects_offset:
+                all_path_tiles.append({index:"plat_vertical"})
+        for path_tile in all_path_tiles:
+            index = list(path_tile.keys())[0]
+            if index not in visited:
+                path = []
+                stack = [index]
+                while stack:
+                    current_index = stack.pop()
+                    if current_index not in visited:
+                        visited.add(current_index)
+                        path.append(current_index)
+                        neighbors = self.get_neighbors(current_index)
+                        for neighbor in neighbors:
+                            if neighbor in [list(d.keys())[0] for d in all_path_tiles]:
+                                stack.append(neighbor)
+                paths.append(path)
+                
+        return paths
+        
+    def load_tile_layers(self):
+        # Handle other layers
+        for layer in self.layers:
+            
+            #layer_name = layer["name"]
+            if layer != "gameObjects":
+                for index, tile_id in enumerate(self.layers[layer]["data"]):
+                    if tile_id != 0:
+                        tile_surf = self.get_tile_surface(tile_id)
+                        if tile_surf is not None:
+                            col = index % self.width
+                            row = index // self.width
+                            
+                            #print id ontop of tile_surf
+                            """ text_surf = self.font.render(f"{index}",True,(255,255,255))
+                            tile_surf.blit(text_surf,(0,0)) """
+                            tile_sprite = self.game.assets.get("Sprite", tile_surf)
+                            
+                            tile_sprite.rect = pygame.rect.Rect(
+                                col * self.tile_width,
+                                row * self.tile_height,
+                                self.tile_width,
+                                self.tile_height,
+                            )
+                            self.layers[layer]["group"].add(tile_sprite)
+    
+    def flood_fill(self, data, start_index, visited):
+        platform_tiles = []
+        stack = [start_index]
+        while stack:
+            index = stack.pop()
+            if index not in visited:
+                visited.add(index)
+                object_type = self.get_tile_surface(data[index])
+                if object_type == "plat_select":
+                    platform_tiles.append(index)
+                    stack.extend(self.get_neighbors(index))
 
+        return platform_tiles
+    
+    def is_valid_index(self, index):
+            row = index // self.width
+            col = index % self.width
+            return 0 <= row < self.height and 0 <= col < self.width
+        
+    def get_neighbors(self, index, horizontal=True, vertical=True):
+            neighbors = []
+            if vertical:
+                if self.is_valid_index(index - self.width):
+                    neighbors.append(index - self.width)  # Up
+                if self.is_valid_index(index + self.width):
+                    neighbors.append(index + self.width)  # Down
+            if horizontal:
+                if self.is_valid_index(index - 1) and (index % self.width) > 0:
+                    neighbors.append(index - 1)  # Left
+                if self.is_valid_index(index + 1) and (index % self.width) < self.width - 1:
+                    neighbors.append(index + 1)  # Right
+            return neighbors
+        
+    def create_moving_platform(self, platform_tiles, path, direction):
+        moving_platform = MovingPlatform(self.game, self, platform_tiles, self.tile_width, self.tile_height, PLATFORM_SPEED, path, direction)
+        print(f"Path: {path}")
+        print(f"Initial position: {moving_platform.rect}")
+        print(f"Directions: {direction}")
+        self.layers["gameObjects"]["moving_platforms"].add(moving_platform)
+            
     def get_tile_surface(self, tile_id):
         for firstgid, tileset in self.tilesets:
             if tile_id >= firstgid and tile_id <=firstgid+tileset.tile_count:

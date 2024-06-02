@@ -7,8 +7,8 @@ class PlayState(GameState):
     def enterState(self, game):
         print("Entered Playstate")
         game.music = game.assets.get("Music","music/loop.wav")
-        # game.music.load("assets/music/loop.wav")
-        # game.music.play(-1)
+        #game.music.load("assets/music/loop.wav")
+        #game.music.play(-1)
 
     def exitState(self, game):
         pass
@@ -22,16 +22,16 @@ class PlayState(GameState):
                 else:
                     game.current_level = game.current_level - 1
             if keys[pygame.K_2]:
-                if game.current_level == len(game.levels) - 1:
-                    game.current_level = 0
-                else:
-                    game.current_level = game.current_level + 1
-
+                game.level_manager.next_level()
 
     def update(self, game):
+        #print("Updating play state")
+        game.level_manager.current_level.update()
+        #print("Updated current level")
         game.character.update()
 
     def render(self, game):
+        #print("Rendering play state")
         game.screen.fill((0, 0, 0))
         for line in range(0, math.ceil(WIDTH / TILE_SIZE)):
             pygame.draw.line(
@@ -46,8 +46,7 @@ class PlayState(GameState):
                 (line * TILE_SIZE, 0),
                 (line * TILE_SIZE, HEIGHT),
             )
-        for layer in game.levels[game.current_level].get_layers().values():
-            layer["group"].draw(game.screen)
-
-        game.screen.blit(game.character.image, (game.character.rect.x, game.character.rect.bottom - game.character.image.get_height()))
-        # game.screen.blit(game.character.image, game.character.rect)
+            
+        game.level_manager.current_level.render()
+        #print("Rendered current level")
+        game.screen.blit(game.character.image, game.character.rect)

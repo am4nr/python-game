@@ -10,10 +10,10 @@ class CharacterSpriteManager:
 
     def get_spritesheets(self, category, subcategory):
         self.path = os.path.join(os.getcwd(), "assets", category, subcategory)
-        print(self.path)
+        #print(self.path)
         self.spritesheets = {}
         for filename in os.listdir(self.path):
-            print(self.path + filename)
+            #print(self.path + filename)
             self.spritesheets[filename.split(".")[0]] = self.assetmanager.get(
                 "Image", category + "/" + subcategory + "/" + filename
             )
