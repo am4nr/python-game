@@ -5,6 +5,9 @@ import math
 from scripts.Utils.settings import *
 from scripts.Utils.utils import trim_surface
 from scripts.GameObjects.platform import MovingPlatform
+from scripts.GameObjects.collectable import Collectable
+from scripts.GameObjects.trap import Trap
+from scripts.GameObjects.goal import Goal
 scripts_folders = os.path.dirname(__file__)
 game_folder = os.getcwd()
 assets_folder = os.path.join(game_folder, "assets")
@@ -95,8 +98,8 @@ class Tilemap:
         paths = self.get_paths()
         if game_objects_layer:
             game_objects_layer["moving_platforms"] = pygame.sprite.Group()
-
             visited = set()  # Keep track of visited tiles
+            
             for index, tile_id in enumerate(game_objects_layer["data"]):
                 if tile_id != 0 and index not in visited:
                     object_type = self.get_tile_surface(tile_id)
@@ -119,6 +122,16 @@ class Tilemap:
                                             #print(f"path: {self.convert_path(path)}")
                                             #print(f"platform: {platform_tiles}")
                                             break
+                    
+                    elif object_type == "collectable":
+                        self.create_collectable(index)
+                        
+                    elif object_type == "trap":
+                        self.create_trap(index)
+                        
+                    elif object_type == "goal":
+                        self.create_goal(index)
+                        
     def convert_path(self, path):
         tile_size = self.tile_height
         width = self.width
@@ -231,11 +244,42 @@ class Tilemap:
         
     def create_moving_platform(self, platform_tiles, path, direction):
         moving_platform = MovingPlatform(self.game, self, platform_tiles, self.tile_width, self.tile_height, PLATFORM_SPEED, path, direction)
-        # print(f"Path: {path}")
-        # print(f"Initial position: {moving_platform.rect}")
-        # print(f"Directions: {direction}")
         self.layers["gameObjects"]["moving_platforms"].add(moving_platform)
-            
+        
+    def index_to_coordinates(self,index):
+        row = index // self.width
+        col = index % self.width
+        x = col*self.tile_width
+        y = row*self.tile_height
+        return x,y
+    
+    def create_collectable(self, index):
+        x,y = self.index_to_coordinates(index)
+        collectable = Collectable(self.game, x, y,)
+        self.layers["gameObjects"]["group"].add(collectable)
+        
+    def create_trap(self, index):
+        x,y = self.index_to_coordinates(index)
+        surf = self.get_tile_surface(self.layers["solid"]["data"]["index"])
+        rect = pygame.rect.Rect(x,
+                                y,
+                                self.tile_width,
+                                self.tile_height,
+                            )
+        trap = Trap(self.game, x, y, surf, rect)
+        self.layers["gameObjects"]["group"].add(trap)
+        
+    def create_goal(self, index):
+        x, y = self.index_to_coordinates(index)
+        surf = self.get_tile_surface(self.layers["solid"]["data"]["index"])
+        rect = pygame.rect.Rect(x,
+                                y,
+                                self.tile_width,
+                                self.tile_height,
+                            )
+        goal = Goal(self.game, x, y, surf, rect)
+        self.layers["gameObjects"]["group"].add(goal)
+        
     def get_tile_surface(self, tile_id):
         for firstgid, tileset in self.tilesets:
             if tile_id >= firstgid and tile_id <=firstgid+tileset.tile_count:
