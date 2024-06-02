@@ -18,6 +18,7 @@ class OptionsState(GameState):
             base_color="White",
             hovering_color="Green",
         )
+        
         self.bg = game.assets.get("Image", "background/BG.png")
         self.volume_slider = Slider(300, 250, 200, 20, 0, 100, 50)
     
