@@ -12,6 +12,11 @@ class Collision:
             "group"
         ]
 
+    def update_level(self):
+        self.solid_layer = self.game.current_level.tilemap.get_layers()["solid"][
+            "group"
+        ]
+
     def detect_horizontal_collision(self, character: "Character"):
         character.collided_x = False
 
