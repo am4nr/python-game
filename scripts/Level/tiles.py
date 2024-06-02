@@ -47,8 +47,9 @@ class Tileset:
                     self.tile_height,
                 ),
             )
-            return trim_surface(surf)
-
+            #return trim_surface(surf)
+            return surf
+        
 class Tilemap:
     def __init__(self, game, tilemap):
         self.tmap = os.path.join(assets_folder, "maps", tilemap + ".json")
@@ -119,6 +120,7 @@ class Tilemap:
                                             #print(f"platform: {platform_tiles}")
                                             break
     def convert_path(self, path):
+        tile_size = self.tile_height
         width = self.width
         converted_path = []
         direction = None
@@ -126,13 +128,13 @@ class Tilemap:
         for step in path:
             row = step // width
             col = step % width
-            converted_path.append([row,col])
+            converted_path.append([col*tile_size,row*tile_size])
             
         if converted_path[0][0] == converted_path[1][0]:
-            direction = "horizontal"
+            direction = "vertical"
             converted_path.sort(key=lambda x: x[1])
         elif converted_path[0][1] == converted_path[1][1]:
-            direction = "vertical"
+            direction = "horizontal"
             converted_path.sort(key=lambda x: x[0])
         return converted_path,direction
     
@@ -182,8 +184,8 @@ class Tilemap:
                             row = index // self.width
                             
                             #print id ontop of tile_surf
-                            text_surf = self.font.render(f"{index}",True,(255,255,255))
-                            tile_surf.blit(text_surf,(0,0))
+                            """ text_surf = self.font.render(f"{index}",True,(255,255,255))
+                            tile_surf.blit(text_surf,(0,0)) """
                             tile_sprite = self.game.assets.get("Sprite", tile_surf)
                             
                             tile_sprite.rect = pygame.rect.Rect(

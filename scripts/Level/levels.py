@@ -52,7 +52,7 @@ class Level:
         print(f"Loaded {len(self.moving_platforms)} moving platforms")
         for platform in self.moving_platforms:
             print(f"Loaded platform: {platform}")
-            self.gameObjects.add(platform.sprite)  # Add the platform sprite to the gameObjects group
+            self.gameObjects.add(platform)  # Add the platform sprite to the gameObjects group
 
 
     def update(self):
