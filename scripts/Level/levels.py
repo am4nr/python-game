@@ -50,9 +50,9 @@ class Level:
         self.tilemap.load_layers()
         self.moving_platforms = self.tilemap.layers["gameObjects"]["moving_platforms"]
         self.solid_layer = self.tilemap.layers["solid"]["group"]
-        print(f"Loaded {len(self.moving_platforms)} moving platforms")
+        # print(f"Loaded {len(self.moving_platforms)} moving platforms")
         for platform in self.moving_platforms:
-            print(f"Loaded platform: {platform}")
+            # print(f"Loaded platform: {platform}")
             self.solid_layer.add(platform)  # Add the platform sprite to the gameObjects group
 
 
@@ -60,7 +60,7 @@ class Level:
         #print("Updating level")
         self.gameObjects.update()
         for platform in self.moving_platforms:
-            print(f"Updating platform: {platform}")
+            # print(f"Updating platform: {platform}")
             platform.update()
 
     def render(self):
@@ -68,7 +68,7 @@ class Level:
         # Render the level tiles and objects
         for layer in self.tilemap.get_layers().values():
             layer["group"].draw(self.game.screen)
-        print(self.moving_platforms)
+        # print(self.moving_platforms)
         for platform in self.moving_platforms:
             platform.draw(self.game.screen)
             

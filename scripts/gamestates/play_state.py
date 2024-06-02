@@ -47,7 +47,6 @@ class PlayState(GameState):
                 (line * TILE_SIZE, HEIGHT),
             )
             
-        for layer in game.levels[game.current_level].get_layers().values():
-            layer["group"].draw(game.screen)
+        game.level_manager.current_level.render()
         #print("Rendered current level")
         game.screen.blit(game.character.image, game.character.rect)

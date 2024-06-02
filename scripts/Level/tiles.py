@@ -115,7 +115,7 @@ class Tilemap:
                                         if tile_neighbor in path:
                                             path, direction = self.convert_path(path)
                                             self.create_moving_platform(platform_tiles,path,direction)
-                                            print(path)
+                                            # print(path)
                                             #print(f"path: {self.convert_path(path)}")
                                             #print(f"platform: {platform_tiles}")
                                             break
@@ -231,9 +231,9 @@ class Tilemap:
         
     def create_moving_platform(self, platform_tiles, path, direction):
         moving_platform = MovingPlatform(self.game, self, platform_tiles, self.tile_width, self.tile_height, PLATFORM_SPEED, path, direction)
-        print(f"Path: {path}")
-        print(f"Initial position: {moving_platform.rect}")
-        print(f"Directions: {direction}")
+        # print(f"Path: {path}")
+        # print(f"Initial position: {moving_platform.rect}")
+        # print(f"Directions: {direction}")
         self.layers["gameObjects"]["moving_platforms"].add(moving_platform)
             
     def get_tile_surface(self, tile_id):
