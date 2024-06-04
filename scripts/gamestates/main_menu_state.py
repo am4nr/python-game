@@ -11,23 +11,23 @@ class MainMenuState(GameState):
     buttons = {}
 
     def enterState(self, game):
-        """ self.buttons["PLAY_BACK"] = Button(
-            image=None,
-            pos=(320, 230),
-            text_input="BACK",
-            font=self.get_font(75),
-            base_color="White",
-            hovering_color="Green",
-        )
+        # self.buttons["PLAY_BACK"] = Button(
+        #     image=None,
+        #     pos=(320, 230),
+        #     text_input="BACK",
+        #     font=self.get_font(75),
+        #     base_color="White",
+        #     hovering_color="Green",
+        # )
 
-        self.buttons["OPTIONS_BACK"] = Button(
-            image=None,
-            pos=(320, 230),
-            text_input="BACK",
-            font=self.get_font(75),
-            base_color="Black",
-            hovering_color="Green",
-        )"""
+        # self.buttons["OPTIONS_BACK"] = Button(
+        #     image=None,
+        #     pos=(320, 230),
+        #     text_input="BACK",
+        #     font=self.get_font(75),
+        #     base_color="Black",
+        #     hovering_color="Green",
+        # )
         self.buttons["PLAY_BUTTON"] = Button(
             game.assets.get("Image", "objects/buttons/play_button.png"),
             pos=(WIDTH / 2, HEIGHT / 4 + 90),
