@@ -17,7 +17,7 @@ vec = pygame.math.Vector2
 
 
 class Character(pygame.sprite.Sprite):
-    def __init__(self, game, sprites, start_pos_x, start_pos_y, speed, friction):
+    def __init__(self, game, sprites, start_pos_x, start_pos_y, speed, gravity, friction):
         self.game = game
         self.pos = vec(start_pos_x, start_pos_y)
         self.vel = vec(0, 0)
@@ -42,6 +42,7 @@ class Character(pygame.sprite.Sprite):
         # self.dy = 0
         self.collided_x = False
         self.collided_y = False
+        self.gravity = gravity
 
     def update(self):
         # self.dx = 0
@@ -55,23 +56,25 @@ class Character(pygame.sprite.Sprite):
         self.key_pressed = False
         self.collision.vertical_collision(self)
         self.collision.horizontal_collision(self)
-        self.gravity()
-        self.jump()
         self.horizontal_move()
+        self.apply_gravity()
+        self.jump()
+        
         # self.update_x_position()
         # self.update_y_position()
         self.handle_idle()
 
-    def gravity(self):
+    def apply_gravity(self):
         if not self.on_ground and not self.jumping:
-            self.state.changeState(Falling)
             VerticalMovement().execute(self)
+            self.state.changeState(Falling)
 
     def jump(self):
         for event in self.game.events:
             if event.type == pygame.KEYUP:
                 if event.key == pygame.K_SPACE:
                     self.key_pressed = True
+                    self.jumping = True
                     Jump().execute(self)
 
     def horizontal_move(self):
@@ -79,10 +82,12 @@ class Character(pygame.sprite.Sprite):
 
         if keystate[pygame.K_LEFT] or keystate[pygame.K_a]:
             self.key_pressed = True
+            self.direction = "left"
             RunLeft().execute(self)
 
         if keystate[pygame.K_RIGHT] or keystate[pygame.K_d]:
             self.key_pressed = True
+            self.direction = "right"
             RunRight().execute(self)
 
     # def update_x_position(self):

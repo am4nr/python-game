@@ -55,7 +55,7 @@ class Game:
             64,
             64,
         )
-        self.character = Character(self, self.character_sprites, 200, 400, 0.75, -0.12)
+        self.character = Character(self, self.character_sprites, 200, 400, 0.75, 1, -0.12)
         self.clock = pygame.time.Clock()
         
         self.state = None
