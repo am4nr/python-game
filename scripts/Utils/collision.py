@@ -8,12 +8,8 @@ if TYPE_CHECKING:
 class Collision:
     def __init__(self, game):
         self.game = game
-        self.solid_layer = game.current_level.tilemap.get_layers()["solid"]["group"]
+        self.solid_layer = self.game.level_manager.current_level.solid_layer
 
-    def update_level(self):
-        self.solid_layer = self.game.current_level.tilemap.get_layers()["solid"][
-            "group"
-        ]
 
     def detect_horizontal_collision(self, character: "Character"):
         character.collided_x = False

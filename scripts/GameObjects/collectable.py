@@ -21,7 +21,8 @@ class Collectable(GameObject):
         self.animation.get_surfaces(self.sprites[self.get_random_image()])
         self.image = self.sprites[self.get_random_image()][0].image
         self.rect = self.image.get_rect()
-        self.rect.center = (self.x, self.y)
+        self.rect.x = self.x
+        self.rect.y = self.y
 
     def update(self):
         self.image = self.animation.update()
