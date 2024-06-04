@@ -123,7 +123,7 @@ class Tilemap:
                                             #print(f"platform: {platform_tiles}")
                                             break
                     
-                    elif object_type == "collectable":
+                    """ elif object_type == "collectable":
                         self.create_collectable(index)
                         
                     """elif object_type == "trap":
@@ -253,7 +253,7 @@ class Tilemap:
         y = row*self.tile_height
         return x,y
     
-    def create_collectable(self, index):
+    """ def create_collectable(self, index):
         x,y = self.index_to_coordinates(index)
         collectable = Collectable(self.game, x, y,)
         self.layers["gameObjects"]["group"].add(collectable)
