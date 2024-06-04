@@ -35,10 +35,6 @@ class Idle(CharacterState):
         self.character.animation.reset(
             self.character.sprites["idle"], self.character.direction
         )
-        # self.character.rect.update(
-        #     self.character.rect.topleft,
-        #     self.character.image.get_size(),
-        # )
         self.character.idle_waiting_time_counter = 0
 
     def update(self):
@@ -51,16 +47,11 @@ class Idle(CharacterState):
 class RunningRight(CharacterState):
     def enter(self):
         self.character.vel.x = 0
-        self.character.direction = "right"
+        # self.character.direction = "right"
         if self.character.on_ground:
             self.character.animation.reset(
                 self.character.sprites["run"], self.character.direction
             )
-            # self.character.rect.update(
-            #     self.character.rect.topleft,
-            #     self.character.image.get_size(),
-            # )
-
     def update(self):
         pass
 
@@ -71,15 +62,11 @@ class RunningRight(CharacterState):
 class RunningLeft(CharacterState):
     def enter(self):
         self.character.vel.x = 0
-        self.character.direction = "left"
+        # self.character.direction = "left"
         if self.character.on_ground:
             self.character.animation.reset(
                 self.character.sprites["run"], self.character.direction
             )
-            # self.character.rect.update(
-            #     self.character.rect.topleft,
-            #     self.character.image.get_size(),
-            # )
 
     def update(self):
         pass
@@ -90,36 +77,27 @@ class RunningLeft(CharacterState):
 
 class Jumping(CharacterState):
     def enter(self):
-        self.character.jumping = True
-        self.character.vel.y = -40
+        self.character.vel.y = -self.character.gravity * 40
         self.character.jumps -= 1
         self.character.animation.reset(
             self.character.sprites["jump"], self.character.direction, False, 10
         )
         self.character.sounds_jump.play()
-        # self.character.rect.update(self.character.rect.topleft , self.character.image.get_size())
 
     def update(self):
         if self.character.animation.check_done():
             self.character.state.changeState(Falling)
 
     def exitState(self):
-        self.character.vel.y = 0
         self.character.jumping = False
 
 
 class Falling(CharacterState):
     def enter(self):
-        # self.character.jumping = False
-        self.character.vel.y = 1
+        self.character.vel.y = self.character.gravity
         self.character.animation.reset(
             self.character.sprites["fall"], self.character.direction
         )
-
-        # self.character.rect.update(
-        #     self.character.rect.topleft,
-        #     self.character.image.get_size(),
-        # )
 
     def update(self):
         if self.character.on_ground:
@@ -134,10 +112,7 @@ class Landing(CharacterState):
         self.character.animation.reset(
             self.character.sprites["land"], self.character.direction, False
         )
-        # self.character.rect.update(
-        #     self.character.rect.topleft,
-        #     self.character.image.get_size(),
-        # )
+
 
     def update(self):
         if self.character.animation.check_done():
@@ -146,10 +121,3 @@ class Landing(CharacterState):
     def exitState(self):
         pass
 
-
-# hit
-# wallslide
-# attack
-# die
-# powerup
-# doublejump

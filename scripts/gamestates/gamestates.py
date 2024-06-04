@@ -7,7 +7,7 @@ from scripts.Utils.settings import *
 from scripts.Utils.flyweight import Flyweight
 
 from scripts.Character.character import Character
-from scripts.Character.characterSpriteManager import CharacterSpriteManager
+from scripts.Utils.spritesheetManager import SpritesheetManager
 
 
 from scripts.gamestates.play_state import PlayState
@@ -29,7 +29,7 @@ class Game:
         pygame.display.set_caption(TITLE)
         self.screen = pygame.display.set_mode((WIDTH, HEIGHT), pygame.SCALED)
         self.assets = Flyweight(self)
-        self.sprites = CharacterSpriteManager(self.assets)
+        self.sprites = SpritesheetManager(self.assets)
         self.states = {
             "Play":PlayState(),
             "MainMenu": MainMenuState(),
@@ -55,7 +55,7 @@ class Game:
             64,
             64,
         )
-        self.character = Character(self, self.character_sprites, 200, 400, 0.75, -0.12)
+        self.character = Character(self, self.character_sprites, 200, 400, 0.75, 1, -0.12)
         self.clock = pygame.time.Clock()
         
         self.state = None

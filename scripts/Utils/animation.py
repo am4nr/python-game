@@ -33,6 +33,9 @@ class Animation:
         elif direction == "right":
             self.get_surfaces(sprites)
 
+    def get_img_dur(self, img_dur):
+        self.img_dur = img_dur
+
     def get_surfaces(self, sprites):
         self.images = []
         for sprite in sprites:

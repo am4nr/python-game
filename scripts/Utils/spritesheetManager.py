@@ -4,13 +4,13 @@ from pathlib import Path
 from scripts.Utils.flyweight import *
 
 
-class CharacterSpriteManager:
+class SpritesheetManager:
     def __init__(self, assetmanager):
         self.assetmanager = assetmanager
 
     def get_spritesheets(self, category, subcategory):
         self.path = os.path.join(os.getcwd(), "assets", category, subcategory)
-        #print(self.path)
+        print(self.path)
         self.spritesheets = {}
         for filename in os.listdir(self.path):
             #print(self.path + filename)

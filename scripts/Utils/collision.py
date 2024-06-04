@@ -110,3 +110,6 @@ class Collision:
                     character.jumps = 0
                     character.collided_y = True
                     return
+
+    def object_collision(self, character, objects):
+        collision_list = pygame.sprite.spritecollide(character, objects, True)

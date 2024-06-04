@@ -116,7 +116,7 @@ class Tilemap:
                     """ elif object_type == "collectable":
                         self.create_collectable(index)
                         
-                    elif object_type == "trap":
+                    """elif object_type == "trap":
                         self.create_trap(index)
                         
                     elif object_type == "goal":
@@ -243,7 +243,7 @@ class Tilemap:
         collectable = Collectable(self.game, x, y,)
         self.layers["gameObjects"]["group"].add(collectable)
         
-    def create_trap(self, index):
+    """def create_trap(self, index):
         x,y = self.index_to_coordinates(index)
         surf = self.get_tile_surface(self.layers["solid"]["data"]["index"])
         rect = pygame.rect.Rect(x,
