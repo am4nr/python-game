@@ -24,8 +24,8 @@ class LevelManager:
             self.current_level = self.levels[index+1]
             self.game.character.collision.update_level()
         
-    def load_levels(self):         #⬇️, "Test-Level2"
-        for level_name in ["Test-Level"]:
+    def load_levels(self):         #⬇️
+        for level_name in ["Test-Level", "Test-Level2"]:
             if len(self.levels) == 0:
                 self.current_level = Level(self.game, level_name, len(self.levels))
                 self.levels.append(self.current_level)

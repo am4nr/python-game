@@ -16,6 +16,7 @@ class MovingPlatform(pygame.sprite.Sprite):
         self.path_index = 0
         self.direction = direction
         self.image,self.rect = self.create_image_and_rect()
+        self.path.append([self.rect.x,self.rect.y])
         
     def create_image_and_rect(self):
         # Determine the bounds of the platform
@@ -70,28 +71,17 @@ class MovingPlatform(pygame.sprite.Sprite):
                     direction_vector = vec(-self.speed, 0)
                     moving_direction_y = "left"
                     
-                    
-                #direction_vector = vec(self.speed if target_pos[0] > self.rect.x else -self.speed, 0)
+    
 
             # Move the platform
             self.rect.move_ip(direction_vector)
 
             # Check if the platform has reached the target position
-            """ if self.direction == "vertical":
-                if self.rect.y == target_pos[1]:
-                    self.path_index = (self.path_index + 1) % len(self.path)
-                    if self.path_index == 0 or self.path_index == len(self.path):
-                        self.path = list(reversed(self.path)) """
-                        
+
             if (self.direction == "horizontal" and self.rect.x == target_pos[0]) or (self.direction == "vertical" and self.rect.y == target_pos[1]):
                 self.path_index = (self.path_index + 1) % len(self.path)
                 if self.path_index == 0 or self.path_index == len(self.path):
                     self.path = list(reversed(self.path))
-            
-            """ if self.rect.y == target_pos[1] or self.rect.left == target_pos[0] or self.rect.right == target_pos[0]:
-                self.path_index = (self.path_index + 1) % len(self.path)
-                if self.path_index == 0 or self.path_index == len(self.path):
-                    self.path = list(reversed(self.path)) """
 
         
     def draw(self, screen):
