@@ -54,6 +54,7 @@ class Level:
         for platform in self.moving_platforms:
             # print(f"Loaded platform: {platform}")
             self.solid_layer.add(platform)  # Add the platform sprite to the gameObjects group
+        self.gameObjects.add(self.tilemap.layers["gameObjects"]["group"])
 
 
     def update(self):
@@ -72,5 +73,4 @@ class Level:
         for platform in self.moving_platforms:
             platform.draw(self.game.screen)
             
-        """ for obj in self.gameObjects:
-            obj.draw(self.game.screen) """
+        self.gameObjects.draw(self.game.screen) 
