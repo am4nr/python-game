@@ -123,14 +123,14 @@ class Tilemap:
                                             #print(f"platform: {platform_tiles}")
                                             break
                     
-                    """ elif object_type == "collectable":
+                    elif object_type == "collectable":
                         self.create_collectable(index)
                         
-                    """elif object_type == "trap":
-                        self.create_trap(index)
+                    # elif object_type == "trap":
+                    #     self.create_trap(index)
                         
-                    elif object_type == "goal":
-                        self.create_goal(index) """
+                    # elif object_type == "goal":
+                    #     self.create_goal(index) 
                         
     def convert_path(self, path):
         tile_size = self.tile_height
@@ -253,32 +253,32 @@ class Tilemap:
         y = row*self.tile_height
         return x,y
     
-    """ def create_collectable(self, index):
+    def create_collectable(self, index):
         x,y = self.index_to_coordinates(index)
         collectable = Collectable(self.game, x, y,)
         self.layers["gameObjects"]["group"].add(collectable)
         
-    """def create_trap(self, index):
-        x,y = self.index_to_coordinates(index)
-        surf = self.get_tile_surface(self.layers["solid"]["data"]["index"])
-        rect = pygame.rect.Rect(x,
-                                y,
-                                self.tile_width,
-                                self.tile_height,
-                            )
-        trap = Trap(self.game, x, y, surf, rect)
-        self.layers["gameObjects"]["group"].add(trap)
+    #     def create_trap(self, index):
+    #     x,y = self.index_to_coordinates(index)
+    #     surf = self.get_tile_surface(self.layers["solid"]["data"]["index"])
+    #     rect = pygame.rect.Rect(x,
+    #                             y,
+    #                             self.tile_width,
+    #                             self.tile_height,
+    #                         )
+    #     trap = Trap(self.game, x, y, surf, rect)
+    #     self.layers["gameObjects"]["group"].add(trap)
         
-    def create_goal(self, index):
-        x, y = self.index_to_coordinates(index)
-        surf = self.get_tile_surface(self.layers["solid"]["data"]["index"])
-        rect = pygame.rect.Rect(x,
-                                y,
-                                self.tile_width,
-                                self.tile_height,
-                            )
-        goal = Goal(self.game, x, y, surf, rect)
-        self.layers["gameObjects"]["group"].add(goal) """
+    # def create_goal(self, index):
+    #     x, y = self.index_to_coordinates(index)
+    #     surf = self.get_tile_surface(self.layers["solid"]["data"]["index"])
+    #     rect = pygame.rect.Rect(x,
+    #                             y,
+    #                             self.tile_width,
+    #                             self.tile_height,
+    #                         )
+    #     goal = Goal(self.game, x, y, surf, rect)
+    #     self.layers["gameObjects"]["group"].add(goal)
         
     def get_tile_surface(self, tile_id):
         for firstgid, tileset in self.tilesets:
