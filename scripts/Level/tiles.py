@@ -50,7 +50,6 @@ class Tileset:
                     self.tile_height,
                 ),
             )
-            #return trim_surface(surf)
             return surf
         
 class Tilemap:
@@ -74,8 +73,6 @@ class Tilemap:
             name = os.path.splitext(os.path.basename(source))[0]
             tileset_obj = self.game.assets.get("Tileset", name)
             self.tilesets.append((firstgid, tileset_obj))
-
-        #self.load_layers()
         
     def load_layers(self):
         self.prepare_layers()
@@ -84,13 +81,10 @@ class Tilemap:
         
     def prepare_layers(self):
         for layer in self.json["layers"]:
-            #print(layer["name"])
             self.layers.update({layer["name"]:{
                 "group":pygame.sprite.Group(),
                 "data": layer.get("data",[]),
                 }})
-            #if layer["name"] == "solid":
-            #    print(self.layers[layer["name"]]["data"])
             
     def load_game_object_layer(self):
         #print(self.tmap)
@@ -105,7 +99,6 @@ class Tilemap:
                     object_type = self.get_tile_surface(tile_id)
                     if object_type == "plat_select":
                         platform_tiles = self.flood_fill(game_objects_layer["data"], index, visited)
-                        #print(f"Platform tiles: {platform_tiles}")  # Debug print
                         if platform_tiles:
                             # delete selector tiles
                             for tile in platform_tiles:
@@ -118,19 +111,16 @@ class Tilemap:
                                         if tile_neighbor in path:
                                             path, direction = self.convert_path(path)
                                             self.create_moving_platform(platform_tiles,path,direction)
-                                            # print(path)
-                                            #print(f"path: {self.convert_path(path)}")
-                                            #print(f"platform: {platform_tiles}")
                                             break
                     
-                    elif object_type == "collectable":
+                    """ elif object_type == "collectable":
                         self.create_collectable(index)
                         
                     elif object_type == "trap":
                         self.create_trap(index)
                         
                     elif object_type == "goal":
-                        self.create_goal(index)
+                        self.create_goal(index) """
                         
     def convert_path(self, path):
         tile_size = self.tile_height
@@ -186,8 +176,6 @@ class Tilemap:
     def load_tile_layers(self):
         # Handle other layers
         for layer in self.layers:
-            
-            #layer_name = layer["name"]
             if layer != "gameObjects":
                 for index, tile_id in enumerate(self.layers[layer]["data"]):
                     if tile_id != 0:
@@ -196,9 +184,6 @@ class Tilemap:
                             col = index % self.width
                             row = index // self.width
                             
-                            #print id ontop of tile_surf
-                            """ text_surf = self.font.render(f"{index}",True,(255,255,255))
-                            tile_surf.blit(text_surf,(0,0)) """
                             tile_sprite = self.game.assets.get("Sprite", tile_surf)
                             
                             tile_sprite.rect = pygame.rect.Rect(
@@ -253,7 +238,7 @@ class Tilemap:
         y = row*self.tile_height
         return x,y
     
-    def create_collectable(self, index):
+    """ def create_collectable(self, index):
         x,y = self.index_to_coordinates(index)
         collectable = Collectable(self.game, x, y,)
         self.layers["gameObjects"]["group"].add(collectable)
@@ -278,7 +263,7 @@ class Tilemap:
                                 self.tile_height,
                             )
         goal = Goal(self.game, x, y, surf, rect)
-        self.layers["gameObjects"]["group"].add(goal)
+        self.layers["gameObjects"]["group"].add(goal) """
         
     def get_tile_surface(self, tile_id):
         for firstgid, tileset in self.tilesets:
