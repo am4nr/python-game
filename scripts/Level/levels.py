@@ -85,6 +85,11 @@ class Level:
             # print(f"Updating platform: {platform}")
             platform.update()
         self.character.update()
+        self.check_goal()
+
+    def check_goal(self):
+        if self.gameObjects.__len__() == 0:
+            print("yay")
 
     def render(self):
         # print("render level")
@@ -96,5 +101,6 @@ class Level:
         for platform in self.moving_platforms:
             platform.draw(self.game.screen)
 
+        # pygame.sprite.Group.draw(self.gameObjects, self.game.screen)
         self.gameObjects.draw(self.game.screen)
         self.game.screen.blit(self.character.image, self.character.rect)

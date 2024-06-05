@@ -43,7 +43,7 @@ class Character(pygame.sprite.Sprite):
         self.rect.topleft = self.pos
         self.sounds_jump = self.game.assets.get("Sound", "SFX/jump.wav")
         self.collision = Collision(self.game)
-        # self.collision.update_level()
+        
         
     def update(self):
         self.image = self.animation.update()
@@ -51,6 +51,7 @@ class Character(pygame.sprite.Sprite):
         self.key_pressed = False
         self.collision.vertical_collision(self)
         self.collision.horizontal_collision(self)
+        self.collision.object_collision(self)
         self.horizontal_move()
         self.apply_gravity()
         self.jump()
@@ -66,8 +67,9 @@ class Character(pygame.sprite.Sprite):
             if event.type == pygame.KEYUP:
                 if event.key == pygame.K_SPACE:
                     self.key_pressed = True
-                    self.jumping = True
-                    Jump().execute(self)
+                    if self.jumps > 0:
+                        self.jumping = True
+                        Jump().execute(self)
 
     def horizontal_move(self):
         keystate = self.game.keystate

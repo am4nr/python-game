@@ -50,9 +50,8 @@ class RunRight(PlayerCommand):
 
 class Jump(PlayerCommand):
     def execute(self, character: "Character"):
-        if character.jumps > 0:
-            character.state.changeState(Jumping)
-            VerticalMovement().execute(character)
+        character.state.changeState(Jumping)
+        VerticalMovement().execute(character)
 
 
 class Attack(PlayerCommand):
