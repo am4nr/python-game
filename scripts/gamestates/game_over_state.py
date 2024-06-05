@@ -31,7 +31,7 @@ class GameOver(GameState):
 
     def render(self):
         self.game.screen.fill(self.BLACK)
-        game_over_text = self.font.render("Game Over", True, self.WHITE)
+        game_over_text = self.get_font(70).render("GAME OVER", True, "#b68f40")
         text_rect = game_over_text.get_rect(center=(self.game.WIDTH / 2, self.game.HEIGHT / 2))
         self.game.screen.blit(game_over_text, text_rect)
         self.pygame.display.flip()
