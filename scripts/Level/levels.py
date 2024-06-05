@@ -102,6 +102,6 @@ class Level:
         for platform in self.moving_platforms:
             platform.draw(self.game.screen)
 
-        # pygame.sprite.Group.draw(self.gameObjects, self.game.screen)
+        
         self.gameObjects.draw(self.game.screen)
         self.game.screen.blit(self.character.image, self.character.rect)
