@@ -58,8 +58,6 @@ class Tilemap:
         self.tmap = os.path.join(assets_folder, "maps", tilemap + ".json")
         with open(self.tmap) as tm:
             self.json = json.load(tm)
-        pygame.font.init()
-        self.font = pygame.font.SysFont('Arial',15)
         self.game = game
         self.width = self.json["width"]
         self.height = self.json["height"]
@@ -78,6 +76,9 @@ class Tilemap:
         #self.load_layers()
         
     def load_layers(self):
+        self.layers = {}
+        with open(self.tmap)as tm:
+            self.json=json.load(tm) 
         self.prepare_layers()
         self.load_game_object_layer()
         self.load_tile_layers()
