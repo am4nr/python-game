@@ -65,6 +65,7 @@ class Level:
     def load(self):
         # if self.solid_layer:
         #     del self.solid_layer
+        self.gameObjects = pygame.sprite.Group()
         self.tilemap.load_layers()
         self.moving_platforms = self.tilemap.layers["gameObjects"]["moving_platforms"]
         self.solid_layer = self.tilemap.layers["solid"]["group"]
