@@ -31,16 +31,16 @@ class MainMenuState(GameState):
         self.buttons["PLAY_BUTTON"] = Button(
             game.assets.get("Image", "objects/buttons/play_button.png"),
             pos=(WIDTH / 2, HEIGHT / 4 + 90),
-            text_input="PLAY",
+            text_input="",
             font=self.get_font(30),
             base_color="#d7fcd4",
             hovering_color="White",
             callback=lambda: self.play(game)
         )
         self.buttons["OPTIONS_BUTTON"] = Button(
-            game.assets.get("Image", "objects/buttons/play_button.png"),
+            game.assets.get("Image", "objects/buttons/options_button.png"),
             pos=(WIDTH / 2, 2 * HEIGHT / 4 + 65),
-            text_input="OPTIONS",
+            text_input="",
             font=self.get_font(30),
             base_color="#d7fcd4",
             hovering_color="White",
@@ -49,7 +49,7 @@ class MainMenuState(GameState):
         self.buttons["QUIT_BUTTON"] = Button(
             game.assets.get("Image", "objects/buttons/cancel_button.png"),
             pos=(WIDTH / 2, 3 * HEIGHT / 4 + 50),
-            text_input="QUIT",
+            text_input="",
             font=self.get_font(30),
             base_color="#d7fcd4",
             hovering_color="White",
@@ -100,7 +100,7 @@ class MainMenuState(GameState):
         BG = self.bg
         game.screen.blit(BG, (0, 0))
 
-        MENU_TEXT = self.get_font(100).render("MAIN MENU", True, "#b68f40")
+        MENU_TEXT = self.get_font(70).render("MAIN MENU", True, "#b68f40")
         MENU_RECT = MENU_TEXT.get_rect(center=(WIDTH / 2, 100))
 
         game.screen.blit(MENU_TEXT, MENU_RECT)
