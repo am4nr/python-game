@@ -32,7 +32,6 @@ class Collectable(GameObject):
     def update(self):
         self.image = self.animation.update()
         self.rect = self.image.get_rect(center=(self.x, self.y))
-        # self.detect_collision()
         self.remove()
 
     def get_random_image(self):
