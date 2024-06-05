@@ -273,6 +273,7 @@ class Tilemap:
     # def create_goal(self, index):
     #     x, y = self.index_to_coordinates(index)
     #     surf = self.get_tile_surface(self.layers["solid"]["data"]["index"])
+        #set new surf with image
     #     rect = pygame.rect.Rect(x,
     #                             y,
     #                             self.tile_width,

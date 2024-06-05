@@ -1,5 +1,6 @@
 import pygame
 from scripts.Character.characters import Finn, Quack
+from scripts.Utils.settings import WIDTH
 
 vec = pygame.math.Vector2
 levels = [
@@ -61,6 +62,7 @@ class Level:
         self.id = level_id
         self.moving_platforms = []
         self.character = character
+        self.offset = 0
 
     def load(self):
         # if self.solid_layer:
@@ -87,6 +89,33 @@ class Level:
             platform.update()
         self.character.update()
         self.check_goal()
+        self.set_offset()
+
+    def set_offset(self):
+        # if (
+        #     (self.tilemap.width * self.tilemap.tile_width) > WIDTH
+        # ) and self.character.pos.x > WIDTH / 2:
+        #     self.offset = self.character.pos.x - WIDTH / 2
+        # else:
+        #     self.offset = 0
+        
+        scroll_area_width = WIDTH * 0.2
+        tilemap_width = self.tilemap.width * self.tilemap.tile_width
+        if tilemap_width <= WIDTH:
+            return
+        elif (
+            (self.character.rect.right - self.offset >= WIDTH - scroll_area_width)
+            and self.character.vel.x > 0
+        ) or (
+            (self.character.rect.left - self.offset <= scroll_area_width)
+            and self.character.vel.x < 0
+        ):
+            self.offset += self.character.vel.x
+            if self.offset <=0:
+                self.offset = 0
+            elif self.offset >=  tilemap_width-WIDTH:
+                self.offset = tilemap_width-WIDTH
+
 
     def check_goal(self):
         if self.gameObjects.__len__() == 0:
@@ -95,13 +124,26 @@ class Level:
     def render(self):
         # print("render level")
         # Render the level tiles and objects
-        self.solid_layer.draw(self.game.screen)
+        for solid_tile in self.solid_layer:
+            self.game.screen.blit(
+                solid_tile.image, (solid_tile.rect.x - self.offset, solid_tile.rect.y)
+            )
+        # self.solid_layer.draw(self.game.screen)
         # for layer in self.tilemap.get_layers().values():
         #     layer["group"].draw(self.game.screen)
         # print(self.moving_platforms)
         for platform in self.moving_platforms:
-            platform.draw(self.game.screen)
+            self.game.screen.blit(
+                platform.image, (platform.rect.x - self.offset, platform.rect.y)
+            )
+            # platform.blit(self.game.screen)
 
-        
-        self.gameObjects.draw(self.game.screen)
-        self.game.screen.blit(self.character.image, self.character.rect)
+        for gameObject in self.gameObjects:
+            self.game.screen.blit(
+                gameObject.image, (gameObject.rect.x - self.offset, gameObject.rect.y)
+            )
+        # self.gameObjects.draw(self.game.screen)
+        self.game.screen.blit(
+            self.character.image,
+            (self.character.rect.x - self.offset, self.character.rect.y),
+        )
