@@ -1,17 +1,37 @@
+import pygame
+import sys
 from scripts.gamestates.meta_state import GameState
 
 class GameOver(GameState):
+    def __init__(self, game):
+        self.game = game
+        self.bg = game.assets.get("Image", "background/BG.png")
+        self.BLACK = (0, 0, 0)
+        self.WHITE = (255, 255, 255)
+    
+    def get_font(self, size):  
+        return pygame.font.Font("assets/font/Pacifico.ttf", size)
+
     def enterState(self):
         pass
 
     def exitState(self):
-        pass
+        pass  
 
     def event(self):
-        pass
+        for event in self.pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+            if event.type == self.pygame.KEYDOWN:
+                self.game.changeState(self.game.previousState) 
 
     def update(self):
-        pass
+        pass  
 
     def render(self):
-        pass
+        self.game.screen.fill(self.BLACK)
+        game_over_text = self.font.render("Game Over", True, self.WHITE)
+        text_rect = game_over_text.get_rect(center=(self.game.WIDTH / 2, self.game.HEIGHT / 2))
+        self.game.screen.blit(game_over_text, text_rect)
+        self.pygame.display.flip()
