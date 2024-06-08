@@ -36,3 +36,4 @@ class Slider:
     def update(self, pos):
         if self.hit:
             self.move_handle(pos[0])
+        

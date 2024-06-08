@@ -19,10 +19,28 @@ class OptionsState(GameState):
             hovering_color="#d7fcd4",
             callback=lambda: self.main_menu(game)
         )
+        self.buttons["NOISE"] = Button(
+            image=None,
+            pos=(200, 255),
+            text_input="Lautstärke",
+            font=self.get_font(30),
+            base_color="#b68f40",
+            hovering_color="#b68f40",
+            callback=lambda: self.options(game)
+        )
+        print("Entered Playstate")
+        game.music = game.assets.get("Music","music/loop.wav")
+        game.music.load("assets/music/loop.wav")
+        game.music.play(-1)
+
+        pygame.mixer.music.play(-1,0.0)
+        pygame.mixer.music.set_volume(.6)
         
         self.bg = game.assets.get("Image", "background/BG.png")
-        self.volume_slider = Slider(300, 250, 200, 20, 0, 100, 50)
-    
+        self.volume_slider = Slider(300, 250, 200, 20, 0.0, 1.0, 0.5)
+
+
+
     def get_font(self, size):  
         return pygame.font.Font("assets/font/Pacifico.ttf", size)
     
@@ -53,8 +71,12 @@ class OptionsState(GameState):
                     if callback is not None:
                         callback()
                         
-        if event.type == pygame.MOUSEBUTTONUP:
+        elif event.type == pygame.MOUSEBUTTONUP:
             self.volume_slider.hit = False
+        elif event.type == pygame.MOUSEBUTTONDOWN:
+            self.volume_slider.check_click(event.pos)
+        elif event.type == pygame.MOUSEMOTION:
+            self.volume_slider.update(event.pos)
 
         
 
@@ -65,6 +87,10 @@ class OptionsState(GameState):
 
         self.volume_slider.update(game.mouse_pos)
         game.audio_volume = self.volume_slider.val
+
+        # Setze die Lautstärke entsprechend der Position des Reglers
+        current_volume = self.volume_slider.val
+        pygame.mixer.music.set_volume(current_volume)
 
     def render(self, game):
         BG = self.bg
