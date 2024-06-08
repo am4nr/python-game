@@ -1,11 +1,17 @@
 import pygame
 from scripts.Character.characters import Finn, Quack
 from scripts.Utils.settings import WIDTH
+from scripts.Level.background import Background
 
 vec = pygame.math.Vector2
+BG1 = Background("1")
+BG2 = Background("2")
+BG3 = Background("3")
+BG4 = Background("4")
+
 levels = [
-    {"level_name": "Test-Level", "character": Quack},
-    {"level_name": "Test-Level2", "character": Finn},
+    {"level_name": "Test-Level", "character": Quack, "background": BG1},
+    {"level_name": "Test-Level2", "character": Finn, "background": BG2},
 ]
 
 
@@ -39,20 +45,17 @@ class LevelManager:
         for level in levels:
             level_name = level.get("level_name")
             character = level.get("character")
+            background = level.get("background")
             character.game = self.game
             if len(self.levels) == 0:
-                self.current_level = Level(
-                    self.game, level_name, len(self.levels), character
-                )
+                self.current_level = Level(self.game, level_name, len(self.levels), character, background)
                 self.levels.append(self.current_level)
             else:
-                self.levels.append(
-                    Level(self.game, level_name, len(self.levels), character)
-                )
+                self.levels.append(Level(self.game, level_name, len(self.levels), character,background))
 
 
 class Level:
-    def __init__(self, game, level_name, level_id, character):
+    def __init__(self, game, level_name, level_id, character, background):
         self.game = game
         self.tilemap = game.assets.get("Tilemap", level_name)
         self.tilesets = self.tilemap.tilesets
@@ -63,6 +66,7 @@ class Level:
         self.moving_platforms = []
         self.character = character
         self.offset = 0
+        self.background = background
 
     def load(self):
         # if self.solid_layer:
@@ -71,6 +75,7 @@ class Level:
         self.tilemap.load_layers()
         self.moving_platforms = self.tilemap.layers["gameObjects"]["moving_platforms"]
         self.solid_layer = self.tilemap.layers["solid"]["group"]
+        self.background.load(self.game)
         for platform in self.moving_platforms:
             self.solid_layer.add(
                 platform
@@ -90,6 +95,7 @@ class Level:
         self.character.update()
         self.check_goal()
         self.set_offset()
+        self.background.update()
 
     def set_offset(self):
         # if (
@@ -124,6 +130,7 @@ class Level:
     def render(self):
         # print("render level")
         # Render the level tiles and objects
+        self.background.draw()
         for solid_tile in self.solid_layer:
             self.game.screen.blit(
                 solid_tile.image, (solid_tile.rect.x - self.offset, solid_tile.rect.y)
