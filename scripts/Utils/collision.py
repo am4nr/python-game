@@ -1,4 +1,5 @@
 import pygame
+from scripts.GameObjects.platform import MovingPlatform
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
@@ -8,12 +9,9 @@ if TYPE_CHECKING:
 class Collision:
     def __init__(self, game):
         self.game = game
-        self.solid_layer = game.current_level.tilemap.get_layers()["solid"]["group"]
+        self.solid_layer = self.game.level_manager.current_level.solid_layer
+        self.gameObjects = self.game.level_manager.current_level.gameObjects
 
-    def update_level(self):
-        self.solid_layer = self.game.current_level.tilemap.get_layers()["solid"][
-            "group"
-        ]
 
     def detect_horizontal_collision(self, character: "Character"):
         character.collided_x = False
@@ -23,15 +21,15 @@ class Collision:
             character.image.get_size(),
         )
         if character.direction == "left":
-            character.rect.left -= 3
+            character.rect.left -= 5
         elif character.direction == "right":
-            character.rect.right += 3
+            character.rect.right += 5
 
         collision_list = pygame.sprite.spritecollide(character, self.solid_layer, False)
         if character.direction == "left":
-            character.rect.left += 3
+            character.rect.left += 5
         elif character.direction == "right":
-            character.rect.right -= 3
+            character.rect.right -= 5
         return collision_list
 
     def horizontal_collision(self, character: "Character"):
@@ -42,7 +40,7 @@ class Collision:
             for collided_sprite in collision_list:
                 if character.vel.x > 0:
                     character.pos.x = (
-                        collided_sprite.rect.left - character.rect.width - 3
+                        collided_sprite.rect.left - character.rect.width - 5
                     )
                     character.rect.x = character.pos.x
                     character.vel.x = 0
@@ -51,10 +49,24 @@ class Collision:
 
                 # moving left
                 elif character.vel.x < 0:
-                    character.pos.x = collided_sprite.rect.right + 3
+                    character.pos.x = collided_sprite.rect.right + 5
                     character.rect.x = character.pos.x
                     character.vel.x = 0
                     character.collided_x = True
+                    return
+                
+                elif character.vel.x == 0:
+                    if isinstance(collided_sprite, MovingPlatform):
+                        if collided_sprite.rect.x > character.rect.x:
+                            character.pos.x = collided_sprite.rect.left - character.rect.width - 5
+                            character.rect.x = character.pos.x
+                            character.vel.x = 0
+                            character.collided_x = True
+                        if collided_sprite.rect.x < character.rect.x - character.rect.width:
+                            character.pos.x = collided_sprite.rect.right + 5
+                            character.rect.x = character.pos.x
+                            character.vel.x = 0
+                            character.collided_x = True
                     return
 
     def detect_vertical_collision(self, character: "Character"):
@@ -111,5 +123,10 @@ class Collision:
                     character.collided_y = True
                     return
 
-    def object_collision(self, character, objects):
-        collision_list = pygame.sprite.spritecollide(character, objects, True)
+    def object_collision(self, character):
+        collision_list = pygame.sprite.spritecollide(character, self.gameObjects, False)
+
+        for obj in collision_list: 
+            if not obj.collided:
+                obj.handle_collision()
+                return

@@ -57,8 +57,6 @@ class Tilemap:
         self.tmap = os.path.join(assets_folder, "maps", tilemap + ".json")
         with open(self.tmap) as tm:
             self.json = json.load(tm)
-        pygame.font.init()
-        self.font = pygame.font.SysFont('Arial',15)
         self.game = game
         self.width = self.json["width"]
         self.height = self.json["height"]
@@ -75,6 +73,9 @@ class Tilemap:
             self.tilesets.append((firstgid, tileset_obj))
         
     def load_layers(self):
+        self.layers = {}
+        with open(self.tmap)as tm:
+            self.json=json.load(tm) 
         self.prepare_layers()
         self.load_game_object_layer()
         self.load_tile_layers()
@@ -237,13 +238,13 @@ class Tilemap:
         x = col*self.tile_width
         y = row*self.tile_height
         return x,y
-
+    
     def create_collectable(self, index):
         x,y = self.index_to_coordinates(index)
         collectable = Collectable(self.game, x, y,)
         self.layers["gameObjects"]["group"].add(collectable)
         
-    # def create_trap(self, index):
+    #     def create_trap(self, index):
     #     x,y = self.index_to_coordinates(index)
     #     surf = self.get_tile_surface(self.layers["solid"]["data"]["index"])
     #     rect = pygame.rect.Rect(x,
@@ -257,13 +258,14 @@ class Tilemap:
     # def create_goal(self, index):
     #     x, y = self.index_to_coordinates(index)
     #     surf = self.get_tile_surface(self.layers["solid"]["data"]["index"])
+        #set new surf with image
     #     rect = pygame.rect.Rect(x,
     #                             y,
     #                             self.tile_width,
     #                             self.tile_height,
     #                         )
     #     goal = Goal(self.game, x, y, surf, rect)
-    #     self.layers["gameObjects"]["group"].add(goal) 
+    #     self.layers["gameObjects"]["group"].add(goal)
         
     def get_tile_surface(self, tile_id):
         for firstgid, tileset in self.tilesets:

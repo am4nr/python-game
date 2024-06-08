@@ -42,20 +42,8 @@ class Game:
 
         self.level_manager = LevelManager(self)
         self.level_manager.set_level("Test-Level")
-        self.current_level = self.level_manager.current_level
+        
 
-        # self.character_sprites = self.sprites.handle_spritesheetDictTransformation(
-        #     self.sprites.get_spritesheets("characters", "finn"),
-        #     200,
-        #     200,
-        #     0.32,
-        # )
-        self.character_sprites = self.sprites.handle_spritesheetDictTransformation(
-            self.sprites.get_spritesheets("characters", "quack"),
-            64,
-            64,
-        )
-        self.character = Character(self, self.character_sprites, 200, 400, 0.75, 1, -0.12)
         self.clock = pygame.time.Clock()
         
         self.state = None
