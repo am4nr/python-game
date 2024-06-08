@@ -113,7 +113,7 @@ class Tilemap:
                                             self.create_moving_platform(platform_tiles,path,direction)
                                             break
                     
-                    """ elif object_type == "collectable":
+                    elif object_type == "collectable":
                         self.create_collectable(index)
                         
                     # elif object_type == "trap":
