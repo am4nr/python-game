@@ -1,5 +1,4 @@
 import pygame
-from scripts.Utils.collision import Collision
 
 
 class GameObject(pygame.sprite.Sprite):

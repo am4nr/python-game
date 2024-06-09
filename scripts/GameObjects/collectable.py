@@ -5,7 +5,9 @@ import pygame
 vec = pygame.math.Vector2
 
 class Collectable(GameObject):
+    counter = 0
     def __init__(self, game, x, y):
+        Collectable.counter += 1
         self.game = game
         super().__init__(game)
         self.x = x
@@ -28,7 +30,6 @@ class Collectable(GameObject):
         self.rect = self.image.get_rect(center = (self.x, self.y))
         self.collided = False
 
-
     def update(self):
         self.image = self.animation.update()
         self.rect = self.image.get_rect(center=(self.x, self.y))
@@ -44,3 +45,5 @@ class Collectable(GameObject):
     def remove(self):
         if self.animation.check_done():
             self.game.level_manager.current_level.gameObjects.remove(self)
+            Collectable.counter -= 1
+        

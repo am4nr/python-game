@@ -1,6 +1,7 @@
 import pygame
 from scripts.Character.characters import Finn, Quack
 from scripts.Utils.settings import WIDTH
+from scripts.GameObjects.collectable import Collectable
 
 vec = pygame.math.Vector2
 levels = [
@@ -88,8 +89,10 @@ class Level:
             # print(f"Updating platform: {platform}")
             platform.update()
         self.character.update()
-        self.check_goal()
         self.set_offset()
+        if self.gameObjects.has(Collectable):
+            print("got")
+        
 
     def set_offset(self):
         # if (
@@ -116,8 +119,9 @@ class Level:
             elif self.offset >=  tilemap_width-WIDTH:
                 self.offset = tilemap_width-WIDTH
 
-
     def check_goal(self):
+        #update only Collectable
+
         if self.gameObjects.__len__() == 0:
             print("yay")
 
