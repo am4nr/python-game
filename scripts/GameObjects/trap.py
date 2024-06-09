@@ -22,4 +22,4 @@ class Trap(GameObject):
 
     def handle_collision(self):
         self.game.level_manager.current_level.character.health -= 1
-        print("detected")
+        # print("detected")

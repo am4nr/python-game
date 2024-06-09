@@ -57,7 +57,7 @@ class Character(pygame.sprite.Sprite):
         self.apply_gravity()
         self.jump()
         self.handle_idle()
-        print(self.health)
+        # print(self.health)
 
     def apply_gravity(self):
         if not self.on_ground and not self.jumping:

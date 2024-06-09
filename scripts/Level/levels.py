@@ -49,10 +49,16 @@ class LevelManager:
             background = level.get("background")
             character.game = self.game
             if len(self.levels) == 0:
-                self.current_level = Level(self.game, level_name, len(self.levels), character, background)
+                self.current_level = Level(
+                    self.game, level_name, len(self.levels), character, background
+                )
                 self.levels.append(self.current_level)
             else:
-                self.levels.append(Level(self.game, level_name, len(self.levels), character,background))
+                self.levels.append(
+                    Level(
+                        self.game, level_name, len(self.levels), character, background
+                    )
+                )
 
 
 class Level:
@@ -61,6 +67,9 @@ class Level:
         self.tilemap = game.assets.get("Tilemap", level_name)
         self.tilesets = self.tilemap.tilesets
         self.tiles = {}
+        self.collectables = pygame.sprite.Group()
+        self.traps = pygame.sprite.Group()
+        self.goals = pygame.sprite.Group()
         self.gameObjects = pygame.sprite.Group()
         self.levelObjects = []
         self.id = level_id
@@ -81,9 +90,24 @@ class Level:
             self.solid_layer.add(
                 platform
             )  # Add the platform sprite to the gameObjects group
-        self.gameObjects.add(self.tilemap.layers["gameObjects"]["group"])
+        # self.gameObjects.add(self.tilemap.layers["gameObjects"]["group"])
+        self.gameObjectsLayer = self.tilemap.layers["gameObjects"]
+        self.collectables = self.gameObjectsLayer["collectables"]
+        self.traps = self.gameObjectsLayer["traps"]
+        self.spawn = self.gameObjectsLayer["spawn"]
+        self.goal = self.gameObjectsLayer["goal"]
+
+        self.gameObjects.add(self.collectables)
+        self.gameObjects.add(self.traps)
+        self.gameObjects.add(self.goal)
+
+        # self.character.pos = vec(
+        #     self.spawn[0] + self.tilemap.tile_width,
+        #     self.spawn[1] - 2 * self.tilemap.tile_height,
+        # )
         self.character.pos = vec(200, 200)
         self.character.load()
+        print(f"x: {self.spawn[0]} y: {self.spawn[1]}")
         # self.character.collision.update_level()
 
     def update(self):
@@ -96,9 +120,9 @@ class Level:
         self.character.update()
         self.set_offset()
         self.background.update()
-        if self.gameObjects.has(Collectable):
-            print("got")
-        
+        print(self.collectables.__len__())
+        # if self.gameObjects.has(Collectable):
+        # print("got")
 
     def set_offset(self):
         # if (
@@ -107,7 +131,7 @@ class Level:
         #     self.offset = self.character.pos.x - WIDTH / 2
         # else:
         #     self.offset = 0
-        
+
         scroll_area_width = WIDTH * 0.2
         tilemap_width = self.tilemap.width * self.tilemap.tile_width
         if tilemap_width <= WIDTH:
@@ -120,14 +144,14 @@ class Level:
             and self.character.vel.x < 0
         ):
             self.offset += self.character.vel.x
-            if self.offset <=0:
+            if self.offset <= 0:
                 self.offset = 0
-            elif self.offset >=  tilemap_width-WIDTH:
-                self.offset = tilemap_width-WIDTH
+            elif self.offset >= tilemap_width - WIDTH:
+                self.offset = tilemap_width - WIDTH
 
     def check_goal(self):
-        #update only Collectable
-
+        # update only Collectable
+        # print(self.collectables.__len__())
         if self.gameObjects.__len__() == 0:
             print("yay")
 
