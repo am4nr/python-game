@@ -48,6 +48,10 @@ class Character(pygame.sprite.Sprite):
         
     def update(self):
         self.image = self.animation.update()
+        self.rect.update(
+            (self.rect.x, self.rect.bottom - self.image.get_height()),
+            self.image.get_size(),
+        )
         self.state.update()
         self.key_pressed = False
         self.collision.vertical_collision(self)
@@ -57,7 +61,7 @@ class Character(pygame.sprite.Sprite):
         self.apply_gravity()
         self.jump()
         self.handle_idle()
-        # print(self.health)
+        print(self.health)
 
     def apply_gravity(self):
         if not self.on_ground and not self.jumping:

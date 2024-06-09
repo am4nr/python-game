@@ -13,7 +13,7 @@ class SpritesheetManager:
         # print(self.path)
         self.spritesheets = {}
         for filename in os.listdir(self.path):
-            #print(self.path + filename)
+            # print(self.path + filename)
             self.spritesheets[filename.split(".")[0]] = self.assetmanager.get(
                 "Image", category + "/" + subcategory + "/" + filename
             )
