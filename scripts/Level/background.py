@@ -9,7 +9,7 @@ class Background:
         self.level_number = level_number
         self.file_suffix = "_0"+level_number+".png"
         self.offset = 0
-        self.offset_multiplier = {"sky": 0.5, "bg_decor": 0.75, "mid_decor": 1, "fg_decor": 1.25, "ground": 1.5}
+        self.offset_multiplier = {"sky": 0, "bg_decor": 0.25, "mid_decor": .5, "fg_decor": .75, "ground": 1}
         
     def load(self, game):
         self.game = game
@@ -37,3 +37,4 @@ class Background:
         self.game.screen.blit(fg_decor, (-math.floor(self.offset*self.offset_multiplier["fg_decor"]), 0))
         self.game.screen.blit(fg_decor, (-math.floor(self.offset*self.offset_multiplier["fg_decor"])-fg_decor.get_width(), 0))
         self.game.screen.blit(self.ground, (-math.floor(self.offset*self.offset_multiplier["ground"]), 0))
+        self.game.screen.blit(self.ground, (-math.floor(self.offset*self.offset_multiplier["ground"])-self.ground.get_width(), 0))
