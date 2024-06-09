@@ -1,6 +1,6 @@
 import pygame
 from scripts.Character.characters import Finn, Quack
-from scripts.Utils.settings import WIDTH
+from scripts.Utils.settings import WIDTH, HEIGHT
 from scripts.Level.background import Background
 from scripts.GameObjects.collectable import Collectable
 from scripts.UI.healthbar import Healthbar
@@ -14,6 +14,8 @@ BG4 = Background("4")
 levels = [
     {"level_name": "Test-Level", "character": Quack, "background": BG1},
     {"level_name": "Test-Level2", "character": Finn, "background": BG2},
+    {"level_name": "Level2", "character": Quack, "background": BG3},
+    {"level_name": "Level1", "character": Quack, "background": BG3},
 ]
 
 
@@ -76,7 +78,8 @@ class Level:
         self.id = level_id
         self.moving_platforms = []
         self.character = character
-        self.offset = 0
+        self.offset_x = 0
+        self.offset_y = self.tilemap.height*self.tilemap.tile_height-HEIGHT
         self.background = background
         self.healthbar = Healthbar(self.game, 50, 50)
 
@@ -133,29 +136,34 @@ class Level:
         # print("got")
 
     def set_offset(self):
-        # if (
-        #     (self.tilemap.width * self.tilemap.tile_width) > WIDTH
-        # ) and self.character.pos.x > WIDTH / 2:
-        #     self.offset = self.character.pos.x - WIDTH / 2
-        # else:
-        #     self.offset = 0
-
         scroll_area_width = WIDTH * 0.2
+        scroll_area_height = HEIGHT * 0.2
         tilemap_width = self.tilemap.width * self.tilemap.tile_width
+        tilemap_height = self.tilemap.height * self.tilemap.tile_height
+
         if tilemap_width <= WIDTH:
             return
-        elif (
-            (self.character.rect.right - self.offset >= WIDTH - scroll_area_width)
-            and self.character.vel.x > 0
-        ) or (
-            (self.character.rect.left - self.offset <= scroll_area_width)
-            and self.character.vel.x < 0
-        ):
-            self.offset += self.character.vel.x
-            if self.offset <= 0:
-                self.offset = 0
-            elif self.offset >= tilemap_width - WIDTH:
-                self.offset = tilemap_width - WIDTH
+        elif ((self.character.rect.right - self.offset_x >= WIDTH - scroll_area_width) and self.character.vel.x > 0) or ((self.character.rect.left - self.offset_x <= scroll_area_width) and self.character.vel.x < 0):
+            self.offset_x += self.character.vel.x
+            if self.offset_x <= 0:
+                self.offset_x = 0
+            elif self.offset_x >= tilemap_width - WIDTH:
+                self.offset_x = tilemap_width - WIDTH
+
+        if tilemap_height <= HEIGHT:
+            return
+        else:
+            self.offset_y = self.character.rect.centery - HEIGHT // 2
+            
+            if self.offset_y < 0:
+                self.offset_y = 0
+            elif self.offset_y > tilemap_height - HEIGHT:
+                self.offset_y = tilemap_height - HEIGHT
+                
+        # elif ((self.tilemap.height * self.tilemap.tile_height) > HEIGHT) and self.character.pos.y > HEIGHT / 2:
+        #     print("offset1")
+        #     #self.offset_y = self.tilemap.height * self.tilemap.tile_height - self.character.pos.y + HEIGHT / 2
+        #     self.offset_y = self.tilemap.height*self.tilemap.tile_height + HEIGHT/2 - self.character.pos.y
 
     # def check_goal(self):
     #     # update only Collectable
@@ -169,7 +177,7 @@ class Level:
         self.background.draw()
         for solid_tile in self.solid_layer:
             self.game.screen.blit(
-                solid_tile.image, (solid_tile.rect.x - self.offset, solid_tile.rect.y)
+                solid_tile.image, (solid_tile.rect.x - self.offset_x, solid_tile.rect.y - self.offset_y)
             )
         # self.solid_layer.draw(self.game.screen)
         # for layer in self.tilemap.get_layers().values():
@@ -177,7 +185,7 @@ class Level:
         # print(self.moving_platforms)
         for platform in self.moving_platforms:
             self.game.screen.blit(
-                platform.image, (platform.rect.x - self.offset, platform.rect.y)
+                platform.image, (platform.rect.x - self.offset_x, platform.rect.y - self.offset_y)
             )
             # platform.blit(self.game.screen)
 
@@ -188,25 +196,25 @@ class Level:
         
         for collectable in self.collectables:
             self.game.screen.blit(
-                collectable.image, (collectable.rect.x - self.offset, collectable.rect.y)
+                collectable.image, (collectable.rect.x - self.offset_x, collectable.rect.y - self.offset_y)
             )
         for trap in self.traps:
             self.game.screen.blit(
-                trap.image, (trap.rect.x - self.offset, trap.rect.y)
+                trap.image, (trap.rect.x - self.offset_x, trap.rect.y - self.offset_y)
             )
         
         self.game.screen.blit(
             self.goal.image,
             (
-                self.goal.rect.x - self.offset,
-                self.goal.rect.bottom - self.goal.image.get_height(),
+                self.goal.rect.x - self.offset_x,
+                self.goal.rect.bottom - self.goal.image.get_height()-self.offset_y,
             ),
         )
         
         # self.gameObjects.draw(self.game.screen)
         self.game.screen.blit(
             self.character.image,
-            (self.character.rect.x - self.offset, self.character.rect.y),
+            (self.character.rect.x - self.offset_x, self.character.rect.y - self.offset_y),
         )
         
         for heart in self.healthbar.hearts:

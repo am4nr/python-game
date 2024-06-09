@@ -77,7 +77,7 @@ class RunningLeft(CharacterState):
 
 class Jumping(CharacterState):
     def enter(self):
-        self.character.vel.y = -self.character.gravity * 40
+        self.character.vel.y = -self.character.gravity * 60
         self.character.jumps -= 1
         self.character.animation.reset(
             self.character.sprites["jump"], self.character.direction, False, 10
