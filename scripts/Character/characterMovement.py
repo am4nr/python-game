@@ -55,13 +55,3 @@ class VerticalMovement(Movement):
         character.pos.y += character.vel.y + 0.5 * character.acc.y
         character.rect.y = character.pos.y
 
-
-# class DoVerticalMovement(Movement):
-#     def execute(self, character: "Character"):
-#         character.pos.y += character.dy
-#         character.rect.y = character.pos.y
-
-# class DoHorizontalMovement(Movement):
-#     def execute(self, character: "Character"):
-#         character.pos.x += character.dx
-#         character.rect.x = character.pos.x

@@ -27,7 +27,7 @@ class Character(pygame.sprite.Sprite):
         self.idle_waiting_time_counter = 0
         self.collided_x = False
         self.collided_y = False
-        self.health = 5
+        self.health = None
         
 
     def load(self):

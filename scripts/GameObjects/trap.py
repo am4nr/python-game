@@ -6,8 +6,6 @@ class Trap(GameObject):
         super().__init__(game)
         self.x = x
         self.y = y + 32
-        # self.surf = surf
-        # self.rect = rect
         self.collided = False
         self.sprites = game.sprites.handle_spritesheetDictTransformation(
             game.sprites.get_spritesheets("objects", "Spikes"),
@@ -24,7 +22,6 @@ class Trap(GameObject):
         pass
 
     def handle_collision(self):
-        # self.collided = True
         if self.collision_timer > 0:
             self.collision_timer -= 1
         else: 
@@ -34,6 +31,6 @@ class Trap(GameObject):
                 self.game.level_manager.current_level.healthbar.hearts[
                     self.game.level_manager.current_level.character.health
                 ].deplete()
-                self.collision_timer = 50
+                self.collision_timer = 20
             else:
                 print("game over")

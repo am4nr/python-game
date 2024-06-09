@@ -3,10 +3,6 @@ import pygame
 from scripts.Utils.settings import *
 from scripts.Character.characterMovement import HorizontalMovement, VerticalMovement
 
-# from typing import TYPE_CHECKING
-# if TYPE_CHECKING:
-#     from scripts.Character.character import Character
-
 
 class CharacterState:
     def __init__(self, character):
@@ -47,7 +43,6 @@ class Idle(CharacterState):
 class RunningRight(CharacterState):
     def enter(self):
         self.character.vel.x = 0
-        # self.character.direction = "right"
         if self.character.on_ground:
             self.character.animation.reset(
                 self.character.sprites["run"], self.character.direction
@@ -62,7 +57,6 @@ class RunningRight(CharacterState):
 class RunningLeft(CharacterState):
     def enter(self):
         self.character.vel.x = 0
-        # self.character.direction = "left"
         if self.character.on_ground:
             self.character.animation.reset(
                 self.character.sprites["run"], self.character.direction
