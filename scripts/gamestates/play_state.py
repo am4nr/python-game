@@ -7,7 +7,8 @@ class PlayState(GameState):
     def enterState(self, game):
         print("Entered Playstate")
         game.music = game.assets.get("Music","music/loop.wav")
-        game.level_manager.current_level.load()
+        if game.previousState == game.states["MainMenu"]:
+            game.level_manager.current_level.load()
         #game.music.load("assets/music/loop.wav")
         #game.music.play(-1)
 
@@ -17,11 +18,8 @@ class PlayState(GameState):
     def event(self, game, event):
         if event.type == pygame.KEYDOWN:
             keys = pygame.key.get_pressed()
-            if keys[pygame.K_1]:
-                if game.current_level == 0:
-                    game.current_level = len(game.levels) - 1
-                else:
-                    game.current_level = game.current_level - 1
+            if keys[pygame.K_ESCAPE]:
+                game.changeState(game.states["Options"])
             if keys[pygame.K_2]:
                 game.level_manager.next_level()
 

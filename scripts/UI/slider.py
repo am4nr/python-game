@@ -9,10 +9,10 @@ class Slider:
         self.hit = False
 
     def render(self, screen):
-        pygame.draw.rect(screen, (100, 100, 100), self.rect)
-        pygame.draw.rect(screen, (150, 150, 150), [self.rect.x, self.rect.y, self.val_to_pixel(), self.rect.height])
+        pygame.draw.rect(screen, (100, 100, 100), [self.rect.x, self.rect.y+self.rect.height/4+2, self.rect.width, self.rect.height/4])
+        pygame.draw.rect(screen, (150, 150, 150), [self.rect.x, self.rect.y+self.rect.height/4+2, self.val_to_pixel(), self.rect.height/4])
         handle_pos = self.val_to_pixel() + self.rect.x
-        pygame.draw.circle(screen, (255, 0, 0), (handle_pos, self.rect.centery), int(self.rect.height / 2))
+        pygame.draw.circle(screen, "#b68f40", (handle_pos, self.rect.centery), int(self.rect.height / 2))
 
     def val_to_pixel(self):
         return int((self.val - self.min_val) / (self.max_val - self.min_val) * self.rect.width)
