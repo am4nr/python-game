@@ -60,20 +60,8 @@ class Flyweight:
         return asset_obj
     
 
-# Konstruktor und Initiator sind getrennt, Konstruktor setzt intrinsische values, Initiator 
-# setzt extrinsische Werte und funktioniert dadurch als Factory (?)
+# Asset Klasse um die Assets zu verwalten
 class Asset:
-    #  def __new__(cls, game, asset_type, asset, **kwargs):
-    #     if Flyweight.collections.get(asset_type) is None:
-    #         Flyweight.collections[asset_type] = {}
-    #     self = Flyweight.collections.get(asset_type).get(asset)
-
-    #     if self is None:
-    #         asset_class = str_to_class(asset_type)
-    #         self = asset_class.__new__(asset_class, game, asset)
-
-    #     self.__init__(game, asset, **kwargs)
-    #     return self 
     def __init__(self,game,asset, **kwargs):
         self.game = game
         self.asset = asset

@@ -23,7 +23,6 @@ class Animation:
                 self.done = True
                 
 
-        # return trim_surface(self.images[self.currentAnimIdx])
         return self.images[self.currentAnimIdx]
 
     def check_done(self):
@@ -47,11 +46,6 @@ class Animation:
         self.images = []
         for sprite in sprites:
             self.images.append(pygame.transform.flip(sprite.image, True, False))
-
-    # def upsidedown(self, sprites):
-    #     self.images = []
-    #     for sprite in sprites:
-    #         self.images.append(pygame.transform.flip(sprite.image, False, True))
 
     def reset(self, sprites, direction, loop=True, img_dur=12, next_state=None):
         self.frame = 0

@@ -49,6 +49,7 @@ class MainMenuState(GameState):
 
     def play(self, game):
         self.confirm_sound.play()
+        game.level_manager.current_level.load()
         game.changeState(game.states["Play"])
 
     def options(self, game):

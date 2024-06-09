@@ -10,10 +10,8 @@ class SpritesheetManager:
 
     def get_spritesheets(self, category, subcategory):
         self.path = os.path.join(os.getcwd(), "assets", category, subcategory)
-        # print(self.path)
         self.spritesheets = {}
         for filename in os.listdir(self.path):
-            # print(self.path + filename)
             self.spritesheets[filename.split(".")[0]] = self.assetmanager.get(
                 "Image", category + "/" + subcategory + "/" + filename
             )
@@ -34,10 +32,7 @@ class SpritesheetManager:
 
             rect = pygame.Rect(i * width, 0, width, height)
             surface.blit(spritesheet, (0, 0), rect)
-            # mask = pygame.mask.from_surface(surface)
-            # non_transparent_rect = mask.get_bounding_rects()
             surface = surface.subsurface(surface.get_bounding_rect(min_alpha=1)).copy()
-            # rect = surface.get_rect(topleft=(rect.x + non_transparent_rect.x, rect.y + non_transparent_rect.y))
 
             sprite = self.assetmanager.get(
                 "Sprite", pygame.transform.scale_by(surface, factor)

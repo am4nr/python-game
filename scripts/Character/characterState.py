@@ -115,3 +115,17 @@ class Landing(CharacterState):
     def exitState(self):
         pass
 
+# class Hit(CharacterState):
+#     def enter(self):
+#         self.character.animation.reset(
+#             self.character.sprites["land"], self.character.direction, False
+#         )
+
+
+#     def update(self):
+#         if self.character.animation.check_done():
+#             self.character.state.changeState(Idle)
+
+#     def exitState(self):
+#         pass
+

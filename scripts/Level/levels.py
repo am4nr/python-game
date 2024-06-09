@@ -2,7 +2,6 @@ import pygame
 from scripts.Character.characters import Finn, Quack
 from scripts.Utils.settings import WIDTH, HEIGHT
 from scripts.Level.background import Background
-from scripts.GameObjects.collectable import Collectable
 from scripts.UI.healthbar import Healthbar
 
 vec = pygame.math.Vector2
@@ -101,12 +100,13 @@ class Level:
         self.moving_platforms = self.tilemap.layers["gameObjects"]["moving_platforms"]
         self.solid_layer = self.tilemap.layers["solid"]["group"]
         self.background.load(self.game)
+        
         for platform in self.moving_platforms:
             self.solid_layer.add(
                 platform
             )
+            
         # Add the platform sprite to the gameObjects group
-        
         self.gameObjectsLayer = self.tilemap.layers["gameObjects"]
         self.collectables = self.gameObjectsLayer["collectables"]
         self.traps = self.gameObjectsLayer["traps"]

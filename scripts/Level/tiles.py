@@ -40,8 +40,6 @@ class Tileset:
                 "trap",
                 "goal",
             ]
-            # print("tile_id: " + str(tile_id))
-            # print("get_tile_surface: " + objects[tile_id])
             return objects[tile_id]
         else:
             if tile_id < 0 or tile_id >= self.tile_count:
@@ -105,7 +103,6 @@ class Tilemap:
             )
 
     def load_game_object_layer(self):
-        # print(self.tmap)
         game_objects_layer = self.layers["gameObjects"]
         paths = self.get_paths()
         if game_objects_layer:
@@ -113,7 +110,8 @@ class Tilemap:
             game_objects_layer["collectables"] = pygame.sprite.Group()
             game_objects_layer["traps"] = pygame.sprite.Group()
             game_objects_layer["goal"] = None
-            visited = set()  # Keep track of visited tiles
+            visited = set()
+            # Keep track of visited tiles
 
             for tileset in self.tilesets:
                 if tileset[1].name == "game_objects":
@@ -290,8 +288,7 @@ class Tilemap:
 
     def create_trap(self, index):
         x, y = self.index_to_coordinates(index)
-        # surf = self.get_tile_surface(self.layers["solid"]["data"][index])
-        # rect = pygame.rect.Rect(x, y, self.tile_width, self.tile_height)
+        
         trap = Trap(self.game, x, y)
         self.layers["gameObjects"]["traps"].add(trap)
 
