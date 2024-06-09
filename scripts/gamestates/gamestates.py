@@ -13,12 +13,12 @@ from scripts.Utils.spritesheetManager import SpritesheetManager
 from scripts.gamestates.play_state import PlayState
 from scripts.gamestates.main_menu_state import MainMenuState
 from scripts.gamestates.options_state import OptionsState
-
+from scripts.gamestates.game_over_state import GameOverState
 
 from scripts.Level.levels import LevelManager
 class Game:
     def __init__(self):
-        self.audio_volume = 1
+        self.audio_volume = 0.6
         pygame.mixer.pre_init(44100, -16, 2, 512)
         mixer.init()
         self.sound = pygame.mixer
@@ -35,6 +35,7 @@ class Game:
             "Play":PlayState(),
             "MainMenu": MainMenuState(),
             "Options": OptionsState(),
+            "GameOver": GameOverState(),
             }
 
         self.mouse_pos = pygame.mouse.get_pos()
@@ -48,9 +49,10 @@ class Game:
         self.clock = pygame.time.Clock()
         
         self.state = None
-        self.changeState(MainMenuState())
-
+        self.changeState(GameOverState())
+        self.previousState = None
     def changeState(self, newState):
+        self.previousState = self.state
         #self.state.exitState(self)
         self.state = newState
         self.state.enterState(self)

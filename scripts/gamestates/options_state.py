@@ -13,12 +13,22 @@ class OptionsState(GameState):
         self.buttons["PLAY_BACK"] = Button(
             image=None,
             pos=(400, 550),
-            text_input="BACK",
+            text_input="MAIN MENU",
             font=self.get_font(40),
             base_color="White",
             hovering_color="#d7fcd4",
             callback=lambda: self.main_menu(game)
         )
+        if game.previousState == game.states["Play"]:
+            self.buttons["RESUME"] = Button(
+                image=None,
+                pos=(400, 450),
+                text_input="CONTINUE",
+                font=self.get_font(40),
+                base_color="White",
+                hovering_color="#d7fcd4",
+                callback=lambda: self.play(game)
+            )
         self.buttons["NOISE"] = Button(
             image=None,
             pos=(200, 255),
@@ -34,10 +44,10 @@ class OptionsState(GameState):
         game.music.play(-1)
 
         pygame.mixer.music.play(-1,0.0)
-        pygame.mixer.music.set_volume(.6)
+        pygame.mixer.music.set_volume(game.audio_volume)
         
         self.bg = game.assets.get("Image", "background/BG.png")
-        self.volume_slider = Slider(300, 250, 200, 20, 0.0, 1.0, 0.5)
+        self.volume_slider = Slider(300, 250, 200, 20, 0.0, 1.0, game.audio_volume)
 
 
 
@@ -99,7 +109,7 @@ class OptionsState(GameState):
         BG = self.bg
         game.screen.blit(BG, (0, 0))
 
-        MENU_TEXT = self.get_font(100).render("MAIN MENU", True, "#b68f40")
+        MENU_TEXT = self.get_font(100).render("OPTIONS", True, "#b68f40")
         MENU_RECT = MENU_TEXT.get_rect(center=(WIDTH / 2, 100))
 
         game.screen.blit(MENU_TEXT, MENU_RECT)
