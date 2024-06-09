@@ -3,26 +3,40 @@ from scripts.Utils.animation import Animation
 
 
 class Goal(GameObject):
-    def __init__(self,game,x,y):
+    def __init__(self, game, x, y):
         self.game = game
         super().__init__(game)
-        self.x = x
+        self.x = x 
         self.y = y
-
-        self.sprites = game.sprites.handle_spritesheetDictTransformation(
-            game.sprites.get_spritesheets("objects", "Arrow"),
-            18,
-            18,
-        )
-        self.animation = Animation()
-        self.animation.upsidedown(self.sprites["Idle"])
-        self.image = self.sprites["Idle"][0].image
-        self.rect = self.image.get_rect(center=(self.x, self.y))
         self.collided = False
+
+    def load(self):
+        if self.game.level_manager.current_level.character.name == "finn":
+            self.sprites = self.game.sprites.handle_spritesheetDictTransformation(
+                self.game.sprites.get_spritesheets("goal", "quack"), 64, 64, 1
+            )
+        elif self.game.level_manager.current_level.character.name == "quack":
+            self.sprites = self.game.sprites.handle_spritesheetDictTransformation(
+                self.game.sprites.get_spritesheets("goal", "finn"), 200, 200, 0.32
+            )
+
+        self.animation = Animation()
+        # self.animation.get_img_dur()
+        self.animation.get_images(self.sprites["sleep"], "left")
+        self.image = self.sprites["sleep"][0].image
+        self.rect = self.image.get_rect()
+        self.rect.x = self.x
+        self.rect.y = self.y
+
+        
 
     def update(self):
         self.image = self.animation.update()
-        self.rect = self.image.get_rect(center=(self.x, self.y))
+        self.rect.update(
+            (self.rect.x, self.rect.bottom - self.image.get_height()),
+            self.image.get_size(),
+        )
+        # self.rect = self.image.get_rect()
 
     def handle_collision(self):
         self.animation.upsidedown(self.sprites["Hit"])

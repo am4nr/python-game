@@ -10,7 +10,7 @@ class SpritesheetManager:
 
     def get_spritesheets(self, category, subcategory):
         self.path = os.path.join(os.getcwd(), "assets", category, subcategory)
-        print(self.path)
+        # print(self.path)
         self.spritesheets = {}
         for filename in os.listdir(self.path):
             #print(self.path + filename)

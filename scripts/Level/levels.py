@@ -3,6 +3,7 @@ from scripts.Character.characters import Finn, Quack
 from scripts.Utils.settings import WIDTH
 from scripts.Level.background import Background
 from scripts.GameObjects.collectable import Collectable
+from scripts.UI.healthbar import Healthbar
 
 vec = pygame.math.Vector2
 BG1 = Background("1")
@@ -77,6 +78,7 @@ class Level:
         self.character = character
         self.offset = 0
         self.background = background
+        self.healthbar = Healthbar(self.game, 50, 50)
 
     def load(self):
         # if self.solid_layer:
@@ -99,28 +101,34 @@ class Level:
 
         self.gameObjects.add(self.collectables)
         self.gameObjects.add(self.traps)
-        self.gameObjects.add(self.goal)
+        #self.gameObjects.add(self.goal)
 
         # self.character.pos = vec(
         #     self.spawn[0] + self.tilemap.tile_width,
         #     self.spawn[1] - 2 * self.tilemap.tile_height,
         # )
-        self.character.pos = vec(200, 200)
+        self.character.pos = vec(self.spawn[0], self.spawn[1])
         self.character.load()
-        print(f"x: {self.spawn[0]} y: {self.spawn[1]}")
+        #print(f"x: {self.spawn[0]} y: {self.spawn[1]}")
         # self.character.collision.update_level()
+        self.goal.load()
+        self.healthbar.load()
 
     def update(self):
         # self.character.collision.update_level()
         # print("Updating level")
-        self.gameObjects.update()
+        #self.gameObjects.update()
         for platform in self.moving_platforms:
             # print(f"Updating platform: {platform}")
             platform.update()
         self.character.update()
         self.set_offset()
+        self.healthbar.update()
         self.background.update()
-        print(self.collectables.__len__())
+        self.collectables.update()
+        self.traps.update()
+        self.goal.update()
+        # print(self.collectables.__len__())
         # if self.gameObjects.has(Collectable):
         # print("got")
 
@@ -173,12 +181,27 @@ class Level:
             )
             # platform.blit(self.game.screen)
 
-        for gameObject in self.gameObjects:
+        # for gameObject in self.gameObjects:
+        #     self.game.screen.blit(
+        #         gameObject.image, (gameObject.rect.x - self.offset, gameObject.rect.y)
+        #     )
+        
+        for collectable in self.collectables:
             self.game.screen.blit(
-                gameObject.image, (gameObject.rect.x - self.offset, gameObject.rect.y)
+                collectable.image, (collectable.rect.x - self.offset, collectable.rect.y)
             )
+        for trap in self.traps:
+            self.game.screen.blit(
+                trap.image, (trap.rect.x - self.offset, trap.rect.y)
+            )
+        
+        self.game.screen.blit(self.goal.image, (self.goal.rect.x - self.offset, self.goal.rect.y))
+        
         # self.gameObjects.draw(self.game.screen)
         self.game.screen.blit(
             self.character.image,
             (self.character.rect.x - self.offset, self.character.rect.y),
         )
+        
+        for heart in self.healthbar.hearts:
+            self.game.screen.blit(heart.image, heart.rect)

@@ -17,11 +17,13 @@ class Collectable(GameObject):
             game.sprites.get_spritesheets("collectables", "fruits"),
             32,
             32,
+            1.5
         )
         self.collectedanimation = game.sprites.handle_spritesheetDictTransformation(
             game.sprites.get_spritesheets("collectables", "effects"),
             32,
             32,
+            1.5
         )
         self.animation = Animation()
         self.animation.get_img_dur = 6

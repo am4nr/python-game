@@ -37,9 +37,11 @@ class Tileset:
                 "plat_horizontal",
                 "plat_select",
                 "plat_vertical",
-                "enemy",
+                "trap",
                 "goal",
             ]
+            # print("tile_id: " + str(tile_id))
+            # print("get_tile_surface: " + objects[tile_id])
             return objects[tile_id]
         else:
             if tile_id < 0 or tile_id >= self.tile_count:
@@ -110,12 +112,22 @@ class Tilemap:
             game_objects_layer["moving_platforms"] = pygame.sprite.Group()
             game_objects_layer["collectables"] = pygame.sprite.Group()
             game_objects_layer["traps"] = pygame.sprite.Group()
-            game_objects_layer["spawn"] = [0,0]
-            game_objects_layer["goal"] = pygame.sprite.Group()
+            game_objects_layer["goal"] = None
             visited = set()  # Keep track of visited tiles
 
+            for tileset in self.tilesets:
+                if tileset[1].name == "game_objects":
+                    game_objects_firstgid = tileset[0]
+                    break
+
             for index, tile_id in enumerate(game_objects_layer["data"]):
-                if tile_id != 0 and index not in visited:
+                if tile_id == 0:
+                    continue
+                elif tile_id == game_objects_firstgid:
+                    self.create_spawn(index)
+                elif tile_id == game_objects_firstgid + 6:
+                    self.create_goal(index)
+                elif tile_id != 0 and index not in visited:
                     object_type = self.get_tile_surface(tile_id)
                     if object_type == "plat_select":
                         platform_tiles = self.flood_fill(
@@ -141,12 +153,6 @@ class Tilemap:
 
                     elif object_type == "trap":
                         self.create_trap(index)
-
-                    elif object_type == "goal":
-                        self.create_goal(index)
-
-                    elif object_type == "spawn":
-                        self.create_spawn(index)
 
     def convert_path(self, path):
         tile_size = self.tile_height
@@ -291,12 +297,8 @@ class Tilemap:
 
     def create_goal(self, index):
         x, y = self.index_to_coordinates(index)
-        # surf = self.get_tile_surface(self.layers["solid"]["data"][index])
-        # set new surf with image
-        # rect = pygame.rect.Rect(x, y, self.tile_width, self.tile_height)
-        # goal = Goal(self.game, x, y, surf, rect)
         goal = Goal(self.game, x, y)
-        self.layers["gameObjects"]["goal"].add(goal)
+        self.layers["gameObjects"]["goal"] = goal
 
     def create_spawn(self, index):
         x, y = self.index_to_coordinates(index)
