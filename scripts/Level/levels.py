@@ -14,6 +14,7 @@ BG4 = Background("4")
 levels = [
     {"level_name": "Test-Level", "character": Quack, "background": BG1},
     {"level_name": "Test-Level2", "character": Finn, "background": BG2},
+    {"level_name": "Level2", "character": Quack, "background": BG3},
 ]
 
 
