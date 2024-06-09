@@ -9,6 +9,7 @@ class Goal(GameObject):
         self.x = x - 12
         self.y = y + 12
         self.collided = False
+        self.state = "sleep"
 
     def load(self):
         if self.game.level_manager.current_level.character.name == "finn":
@@ -32,6 +33,13 @@ class Goal(GameObject):
 
     def update(self):
         self.image = self.animation.update()
+        self.check_state()
 
     def handle_collision(self):
-        self.game.level_manager.current_level.check_goal()
+        if self.goal.state == "active":
+            print("yay")
+
+    def check_state(self):
+        if self.game.level_manager.current_level.collectables.__len__() == 0:
+            self.animation.reset(self.sprites["active"], "left")
+            self.state = "active"

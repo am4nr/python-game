@@ -157,11 +157,11 @@ class Level:
             elif self.offset >= tilemap_width - WIDTH:
                 self.offset = tilemap_width - WIDTH
 
-    def check_goal(self):
-        # update only Collectable
-        # print(self.collectables.__len__())
-        if self.gameObjects.__len__() == 0:
-            print("yay")
+    # def check_goal(self):
+    #     # update only Collectable
+    #     # print(self.collectables.__len__())
+    #     if self.goal.state == "active":
+    #         print("yay")
 
     def render(self):
         # print("render level")

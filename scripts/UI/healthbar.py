@@ -16,7 +16,10 @@ class Healthbar():
 
     def update(self):
         for heart in self.hearts:
-            heart.image = heart.animation.update()
+            if heart.animation.check_done:
+                heart.image = heart.sprites["heart_full"][4].image
+            else:
+                heart.image = heart.animation.update()
         # self.rect = self.image.get_rect(center=(self.x,self.y))
         pass
 
@@ -41,4 +44,3 @@ class Heart():
 
     def deplete(self):
         self.animation.reset(self.sprites["heart_deplete"], "right", False, 6)
-

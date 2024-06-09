@@ -27,7 +27,7 @@ class Character(pygame.sprite.Sprite):
         self.idle_waiting_time_counter = 0
         self.collided_x = False
         self.collided_y = False
-        self.health = 3
+        self.health = 5
         
 
     def load(self):
@@ -61,7 +61,7 @@ class Character(pygame.sprite.Sprite):
         self.apply_gravity()
         self.jump()
         self.handle_idle()
-        print(self.health)
+
 
     def apply_gravity(self):
         if not self.on_ground and not self.jumping:

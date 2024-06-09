@@ -18,11 +18,22 @@ class Trap(GameObject):
         self.image = self.sprites["Idle"][0].image
         self.rect = self.image.get_rect()
         self.rect.bottomleft = (self.x, self.y)
+        self.collision_timer = 0
 
     def update(self):
         pass
 
     def handle_collision(self):
-        self.game.level_manager.current_level.character.health -= 1
-        # self.game.level_manager.current_level.healthbar.deplete()
-        # print("detected")
+        # self.collided = True
+        if self.collision_timer > 0:
+            self.collision_timer -= 1
+        else: 
+            if self.game.level_manager.current_level.character.health > 0:
+                self.game.level_manager.current_level.character.health -= 1
+                print(self.game.level_manager.current_level.character.health)
+                self.game.level_manager.current_level.healthbar.hearts[
+                    self.game.level_manager.current_level.character.health
+                ].deplete()
+                self.collision_timer = 50
+            else:
+                print("game over")
