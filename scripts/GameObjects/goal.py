@@ -6,8 +6,8 @@ class Goal(GameObject):
     def __init__(self, game, x, y):
         self.game = game
         super().__init__(game)
-        self.x = x 
-        self.y = y
+        self.x = x - 12
+        self.y = y + 12
         self.collided = False
 
     def load(self):
@@ -21,23 +21,17 @@ class Goal(GameObject):
             )
 
         self.animation = Animation()
-        # self.animation.get_img_dur()
+        self.animation.get_img_dur(18)
         self.animation.get_images(self.sprites["sleep"], "left")
         self.image = self.sprites["sleep"][0].image
         self.rect = self.image.get_rect()
         self.rect.x = self.x
-        self.rect.y = self.y
+        self.rect.y = self.y 
 
         
 
     def update(self):
         self.image = self.animation.update()
-        self.rect.update(
-            (self.rect.x, self.rect.bottom - self.image.get_height()),
-            self.image.get_size(),
-        )
-        # self.rect = self.image.get_rect()
 
     def handle_collision(self):
-        self.animation.upsidedown(self.sprites["Hit"])
         self.game.level_manager.current_level.check_goal()

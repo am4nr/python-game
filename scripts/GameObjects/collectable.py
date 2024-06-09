@@ -5,9 +5,7 @@ import pygame
 vec = pygame.math.Vector2
 
 class Collectable(GameObject):
-    counter = 0
     def __init__(self, game, x, y):
-        Collectable.counter += 1
         self.game = game
         super().__init__(game)
         self.x = x
@@ -47,5 +45,5 @@ class Collectable(GameObject):
     def remove(self):
         if self.animation.check_done():
             self.game.level_manager.current_level.collectables.remove(self)
-            Collectable.counter -= 1
+
         

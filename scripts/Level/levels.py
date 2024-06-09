@@ -195,7 +195,13 @@ class Level:
                 trap.image, (trap.rect.x - self.offset, trap.rect.y)
             )
         
-        self.game.screen.blit(self.goal.image, (self.goal.rect.x - self.offset, self.goal.rect.y))
+        self.game.screen.blit(
+            self.goal.image,
+            (
+                self.goal.rect.x - self.offset,
+                self.goal.rect.bottom - self.goal.image.get_height(),
+            ),
+        )
         
         # self.gameObjects.draw(self.game.screen)
         self.game.screen.blit(

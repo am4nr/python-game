@@ -16,20 +16,20 @@ class Collision:
     def detect_horizontal_collision(self, character: "Character"):
         character.collided_x = False
 
-        character.rect.update(
-            (character.rect.x, character.rect.bottom - character.image.get_height()),
-            character.image.get_size(),
-        )
+        # character.rect.update(
+        #     (character.rect.x, character.rect.bottom - character.image.get_height()),
+        #     character.image.get_size(),
+        # )
         if character.direction == "left":
-            character.rect.left -= 5
+            character.rect.left -= 10
         elif character.direction == "right":
-            character.rect.right += 5
+            character.rect.right += 10
 
         collision_list = pygame.sprite.spritecollide(character, self.solid_layer, False)
         if character.direction == "left":
-            character.rect.left += 5
+            character.rect.left += 10
         elif character.direction == "right":
-            character.rect.right -= 5
+            character.rect.right -= 10
         return collision_list
 
     def horizontal_collision(self, character: "Character"):
@@ -73,10 +73,10 @@ class Collision:
         character.on_ground = False
         character.collided_y = False
 
-        character.rect.update(
-            (character.rect.x, character.rect.bottom - character.image.get_height()),
-            character.image.get_size(),
-        )
+        # character.rect.update(
+        #     (character.rect.x, character.rect.bottom - character.image.get_height()),
+        #     character.image.get_size(),
+        # )
         if character.jumping:
             character.rect.top -= 1
         else:

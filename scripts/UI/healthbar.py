@@ -37,8 +37,6 @@ class Heart():
         self.rect = self.image.get_rect(center=(self.x,self.y))
 
     def update(self):
-        # if not self.animation.check_done:
-        # self.image = self.animation.update()
         pass
 
     def deplete(self):
