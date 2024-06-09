@@ -46,6 +46,7 @@ class Flyweight:
         elif asset_type == "Sound":
             mixer = self.__instance.__game.sound
             asset_obj = mixer.Sound(asset_path)
+            asset_obj.set_volume(self.__instance.__game.audio_volume)
             
         elif asset_type == "Music":
             mixer = self.__instance.__game.music

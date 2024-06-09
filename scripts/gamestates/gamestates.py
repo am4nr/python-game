@@ -18,6 +18,7 @@ from scripts.gamestates.options_state import OptionsState
 from scripts.Level.levels import LevelManager
 class Game:
     def __init__(self):
+        self.audio_volume = 1
         pygame.mixer.pre_init(44100, -16, 2, 512)
         mixer.init()
         self.sound = pygame.mixer

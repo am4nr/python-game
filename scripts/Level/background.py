@@ -18,8 +18,6 @@ class Background:
         self.mid_decor = self.game.assets.get("Image",self.file_prefix+"Middle_Decor"+self.file_suffix)
         self.fg_decor = self.game.assets.get("Image",self.file_prefix+"Foreground"+self.file_suffix)
         self.ground = self.game.assets.get("Image",self.file_prefix+"Ground"+self.file_suffix)
-        print(f"Loaded Background for level {self.level_number}")
-        print(self.sky), print(self.bg_decor), print(self.mid_decor), print(self.fg_decor), print(self.ground)
         
     def update(self):
         self.offset = self.game.level_manager.current_level.offset
@@ -30,12 +28,12 @@ class Background:
         mid_decor = pygame.transform.scale(self.mid_decor, (self.mid_decor.get_width()*0.8, HEIGHT))
         fg_decor = pygame.transform.scale(self.fg_decor, (self.fg_decor.get_width()*0.8, HEIGHT))
         
-        self.game.screen.blit(sky, (math.floor(self.offset*self.offset_multiplier["sky"]), 0))
-        self.game.screen.blit(sky, (math.floor(self.offset*self.offset_multiplier["sky"])-sky.get_width(), 0))
-        self.game.screen.blit(bg_decor, (math.floor(self.offset*self.offset_multiplier["bg_decor"]), 0))
-        self.game.screen.blit(bg_decor, (math.floor(self.offset*self.offset_multiplier["bg_decor"])-bg_decor.get_width(), 0))
-        self.game.screen.blit(mid_decor, (math.floor(self.offset*self.offset_multiplier["mid_decor"]), 0))
-        self.game.screen.blit(mid_decor, (math.floor(self.offset*self.offset_multiplier["mid_decor"])-mid_decor.get_width(), 0))
-        self.game.screen.blit(fg_decor, (math.floor(self.offset*self.offset_multiplier["fg_decor"]), 0))
-        self.game.screen.blit(fg_decor, (math.floor(self.offset*self.offset_multiplier["fg_decor"])-fg_decor.get_width(), 0))
-        self.game.screen.blit(self.ground, (math.floor(self.offset*self.offset_multiplier["ground"]), 0))
+        self.game.screen.blit(sky, (-math.floor(self.offset*self.offset_multiplier["sky"]), 0))
+        self.game.screen.blit(sky, (-math.floor(self.offset*self.offset_multiplier["sky"])-sky.get_width(), 0))
+        self.game.screen.blit(bg_decor, (-math.floor(self.offset*self.offset_multiplier["bg_decor"]), 0))
+        self.game.screen.blit(bg_decor, (-math.floor(self.offset*self.offset_multiplier["bg_decor"])-bg_decor.get_width(), 0))
+        self.game.screen.blit(mid_decor, (-math.floor(self.offset*self.offset_multiplier["mid_decor"]), 0))
+        self.game.screen.blit(mid_decor, (-math.floor(self.offset*self.offset_multiplier["mid_decor"])-mid_decor.get_width(), 0))
+        self.game.screen.blit(fg_decor, (-math.floor(self.offset*self.offset_multiplier["fg_decor"]), 0))
+        self.game.screen.blit(fg_decor, (-math.floor(self.offset*self.offset_multiplier["fg_decor"])-fg_decor.get_width(), 0))
+        self.game.screen.blit(self.ground, (-math.floor(self.offset*self.offset_multiplier["ground"]), 0))

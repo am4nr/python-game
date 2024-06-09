@@ -87,10 +87,13 @@ class OptionsState(GameState):
 
         self.volume_slider.update(game.mouse_pos)
         game.audio_volume = self.volume_slider.val
-
         # Setze die Lautstärke entsprechend der Position des Reglers
         current_volume = self.volume_slider.val
         pygame.mixer.music.set_volume(current_volume)
+        if game.assets.collections["Sound"]:
+            for sound in game.assets.collections["Sound"]:
+                mixer = game.assets.get("Sound", sound)
+                mixer.set_volume(game.audio_volume)
 
     def render(self, game):
         BG = self.bg
