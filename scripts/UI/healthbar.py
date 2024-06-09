@@ -1,8 +1,10 @@
 from scripts.Utils.animation import Animation
 import pygame
+
 vec = pygame.math.Vector2
 
-class Healthbar():
+
+class Healthbar:
     def __init__(self, game, x, y):
         self.game = game
         self.x = x
@@ -10,26 +12,21 @@ class Healthbar():
         self.hearts = []
 
     def load(self):
-        #print(self.game)
-        for i in range (self.game.level_manager.current_level.character.health):
+        # print(self.game)
+        for i in range(self.game.level_manager.current_level.character.health):
             self.hearts.append(Heart(self.game, self.x + i * 23, self.y))
 
     def update(self):
         for heart in self.hearts:
-            if heart.animation.check_done:
-                heart.image = heart.sprites["heart_full"][4].image
-            else:
+            if not heart.isDeplete:
                 heart.image = heart.animation.update()
-        # self.rect = self.image.get_rect(center=(self.x,self.y))
-        pass
 
-class Heart():
+
+class Heart:
     def __init__(self, game, x, y):
         self.game = game
         self.sprites = game.sprites.handle_spritesheetDictTransformation(
-            game.sprites.get_spritesheets("objects", "Hearts"),
-            20,
-            18
+            game.sprites.get_spritesheets("objects", "Hearts"), 20, 18
         )
         self.x = x
         self.y = y
@@ -37,10 +34,13 @@ class Heart():
         self.animation.get_img_dur(6)
         self.animation.get_surfaces(self.sprites["heart_full"])
         self.image = self.sprites["heart_full"][0].image
-        self.rect = self.image.get_rect(center=(self.x,self.y))
+        self.rect = self.image.get_rect(center=(self.x, self.y))
+        self.isDeplete = False
 
     def update(self):
         pass
 
     def deplete(self):
         self.animation.reset(self.sprites["heart_deplete"], "right", False, 6)
+        self.image = self.sprites["heart_deplete"][3].image
+        self.isDeplete = True

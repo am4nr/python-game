@@ -12,6 +12,7 @@ class Animation:
         self.loop = True
 
     def update(self):
+        self.done = False
         self.frame += 1
         if self.frame >= self.img_dur:
             self.frame = 0
@@ -20,6 +21,7 @@ class Animation:
             self.currentAnimIdx = 0
             if not self.loop:
                 self.done = True
+                
 
         # return trim_surface(self.images[self.currentAnimIdx])
         return self.images[self.currentAnimIdx]
