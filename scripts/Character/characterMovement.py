@@ -22,10 +22,16 @@ class HorizontalMovement(Movement):
 
         if character.collided_x:
             character.acc.x = 0
-        elif character.direction == "left":
-            character.acc.x = -character.speed
-        elif character.direction == "right":
-            character.acc.x = character.speed
+        elif not character.on_ground:
+            if character.direction == "left":
+                character.acc.x = -character.speed *0.5
+            if character.direction == "right":
+                character.acc.x = character.speed *0.5
+        else:
+            if character.direction == "left":
+                character.acc.x = -character.speed
+            if character.direction == "right":
+                character.acc.x = character.speed
 
         if character.acc.x != 0:
             character.acc.x *= 0.7071
