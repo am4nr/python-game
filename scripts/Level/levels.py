@@ -121,7 +121,7 @@ class Level:
         self.character.health = self.character_max_health
         
         self.goal.load()
-
+        self.healthbar.hearts = []
         self.healthbar.load()
 
         self.offset_x = 0
