@@ -28,7 +28,7 @@ class PlayerCommand:
 
 class NoInput(PlayerCommand):
     def execute(self, character: "Character"):
-        if character.on_ground and character.state.currentState != Idle:
+        if character.on_ground and not character.hit and character.state.currentState != Idle:
             character.idle_waiting_time_counter += 1
             if character.idle_waiting_time_counter >= 12:
                 character.state.changeState(Idle)
@@ -36,32 +36,22 @@ class NoInput(PlayerCommand):
 
 class RunLeft(PlayerCommand):
     def execute(self, character: "Character"):
-        if character.on_ground:
+        if character.on_ground and not character.hit:
             character.state.changeState(RunningLeft)
         HorizontalMovement().execute(character)
 
 
 class RunRight(PlayerCommand):
     def execute(self, character: "Character"):
-        if character.on_ground:
+        if character.on_ground and not character.hit:
             character.state.changeState(RunningRight)
         HorizontalMovement().execute(character)
 
 
 class Jump(PlayerCommand):
     def execute(self, character: "Character"):
-        character.state.changeState(Jumping)
-        VerticalMovement().execute(character)
+         if not character.hit:
+            character.state.changeState(Jumping)
+            VerticalMovement().execute(character)
 
 
-class Attack(PlayerCommand):
-    def execute(self, character: "Character"):
-        pass
-
-
-class Dash(PlayerCommand):
-    pass
-
-
-class Duck(PlayerCommand):
-    pass

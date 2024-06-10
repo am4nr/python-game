@@ -47,11 +47,16 @@ class RunningRight(CharacterState):
             self.character.animation.reset(
                 self.character.sprites["run"], self.character.direction
             )
+            self.counter = 0
+
     def update(self):
-        pass
+        if self.character.on_ground and self.counter % 15 == 0:
+            self.character.sounds["run"].play()
+        self.counter += 1
 
     def exitState(self):
         self.character.vel.x = 0
+        self.counter = 0
 
 
 class RunningLeft(CharacterState):
@@ -61,12 +66,17 @@ class RunningLeft(CharacterState):
             self.character.animation.reset(
                 self.character.sprites["run"], self.character.direction
             )
+        self.counter = 0
 
     def update(self):
-        pass
+        if self.character.on_ground and self.counter % 15 == 0:
+            self.character.sounds["run"].play()
+        self.counter += 1
 
     def exitState(self):
         self.character.vel.x = 0
+        self.counter = 0
+
 
 
 class Jumping(CharacterState):
@@ -76,7 +86,7 @@ class Jumping(CharacterState):
         self.character.animation.reset(
             self.character.sprites["jump"], self.character.direction, False, 10
         )
-        self.character.sounds_jump.play()
+        self.character.sounds["jump"].play()
 
     def update(self):
         if self.character.animation.check_done():
@@ -92,6 +102,7 @@ class Falling(CharacterState):
         self.character.animation.reset(
             self.character.sprites["fall"], self.character.direction
         )
+        
 
     def update(self):
         if self.character.on_ground:
@@ -106,7 +117,7 @@ class Landing(CharacterState):
         self.character.animation.reset(
             self.character.sprites["land"], self.character.direction, False
         )
-
+        self.character.sounds["land"].play() 
 
     def update(self):
         if self.character.animation.check_done():
@@ -115,17 +126,24 @@ class Landing(CharacterState):
     def exitState(self):
         pass
 
-# class Hit(CharacterState):
-#     def enter(self):
-#         self.character.animation.reset(
-#             self.character.sprites["land"], self.character.direction, False
-#         )
+class Hit(CharacterState):
+    def enter(self):
+        self.character.hit = True
+        self.character.animation.reset(
+            self.character.sprites["hit"], self.character.direction, False, 15
+        )
+        self.character.sounds["hit"].play()
+        
 
+    def update(self):
+        if self.character.animation.check_done():
+            self.character.state.changeState(Idle)
 
-#     def update(self):
-#         if self.character.animation.check_done():
-#             self.character.state.changeState(Idle)
-
-#     def exitState(self):
-#         pass
+    def exitState(self):
+        self.character.hit = False
+        self.character.health -= 1
+        self.character.game.level_manager.current_level.healthbar.hearts[
+                self.character.health
+            ].deplete()
+        
 

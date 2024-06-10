@@ -41,7 +41,9 @@ class Collectable(GameObject):
     
     def handle_collision(self):
         self.animation.reset(self.collectedanimation["Collected"], "right", False, 3)
-
+        self.game.level_manager.current_level.character.sounds["collect"].play()
+        self.collided = True
+        
     def remove(self):
         if self.animation.check_done():
             self.game.level_manager.current_level.collectables.remove(self)

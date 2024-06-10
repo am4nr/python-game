@@ -27,6 +27,7 @@ class Character(pygame.sprite.Sprite):
         self.idle_waiting_time_counter = 0
         self.collided_x = False
         self.collided_y = False
+        self.hit = False
         self.health = None
         
 
@@ -42,7 +43,12 @@ class Character(pygame.sprite.Sprite):
         self.image = self.sprites["idle"][0].image
         self.rect = self.image.get_rect()
         self.rect.topleft = self.pos
-        self.sounds_jump = self.game.assets.get("Sound", "SFX/jump.wav")
+        self.sounds = {
+            "jump": self.game.assets.get("Sound", "SFX/jump.wav"),
+            "run": self.game.assets.get("Sound", "SFX/run.wav"), 
+            "land": self.game.assets.get("Sound", "SFX/land.wav"),
+            "collect": self.game.assets.get("Sound", "SFX/collect.wav"),
+            "hit": self.game.assets.get("Sound", "SFX/hit.wav"),}
         self.collision = Collision(self.game)
         
         
