@@ -138,11 +138,13 @@ class Level:
         self.traps.update()
         self.goal.update()
         if self.character.health <= 0:
+            self.game.assets.get("Sound", "SFX/oops.wav").play()
             self.game.changeState(self.game.states["GameOver"])
             
     def check_goal(self):
         if self.goal.state == "active":
             if self.character.rect.colliderect(self.goal.rect):
+                self.game.assets.get("Sound", "SFX/dinoegg.wav").play().fadeout(1500)
                 self.game.level_manager.next_level()
             
     def set_offset(self):
