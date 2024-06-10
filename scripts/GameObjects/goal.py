@@ -27,9 +27,7 @@ class Goal(GameObject):
         self.image = self.sprites["sleep"][0].image
         self.rect = self.image.get_rect()
         self.rect.x = self.x
-        self.rect.y = self.y 
-
-        
+        self.rect.y = self.y
 
     def update(self):
         self.image = self.animation.update()

@@ -2,8 +2,9 @@ import pygame
 from scripts.Utils.animation import Animation
 from scripts.Character.playerCommand import RunLeft, RunRight, Jump, NoInput
 from scripts.Character.characterMovement import VerticalMovement
-from scripts.Character.characterState import CharacterState, Falling 
+from scripts.Character.characterState import CharacterState, Falling
 from scripts.Utils.collision import Collision
+
 vec = pygame.math.Vector2
 
 
@@ -19,7 +20,7 @@ class Character(pygame.sprite.Sprite):
         self.speed = speed
         self.gravity = gravity
         self.friction = friction
-        self.state = CharacterState(self)   
+        self.state = CharacterState(self)
         self.jumps = 2
         self.direction = "right"
         self.jumping = False
@@ -29,14 +30,13 @@ class Character(pygame.sprite.Sprite):
         self.collided_y = False
         self.hit = False
         self.health = None
-        
 
     def load(self):
         self.sprites = self.game.sprites.handle_spritesheetDictTransformation(
             self.game.sprites.get_spritesheets("characters", self.name),
             self.tilesize,
             self.tilesize,
-            self.scale
+            self.scale,
         )
         self.animation = Animation()
         self.animation.get_images(self.sprites["idle"], self.direction)
@@ -45,13 +45,13 @@ class Character(pygame.sprite.Sprite):
         self.rect.topleft = self.pos
         self.sounds = {
             "jump": self.game.assets.get("Sound", "SFX/jump.wav"),
-            "run": self.game.assets.get("Sound", "SFX/run.wav"), 
+            "run": self.game.assets.get("Sound", "SFX/run.wav"),
             "land": self.game.assets.get("Sound", "SFX/land.wav"),
             "collect": self.game.assets.get("Sound", "SFX/collect.wav"),
-            "hit": self.game.assets.get("Sound", "SFX/hit.wav"),}
+            "hit": self.game.assets.get("Sound", "SFX/hit.wav"),
+        }
         self.collision = Collision(self.game)
-        
-        
+
     def update(self):
         self.image = self.animation.update()
         self.rect.update(
@@ -67,7 +67,6 @@ class Character(pygame.sprite.Sprite):
         self.apply_gravity()
         self.jump()
         self.handle_idle()
-
 
     def apply_gravity(self):
         if not self.on_ground and not self.jumping:

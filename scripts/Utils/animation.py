@@ -1,5 +1,4 @@
 import pygame
-from scripts.Utils.utils import trim_surface
 
 
 class Animation:
@@ -21,7 +20,6 @@ class Animation:
             self.currentAnimIdx = 0
             if not self.loop:
                 self.done = True
-                
 
         return self.images[self.currentAnimIdx]
 

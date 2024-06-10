@@ -1,7 +1,4 @@
-from abc import ABCMeta, abstractmethod
-import pygame
 from scripts.Utils.settings import *
-from scripts.Character.characterMovement import HorizontalMovement, VerticalMovement
 
 
 class CharacterState:
@@ -78,7 +75,6 @@ class RunningLeft(CharacterState):
         self.counter = 0
 
 
-
 class Jumping(CharacterState):
     def enter(self):
         self.character.vel.y = -self.character.gravity * 50
@@ -102,7 +98,6 @@ class Falling(CharacterState):
         self.character.animation.reset(
             self.character.sprites["fall"], self.character.direction
         )
-        
 
     def update(self):
         if self.character.on_ground:
@@ -117,7 +112,7 @@ class Landing(CharacterState):
         self.character.animation.reset(
             self.character.sprites["land"], self.character.direction, False
         )
-        self.character.sounds["land"].play() 
+        self.character.sounds["land"].play()
 
     def update(self):
         if self.character.animation.check_done():
@@ -126,6 +121,7 @@ class Landing(CharacterState):
     def exitState(self):
         pass
 
+
 class Hit(CharacterState):
     def enter(self):
         self.character.hit = True
@@ -133,7 +129,6 @@ class Hit(CharacterState):
             self.character.sprites["hit"], self.character.direction, False, 15
         )
         self.character.sounds["hit"].play()
-        
 
     def update(self):
         if self.character.animation.check_done():
@@ -143,7 +138,5 @@ class Hit(CharacterState):
         self.character.hit = False
         self.character.health -= 1
         self.character.game.level_manager.current_level.healthbar.hearts[
-                self.character.health
-            ].deplete()
-        
-
+            self.character.health
+        ].deplete()

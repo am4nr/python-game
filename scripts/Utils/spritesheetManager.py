@@ -1,6 +1,5 @@
 import pygame
 import os
-from pathlib import Path
 from scripts.Utils.flyweight import *
 
 

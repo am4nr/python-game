@@ -6,8 +6,6 @@ from scripts.Character.characterState import (
     RunningRight,
     RunningLeft,
     Jumping,
-    Falling,
-    Landing,
     Idle,
 )
 from scripts.Character.characterMovement import HorizontalMovement, VerticalMovement
@@ -28,7 +26,11 @@ class PlayerCommand:
 
 class NoInput(PlayerCommand):
     def execute(self, character: "Character"):
-        if character.on_ground and not character.hit and character.state.currentState != Idle:
+        if (
+            character.on_ground
+            and not character.hit
+            and character.state.currentState != Idle
+        ):
             character.idle_waiting_time_counter += 1
             if character.idle_waiting_time_counter >= 12:
                 character.state.changeState(Idle)
@@ -50,8 +52,6 @@ class RunRight(PlayerCommand):
 
 class Jump(PlayerCommand):
     def execute(self, character: "Character"):
-         if not character.hit:
+        if not character.hit:
             character.state.changeState(Jumping)
             VerticalMovement().execute(character)
-
-

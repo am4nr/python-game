@@ -12,10 +12,9 @@ class Collision:
         self.solid_layer = self.game.level_manager.current_level.solid_layer
         self.gameObjects = self.game.level_manager.current_level.gameObjects
 
-
     def detect_horizontal_collision(self, character: "Character"):
         character.collided_x = False
-        
+
         if character.direction == "left":
             character.rect.left -= 10
         elif character.direction == "right":
@@ -29,7 +28,6 @@ class Collision:
         return collision_list
 
     def horizontal_collision(self, character: "Character"):
-        
         collision_list = self.detect_horizontal_collision(character)
         if collision_list:
             for collided_sprite in collision_list:
@@ -49,15 +47,20 @@ class Collision:
                     character.vel.x = 0
                     character.collided_x = True
                     return
-                
+
                 elif character.vel.x == 0:
                     if isinstance(collided_sprite, MovingPlatform):
                         if collided_sprite.rect.x > character.rect.x:
-                            character.pos.x = collided_sprite.rect.left - character.rect.width - 5
+                            character.pos.x = (
+                                collided_sprite.rect.left - character.rect.width - 5
+                            )
                             character.rect.x = character.pos.x
                             character.vel.x = 0
                             character.collided_x = True
-                        if collided_sprite.rect.x < character.rect.x - character.rect.width:
+                        if (
+                            collided_sprite.rect.x
+                            < character.rect.x - character.rect.width
+                        ):
                             character.pos.x = collided_sprite.rect.right + 5
                             character.rect.x = character.pos.x
                             character.vel.x = 0
@@ -67,7 +70,7 @@ class Collision:
     def detect_vertical_collision(self, character: "Character"):
         character.on_ground = False
         character.collided_y = False
-        
+
         if character.jumping:
             character.rect.top -= 1
         else:
@@ -81,7 +84,6 @@ class Collision:
         return collision_list
 
     def vertical_collision(self, character: "Character"):
-        
         # check if below the ground i.e. jumping
         collision_list = self.detect_vertical_collision(character)
         if collision_list:
@@ -116,7 +118,7 @@ class Collision:
     def object_collision(self, character):
         collision_list = pygame.sprite.spritecollide(character, self.gameObjects, False)
 
-        for obj in collision_list: 
+        for obj in collision_list:
             if not obj.collided:
                 obj.handle_collision()
                 return

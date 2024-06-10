@@ -24,9 +24,9 @@ class HorizontalMovement(Movement):
             character.acc.x = 0
         elif not character.on_ground:
             if character.direction == "left":
-                character.acc.x = -character.speed *0.5
+                character.acc.x = -character.speed * 0.5
             if character.direction == "right":
-                character.acc.x = character.speed *0.5
+                character.acc.x = character.speed * 0.5
         else:
             if character.direction == "left":
                 character.acc.x = -character.speed
@@ -60,4 +60,3 @@ class VerticalMovement(Movement):
         character.vel.y += character.acc.y
         character.pos.y += character.vel.y + 0.5 * character.acc.y
         character.rect.y = character.pos.y
-
