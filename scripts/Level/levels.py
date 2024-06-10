@@ -12,9 +12,10 @@ BG4 = Background("4")
 
 levels = [
     {"level_name": "Test-Level", "character": Quack, "background": BG1, "health": 3},
-    {"level_name": "Test-Level2", "character": Finn, "background": BG2, "health": 3},
-    {"level_name": "Level2", "character": Quack, "background": BG3, "health": 3},
-    {"level_name": "Level1", "character": Quack, "background": BG4, "health": 3},
+    {"level_name": "Level1", "character": Finn, "background": BG1, "health": 3},
+    {"level_name": "Level2", "character": Quack, "background": BG2, "health": 5},
+    {"level_name": "Level3", "character": Quack, "background": BG3, "health": 3},
+    {"level_name": "Level4", "character": Quack, "background": BG4, "health": 5},
 ]
 
 
